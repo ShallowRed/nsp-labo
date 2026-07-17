@@ -1,0 +1,17 @@
+{
+  "name": "nsp-labo",
+  "private": true,
+  "type": "module",
+  "description": "Expérimentations Nos Services Publics : notebooks Observable (couleurs, dataviz)",
+  "scripts": {
+    "preview": "notebooks preview --root notebooks",
+    "build": "notebooks build --root notebooks -- notebooks/*.html",
+    "check": "node scripts/check.mjs"
+  },
+  "dependencies": {
+    "@observablehq/notebook-kit": "^2.1.8",
+    "@observablehq/plot": "^0.6.17",
+    "culori": "^4.0.2",
+    "htl": "^1.0.0"
+  }
+}
