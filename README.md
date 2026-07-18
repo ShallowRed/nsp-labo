@@ -31,6 +31,7 @@ scripts/check.mjs             # batterie de mesures en CLI (npm run check)
 - Anti-gonflement : un notebook devenu sans usage est supprimé (git garde l'historique) ; pas de doublon d'un même sujet ; les explorations abandonnées sont mentionnées dans la carte Pawn, pas conservées ici.
 - Pédagogie : les notebooks doivent se lire sans bagage design ni code. Code masqué par défaut (pas de `pinned` sauf nécessité), notions expliquées à leur première occurrence (OKLCH, palier, contraste, dE...), guide de lecture sous chaque graphique, données fictives signalées comme telles.
 - La logique réutilisable vit dans `notebooks/lib/` (importée par les notebooks et par `scripts/`), pas dans les cellules. Les textes de fond (thèses, implications des scénarios) vivent aussi dans `lib/`, pas dans les cellules : ils servent le notebook et le CLI.
+- Dépendances : jamais d'import `npm:...` dans les cellules (Notebook Kit les compile en imports CDN jsDelivr à l'exécution : casse hors ligne et derrière les navigateurs qui filtrent les origines). Toujours passer par `notebooks/lib/deps.js` (imports bare, résolus depuis node_modules).
 - Les données sont figées dans `notebooks/data/` avec leur provenance et leur date de relevé.
 - Tout ce qui touche couleur, contraste ou daltonisme est calculé (culori, matrices de Viénot), jamais estimé à l'oeil.
 
