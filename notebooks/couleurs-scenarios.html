@@ -33,23 +33,22 @@ Tout ce qui suit est calculé avec ces outils de mesure ; rien n'est estimé « 
   <script type="text/markdown">
 ## D'où on part
 
-Le collectif a déjà construit de belles couleurs, mais trois fois, séparément : la charte du Printemps des Services Publics, les palettes des cartes interactives du rapport 2025, et les couleurs des différents sites. Ces systèmes partagent le même esprit (des nuanciers par paliers) mais aucune valeur commune : passer d'un support à l'autre, c'est changer de monde. Le spectre unifié vise à réconcilier tout cela dans un seul système.
-
-Ci-dessous, l'existant tel qu'il est aujourd'hui : en haut les sept familles des cartes interactives (nuanciers complets), en bas les six teintes de la charte du Printemps (six paliers seulement, qui s'arrêtent avant les tons foncés : une partie du problème).
+Le collectif a déjà construit de beaux nuanciers, mais deux fois, séparément : la charte du Printemps des Services Publics définit un spectre complet de 9 familles sur 19 paliers, et les cartes interactives du rapport 2025 en ont reconstruit un autre, 7 familles sur les mêmes 19 paliers, sans réutiliser une seule valeur. S'y ajoutent les couleurs des sites. Aucune valeur commune entre ces systèmes, et des quasi-doublons involontaires : le vert « jasmin » du Printemps et le vert d'eau du site actuel sont par exemple presque la même couleur (dE 3.2, indiscernables), créée deux fois. Le spectre unifié vise à réconcilier tout cela dans un seul système.
   </script>
   <script type="module">
     const existants = [
+      ...Object.entries(sources.psp).flatMap(([famille, arr]) =>
+        arr.map((hex, i) => ({ groupe: `printemps · ${famille}`, palier: sources.paliers19[i], hex }))
+      ),
       ...Object.entries(sources.cartos).flatMap(([famille, arr]) =>
         arr.map((hex, i) => ({ groupe: `cartes · ${famille}`, palier: sources.paliers19[i], hex }))
-      ),
-      ...Object.entries(sources.psp).flatMap(([famille, obj]) =>
-        Object.entries(obj).map(([palier, hex]) => ({ groupe: `printemps · ${famille}`, palier: +palier, hex }))
       )
     ];
+    const nGroupes = new Set(existants.map((d) => d.groupe)).size;
     display(Plot.plot({
       marginLeft: 150,
       width: 940,
-      height: 26 * 13 + 40,
+      height: 26 * nGroupes + 40,
       padding: 0.05,
       x: { axis: "top", tickSize: 0, label: null, domain: sources.paliers19 },
       y: { tickSize: 0, label: null },
@@ -61,12 +60,12 @@ Ci-dessous, l'existant tel qu'il est aujourd'hui : en haut les sept familles des
         })
       ]
     }));
-    display(html`<p style="max-width:60em;font-size:0.9em;opacity:0.8">Guide de lecture : chaque ligne est une famille de couleur, chaque colonne un palier (50 = presque blanc, 950 = presque noir). Les lignes du Printemps sont trouées : seuls six paliers avaient été définis. Survoler une case affiche sa valeur.</p>`);
+    display(html`<p style="max-width:60em;font-size:0.9em;opacity:0.8">Guide de lecture : chaque ligne est une famille de couleur, chaque colonne un palier (50 = presque blanc, 950 = presque noir). En haut les 9 familles du Printemps, en dessous les 7 familles des cartes : 16 nuanciers complets, sans une seule valeur partagée. Survoler une case affiche sa valeur.</p>`);
   </script>
   <script type="text/markdown">
 ## Les quatre scénarios
 
-Un scénario, c'est deux choix : *quelles familles de couleurs* composent le spectre, et *quel dosage de saturation* leur donner. Le scénario « médian » est le brouillon issu de la première exploration ; les trois autres balisent l'espace autour de lui : plus proche de l'identité actuelle, plus resserré, ou plus vif.
+Un scénario, c'est deux choix : *quelles familles de couleurs* composent le spectre, et *quel dosage de saturation* leur donner. Le scénario « médian » est le brouillon issu de la première exploration ; les trois autres balisent l'espace autour de lui : plus proche de l'identité actuelle, plus resserré, ou plus vif. Note : les scénarios ont été dessinés avant la récupération du spectre complet du Printemps ; trois familles retrouvées (bleuet, jasmin, olive) restent à replacer lors de la prochaine itération.
 
 Choisissez un scénario ci-dessous. Les trois réglages suivants sont avancés : ils permettent de tester des variantes de finesse (nombre de paliers) et de saturation ; les ignorer n'enlève rien à la lecture.
   </script>
