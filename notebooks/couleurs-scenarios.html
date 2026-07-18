@@ -1,12 +1,24 @@
 <!doctype html>
 <notebook>
-  <title>Spectre couleurs NSP : scénarios</title>
+  <title>Spectre couleurs : quatre scénarios pour arbitrer</title>
   <script type="text/markdown">
-# Spectre couleurs NSP : scénarios
+# Spectre couleurs : quatre scénarios pour arbitrer
 
-Exploration des variations du spectre unifié (chantier refonte de la charte, carte Pawn `projets/nos-services-publics/`). L'espace exploré : nombre de familles, distance au bleu pétrole NSP (continuité ou rupture), profils de chroma. Tout est calculé (OKLCH, contrastes WCAG, simulation daltonisme par matrices de Viénot), rien n'est estimé à l'oeil.
+**Pour qui, pour quoi.** Ce document s'adresse aux membres du collectif qui participeront au choix de la future palette de couleurs, sans supposer de connaissances en design ou en code. Il présente quatre scénarios de « spectre » (le nuancier complet dont dériveront le site, les rapports, les visuels militants et les graphiques), les compare avec des mesures objectives, et liste les questions qui restent à trancher en réunion.
 
-Le scénario **médian v0.1** est le draft de la première passe (2026-07-17), les trois autres balisent l'espace autour de lui.
+**Comment le lire.** Dix minutes suffisent en lecture simple. Les réglages interactifs permettent d'explorer des variantes ; on peut les ignorer sans rien perdre. Chaque graphique est suivi d'un guide de lecture. La mémoire de travail du chantier est dans la carte Pawn `projets/nos-services-publics/`.
+  </script>
+  <script type="text/markdown">
+## Les notions utiles, en clair
+
+- **Une couleur a trois dimensions** : sa *teinte* (rouge, bleu, vert... sa position sur la roue des couleurs), sa *clarté* (claire ou foncée) et sa *saturation* (vive ou grisée ; les spécialistes disent « chroma »).
+- **OKLCH** est le système de mesure moderne qui décrit les couleurs telles que l'oeil les perçoit. Son intérêt concret : deux couleurs ayant la même clarté OKLCH paraissent réellement aussi claires l'une que l'autre, quelle que soit leur teinte. Les anciens systèmes (le RGB des écrans) ne garantissent pas cela.
+- **Les paliers, de 50 à 950** : chaque famille de couleur est déclinée en nuancier, de 50 (presque blanc) à 950 (presque noir). Grâce à OKLCH, un même palier a la même clarté dans toutes les familles : le palier 500 du rouge est aussi clair que le palier 500 du vert.
+- **Le contraste** mesure la lisibilité d'une couleur posée sur une autre (un texte sur son fond, par exemple). Les normes d'accessibilité fixent des seuils : 3 pour du texte de grande taille, 4.5 pour du texte courant (le seuil dit « AA »), 7 pour le confort maximal (« AAA »).
+- **Le daltonisme** touche environ 8 % des hommes et 0.5 % des femmes, le plus souvent sous forme de confusion entre rouges et verts. On simule ces visions pour vérifier que les graphiques restent lisibles par tout le monde.
+- **Le dE (« delta E »)** mesure l'écart perçu entre deux couleurs : en dessous de 5, l'oeil les confond presque ; au-dessus de 12, on les distingue sans effort.
+
+Tout ce qui suit est calculé avec ces outils de mesure ; rien n'est estimé « à l'oeil ».
   </script>
   <script type="module">
     import * as Plot from "npm:@observablehq/plot";
@@ -19,16 +31,61 @@ Le scénario **médian v0.1** est le draft de la première passe (2026-07-17), l
     const sources = await FileAttachment("data/sources.json").json();
   </script>
   <script type="text/markdown">
-## Choisir un scénario et ses variations
+## D'où on part
+
+Le collectif a déjà construit de belles couleurs, mais trois fois, séparément : la charte du Printemps des Services Publics, les palettes des cartes interactives du rapport 2025, et les couleurs des différents sites. Ces systèmes partagent le même esprit (des nuanciers par paliers) mais aucune valeur commune : passer d'un support à l'autre, c'est changer de monde. Le spectre unifié vise à réconcilier tout cela dans un seul système.
+
+Ci-dessous, l'existant tel qu'il est aujourd'hui : en haut les sept familles des cartes interactives (nuanciers complets), en bas les six teintes de la charte du Printemps (six paliers seulement, qui s'arrêtent avant les tons foncés : une partie du problème).
   </script>
-  <script type="module" pinned>
+  <script type="module">
+    const existants = [
+      ...Object.entries(sources.cartos).flatMap(([famille, arr]) =>
+        arr.map((hex, i) => ({ groupe: `cartes · ${famille}`, palier: sources.paliers19[i], hex }))
+      ),
+      ...Object.entries(sources.psp).flatMap(([famille, obj]) =>
+        Object.entries(obj).map(([palier, hex]) => ({ groupe: `printemps · ${famille}`, palier: +palier, hex }))
+      )
+    ];
+    display(Plot.plot({
+      marginLeft: 150,
+      width: 940,
+      height: 26 * 13 + 40,
+      padding: 0.05,
+      x: { axis: "top", tickSize: 0, label: null, domain: sources.paliers19 },
+      y: { tickSize: 0, label: null },
+      color: { type: "identity" },
+      marks: [
+        Plot.cell(existants, {
+          x: "palier", y: "groupe", fill: "hex", inset: 0.5,
+          title: (d) => `${d.groupe} ${d.palier}\n${d.hex}`
+        })
+      ]
+    }));
+    display(html`<p style="max-width:60em;font-size:0.9em;opacity:0.8">Guide de lecture : chaque ligne est une famille de couleur, chaque colonne un palier (50 = presque blanc, 950 = presque noir). Les lignes du Printemps sont trouées : seuls six paliers avaient été définis. Survoler une case affiche sa valeur.</p>`);
+  </script>
+  <script type="text/markdown">
+## Les quatre scénarios
+
+Un scénario, c'est deux choix : *quelles familles de couleurs* composent le spectre, et *quel dosage de saturation* leur donner. Le scénario « médian » est le brouillon issu de la première exploration ; les trois autres balisent l'espace autour de lui : plus proche de l'identité actuelle, plus resserré, ou plus vif.
+
+Choisissez un scénario ci-dessous. Les trois réglages suivants sont avancés : ils permettent de tester des variantes de finesse (nombre de paliers) et de saturation ; les ignorer n'enlève rien à la lecture.
+  </script>
+  <script type="module">
     const scenarioId = view(Inputs.select(Object.keys(SCENARIOS), {
       label: "Scénario",
       format: (id) => SCENARIOS[id].label
     }));
-    const nPaliers = view(Inputs.radio([19, 11], { label: "Paliers", value: 19 }));
-    const profil = view(Inputs.select(["(du scénario)", "cloche", "plateau", "constant"], { label: "Profil de chroma" }));
-    const kGlobal = view(Inputs.range([0.7, 1.3], { label: "Intensité chroma", step: 0.05, value: 1 }));
+    const nPaliers = view(Inputs.radio([19, 11], {
+      label: "Paliers par famille",
+      value: 19
+    }));
+    const profil = view(Inputs.select(["(du scénario)", "cloche", "plateau", "constant"], {
+      label: "Profil de saturation (avancé)"
+    }));
+    const kGlobal = view(Inputs.range([0.7, 1.3], {
+      label: "Intensité de saturation (avancé)",
+      step: 0.05, value: 1
+    }));
   </script>
   <script type="module">
     const scenario = SCENARIOS[scenarioId];
@@ -39,12 +96,16 @@ Le scénario **médian v0.1** est le draft de la première passe (2026-07-17), l
     };
     const spectre = genSpectre(scenario, overrides);
     const ps = paliers(nPaliers);
-    display(html`<p style="max-width:60em"><strong>${scenario.label}.</strong> ${scenario.these}</p>`);
+    display(html`<div style="max-width:60em;border-left:3px solid #06708e;padding:0.2em 0 0.2em 1em">
+      <p><strong>${scenario.label}.</strong> ${scenario.these}</p>
+      <p><strong>Ce que ça impliquerait.</strong> ${scenario.implications}</p>
+    </div>`);
   </script>
   <script type="text/markdown">
-## Le spectre
+### Le spectre, famille par famille
   </script>
   <script type="module">
+    const aaParFamille = Object.fromEntries(Object.entries(spectre).map(([f, s]) => [f, aaOnWhite(s, ps)]));
     const cells = Object.entries(spectre).flatMap(([famille, scale]) =>
       scale.map((hex, i) => ({ famille, palier: ps[i], hex, L: okOf(hex).L }))
     );
@@ -59,24 +120,30 @@ Le scénario **médian v0.1** est le draft de la première passe (2026-07-17), l
       marks: [
         Plot.cell(cells, {
           x: "palier", y: "famille", fill: "hex", inset: 0.5,
-          title: (d) => `${d.famille} ${d.palier}\n${d.hex}\nL ${d.L.toFixed(3)}`
-        })
+          title: (d) => `${d.famille} ${d.palier}\n${d.hex}\nclarté ${d.L.toFixed(2)}`
+        }),
+        Plot.dot(
+          Object.entries(aaParFamille).filter(([, p]) => p != null).map(([famille, palier]) => ({ famille, palier })),
+          { x: "palier", y: "famille", r: 3, fill: "white", stroke: "black", strokeWidth: 0.5 }
+        )
       ]
     }));
+    display(html`<p style="max-width:60em;font-size:0.9em;opacity:0.8">Guide de lecture : mêmes conventions que ci-dessus. Le point blanc marque, pour chaque famille, le premier palier assez foncé pour servir de texte lisible sur fond blanc (contraste 4.5, le seuil AA). Survoler une case affiche sa valeur et sa clarté.</p>`);
   </script>
   <script type="text/markdown">
-## Continuité avec le pétrole NSP
+### Rester proche du bleu actuel, ou pas
 
-Le logo NSP 2025 est monochrome `#06708E`. Deux mesures : la couleur du spectre la plus proche (dE2000, moins de 5 = quasi identique), et la position des teintes par rapport à la sienne.
+Le logo du collectif est un bleu pétrole (`#06708E`). La question identitaire centrale de l'arbitrage : le nouveau spectre doit-il contenir ce bleu tel quel (continuité), le contenir à peu près (évolution), ou s'en émanciper (rupture) ? Deux mesures pour objectiver la réponse de chaque scénario.
   </script>
   <script type="module">
     const cont = continuite(spectre);
-    display(html`<p>
-      Couleur la plus proche du logo : <span style="display:inline-block;width:2.2em;height:1.2em;vertical-align:middle;border-radius:3px;background:${cont.hex}"></span>
-      <code>${cont.hex}</code> (${cont.porteur}), <strong>dE ${cont.dEmin}</strong>
-      · logo : <span style="display:inline-block;width:2.2em;height:1.2em;vertical-align:middle;border-radius:3px;background:${PETROLE_NSP}"></span>
-      <code>${PETROLE_NSP}</code>
-      · ${Math.round(cont.partProche * 100)} % des familles à moins de 45° de sa teinte.
+    display(html`<p style="max-width:60em">
+      La couleur du spectre la plus proche du logo est
+      <span style="display:inline-block;width:2.2em;height:1.2em;vertical-align:middle;border-radius:3px;background:${cont.hex}"></span>
+      <code>${cont.hex}</code> (famille ${cont.porteur}), à un écart de <strong>dE ${cont.dEmin}</strong>
+      du logo <span style="display:inline-block;width:2.2em;height:1.2em;vertical-align:middle;border-radius:3px;background:${PETROLE_NSP}"></span>.
+      Rappel : en dessous de dE 5, l'oeil confond les deux ; le logo est alors « dans » le spectre.
+      Par ailleurs, ${Math.round(cont.partProche * 100)} % des familles de ce scénario sont des voisines de teinte du bleu actuel.
     </p>`);
   </script>
   <script type="module">
@@ -89,47 +156,59 @@ Le logo NSP 2025 est monochrome `#06708E`. Deux mesures : la couleur du spectre 
       height: 90,
       width: 940,
       marginBottom: 34,
-      x: { domain: [0, 360], label: "teinte OKLCH (°)", grid: true },
+      x: { domain: [0, 360], label: "position sur la roue des teintes (degrés)", grid: true },
       y: { axis: null },
       color: { type: "identity" },
       marks: [
         Plot.ruleX([hRef], { stroke: "#06708e", strokeWidth: 2 }),
-        Plot.text([{ x: hRef }], { x: "x", frameAnchor: "top", dy: -2, text: () => "pétrole NSP", fill: "#06708e", fontWeight: 600 }),
-        Plot.dot(hues, { x: "H", y: () => 0, fill: "hex", r: 8, title: (d) => `${d.famille} · H ${Math.round(d.H)}°` }),
+        Plot.text([{ x: hRef }], { x: "x", frameAnchor: "top", dy: -2, text: () => "bleu du logo", fill: "#06708e", fontWeight: 600 }),
+        Plot.dot(hues, { x: "H", y: () => 0, fill: "hex", r: 8, title: (d) => `${d.famille}` }),
         Plot.text(hues, { x: "H", y: () => 0, text: "famille", dy: 18, fontSize: 10 })
       ]
     }));
+    display(html`<p style="max-width:60em;font-size:0.9em;opacity:0.8">Guide de lecture : chaque pastille est une famille du scénario, placée selon sa teinte sur la roue des couleurs (0-360°). Plus les pastilles se concentrent près du trait « bleu du logo », plus le scénario est en continuité avec l'identité actuelle.</p>`);
   </script>
   <script type="text/markdown">
-## Garanties de contraste mécaniques
+### La règle de lisibilité
 
-La clarté étant linéaire sur les paliers, un écart de paliers garantit un contraste minimal, toutes familles confondues. Sur le draft v0.1 en 19 paliers : écart de 500 = AA texte (4.5). Vérifier ce que chaque variation fait à cette règle : c'est elle qui la rend transmissible aux bénévoles.
+Parce que la clarté progresse régulièrement le long des paliers, on obtient une règle simple, applicable sans aucune formation : **deux couleurs du spectre séparées d'un écart suffisant de paliers sont toujours lisibles l'une sur l'autre**, quelles que soient leurs familles. C'est cette règle qu'on pourra transmettre à un ou une bénévole qui compose une affiche ou un visuel : « fond en 100, texte en 600 ou plus », et c'est lisible, garanti.
+
+Le tableau vérifie la règle pour le scénario et les réglages choisis. Sur le brouillon de départ, un écart de 500 garantit le seuil AA du texte courant ; les scénarios plus saturés affaiblissent un peu cette garantie.
   </script>
   <script type="module">
     const cran = ps[1] - ps[0];
     const g = garanties(spectre, [6, 8, 10, 12, 14].filter((d) => d < ps.length));
     display(Inputs.table(g.map((r) => ({
-      "écart (paliers)": r.ecartCrans * cran,
+      "écart entre les deux couleurs (en paliers)": r.ecartCrans * cran,
       "contraste garanti": r.contrasteMin,
-      "couvre": r.contrasteMin >= 7 ? "AAA" : r.contrasteMin >= 4.5 ? "AA texte" : r.contrasteMin >= 3 ? "AA texte large / UI" : "décoratif"
-    })), { width: 480 }));
-    const aa = Object.fromEntries(Object.entries(spectre).map(([f, s]) => [f, aaOnWhite(s, ps)]));
-    display(html`<p class="small">Premier palier AA sur blanc par famille : ${Object.entries(aa).map(([f, p]) => `${f} ${p}`).join(" · ")}.</p>`);
+      "ce que ça permet": r.contrasteMin >= 7 ? "texte, confort maximal (AAA)" : r.contrasteMin >= 4.5 ? "texte courant (AA)" : r.contrasteMin >= 3 ? "texte de grande taille, boutons" : "usage décoratif seulement"
+    })), { width: 720 }));
   </script>
   <script type="text/markdown">
-## Catégoriel dataviz, sous contraintes
+### Les couleurs des graphiques
 
-Recherche exhaustive du meilleur jeu de séries : paliers dans la bande de clarté (0.43-0.77 en light), chroma au-dessus du plancher (0.10), séparation daltonisme maximisée (protan, deutan, tritan), ordre des séries optimisé sur les paires adjacentes. Cible : dE adjacent supérieur à 12.
+Un graphique à plusieurs séries (une couleur par courbe ou par barre) exige des couleurs que tout le monde distingue, y compris les personnes daltoniennes. Plutôt que de choisir à l'oeil, l'ordinateur cherche la meilleure combinaison : des paliers ni trop clairs ni trop foncés, une saturation suffisante pour ne pas « lire gris », et des écarts maximaux entre couleurs sous les trois formes de daltonisme simulées.
+
+Le sélecteur ci-dessous montre les couleurs telles que les percevrait une personne daltonienne : les séries doivent rester distinguables dans tous les modes.
   </script>
-  <script type="module" pinned>
-    const modeCVD = view(Inputs.select(["normal", "protan", "deutan", "tritan"], { label: "Vision simulée" }));
+  <script type="module">
+    const libellesVision = {
+      normal: "vision typique",
+      protan: "protanopie (sans rouge)",
+      deutan: "deutéranopie (sans vert, la plus courante)",
+      tritan: "tritanopie (sans bleu, rare)"
+    };
+    const modeCVD = view(Inputs.select(Object.keys(libellesVision), {
+      label: "Vision simulée",
+      format: (v) => libellesVision[v]
+    }));
   </script>
   <script type="module">
     const cat = bestCategorical(spectre, CATEGORIEL[scenarioId], { mode: "light", ps });
     if (cat.infaisable) {
-      display(html`<p><strong>Infaisable</strong> pour ${cat.infaisable.join(", ")} : chroma sous le plancher dans la bande de clarté. La sobriété de ces familles a un coût dataviz : soit on les exclut du catégoriel, soit on leur donne une variante dédiée plus saturée.</p>`);
+      display(html`<p style="max-width:60em"><strong>Ce scénario ne permet pas un jeu complet :</strong> les familles ${cat.infaisable.join(", ")} sont trop discrètes (saturation sous le plancher) pour servir dans un graphique. C'est le prix de la sobriété : soit on les exclut des graphiques, soit on leur crée une variante plus saturée réservée à cet usage.</p>`);
     } else {
-      display(html`<p>Pire paire adjacente toutes visions : <strong>dE ${cat.adjacentMinDE}</strong> (cible 12).</p>`);
+      display(html`<p style="max-width:60em">Meilleure combinaison trouvée : la paire de couleurs voisines la plus proche reste à <strong>dE ${cat.adjacentMinDE}</strong> dans le pire des cas de vision (rappel : au-dessus de 12, on distingue sans effort).</p>`);
       display(Plot.plot({
         height: 70,
         width: 640,
@@ -140,7 +219,7 @@ Recherche exhaustive du meilleur jeu de séries : paliers dans la bande de clart
         marks: [
           Plot.cell(cat.ordered.map((c, i) => ({ ...c, i })), {
             x: "i", y: () => 0, fill: (d) => d.sims[modeCVD], inset: 2,
-            title: (d) => `${d.famille} ${d.palier} ${d.hex}`
+            title: (d) => `${d.famille}, palier ${d.palier}\n${d.hex}`
           }),
           Plot.text(cat.ordered.map((c, i) => ({ ...c, i })), { x: "i", y: () => 0, text: (d) => `${d.famille}\n${d.palier}`, dy: 34, fontSize: 10 })
         ]
@@ -148,82 +227,101 @@ Recherche exhaustive du meilleur jeu de séries : paliers dans la bande de clart
     }
   </script>
   <script type="text/markdown">
-## En situation
+### En situation
+
+Deux graphiques à données fictives pour juger l'effet réel : un graphique à barres (les couleurs de séries ci-dessus) et une carte stylisée en dégradé (la famille canard, échantillonnée en 5 tons). Le sélecteur de fond reproduit une contrainte réelle des rapports du collectif : les graphiques y sont souvent posés sur des fonds de chapitre teintés, pas sur du blanc.
   </script>
   <script type="module">
+    const fondChoisi = view(Inputs.radio(["blanc", "menthe"], {
+      label: "Fond",
+      format: (v) => (v === "blanc" ? "fond blanc" : "fond teinté (comme les rapports)"),
+      value: "blanc"
+    }));
+  </script>
+  <script type="module">
+    const fond = fondChoisi === "menthe" ? (spectre.canard ?? Object.values(spectre)[0])[0] : "#ffffff";
     const series = cat.ordered ?? [];
     const regions = [
       { region: "Occitanie", valeur: 84 }, { region: "AURA", valeur: 71 },
       { region: "Bretagne", valeur: 58 }, { region: "IDF", valeur: 52 },
       { region: "Grand Est", valeur: 38 }, { region: "PACA", valeur: 31 }
-    ].slice(0, series.length);
-    display(Plot.plot({
-      height: 40 + regions.length * 30,
-      width: 460,
-      marginLeft: 76,
-      x: { grid: true, label: "adhésions" },
-      y: { label: null, tickSize: 0 },
-      color: { type: "identity" },
-      marks: [
-        Plot.barX(regions.map((r, i) => ({ ...r, hex: series[i] ? simulate(series[i].hex, modeCVD) : "#999" })), {
-          y: "region", x: "valeur", fill: "hex", rx: 3,
-          sort: { y: "-x" },
-          title: (d) => `${d.region} : ${d.valeur}`
-        }),
-        Plot.textX(regions, { y: "region", x: "valeur", text: "valeur", dx: 12, fontSize: 11 }),
-        Plot.ruleX([0])
-      ]
-    }));
-  </script>
-  <script type="module">
-    // séquentiel : famille canard échantillonnée en 5 pas (150-750)
+    ].slice(0, Math.max(series.length, 4));
     const idx = nPaliers === 19 ? [2, 5, 8, 11, 14] : [1, 3, 5, 7, 9];
     const ramp = (spectre.canard ?? Object.values(spectre)[0]).filter((_, i) => idx.includes(i));
     const grille = Array.from({ length: 78 }, (_, i) => ({
       x: i % 13, y: Math.floor(i / 13),
       v: [8, 12, 17, 22, 28][Math.floor(Math.abs(Math.sin(i * 2.1)) * 4.999)]
     }));
-    display(Plot.plot({
-      height: 190,
-      width: 420,
-      padding: 0.06,
-      x: { axis: null }, y: { axis: null },
-      color: { type: "quantile", range: ramp, label: "durée d'accès (min)", legend: true },
-      marks: [Plot.cell(grille, { x: "x", y: "y", fill: "v", inset: 0.5, title: (d) => `${d.v} min` })]
-    }));
+    display(html`<div style="background:${fond};padding:18px;border-radius:10px;display:flex;flex-wrap:wrap;gap:24px;border:1px solid #00000014">
+      <div>${Plot.plot({
+        height: 40 + regions.length * 30,
+        width: 440,
+        marginLeft: 76,
+        x: { grid: true, label: "adhésions (données fictives)" },
+        y: { label: null, tickSize: 0 },
+        color: { type: "identity" },
+        marks: [
+          Plot.barX(regions.map((r, i) => ({ ...r, hex: series[i] ? simulate(series[i].hex, modeCVD) : "#999" })), {
+            y: "region", x: "valeur", fill: "hex", rx: 3,
+            sort: { y: "-x" },
+            title: (d) => `${d.region} : ${d.valeur}`
+          }),
+          Plot.textX(regions, { y: "region", x: "valeur", text: "valeur", dx: 12, fontSize: 11 }),
+          Plot.ruleX([0])
+        ]
+      })}</div>
+      <div>${Plot.plot({
+        height: 190,
+        width: 400,
+        padding: 0.06,
+        x: { axis: null }, y: { axis: null },
+        color: { type: "quantile", range: ramp, label: "durée d'accès (minutes, fictif)", legend: true },
+        marks: [Plot.cell(grille, { x: "x", y: "y", fill: "v", inset: 0.5, title: (d) => `${d.v} min` })]
+      })}</div>
+    </div>`);
   </script>
   <script type="text/markdown">
-## Comparatif des scénarios
+## Le comparatif d'ensemble
 
-La même batterie de mesures sur les quatre scénarios (en 19 paliers, sans variation) : c'est la table d'arbitrage. Reproduite en CLI par `npm run check`.
+La même batterie de mesures appliquée aux quatre scénarios, dans leur version de référence (19 paliers, sans variation). C'est la table d'arbitrage ; elle est reproductible en ligne de commande par `npm run check`.
   </script>
   <script type="module">
     const rows = Object.entries(SCENARIOS).map(([id, sc]) => {
       const sp = genSpectre(sc);
       const p19 = paliers(19);
-      const cont = continuite(sp);
-      const g = garanties(sp, [8, 10]);
+      const c = continuite(sp);
+      const gg = garanties(sp, [8, 10]);
       const catL = bestCategorical(sp, CATEGORIEL[id], { mode: "light", ps: p19 });
       return {
-        scénario: sc.label,
-        familles: Object.keys(sc.familles).length,
-        "dE au pétrole": cont.dEmin,
-        "Δ400": g[0].contrasteMin,
-        "Δ500 (AA si ≥ 4.5)": g[1].contrasteMin,
-        "catégoriel (dE adj)": catL.adjacentMinDE ?? `infaisable (${catL.infaisable?.length ?? 0} fam.)`,
-        séries: catL.ordered ? catL.ordered.length : CATEGORIEL[id].length
+        "scénario": sc.label,
+        "familles": Object.keys(sc.familles).length,
+        "proximité au bleu du logo (dE)": c.dEmin,
+        "contraste garanti à 500 d'écart": gg[1].contrasteMin,
+        "distinction des séries (dE)": catL.adjacentMinDE ?? "jeu incomplet",
+        "séries de graphique possibles": catL.ordered ? catL.ordered.length : CATEGORIEL[id].length
       };
     });
     display(Inputs.table(rows, { width: 900 }));
+    display(html`<div style="max-width:60em;font-size:0.9em;opacity:0.8"><p>Guide de lecture :</p><ul>
+      <li><em>Proximité au bleu du logo</em> : en dessous de dE 5, le logo actuel vit dans le spectre ; à 11, il n'y est plus exactement (rupture).</li>
+      <li><em>Contraste garanti à 500 d'écart</em> : la règle de lisibilité transmissible ; 4.5 et plus = norme AA du texte courant respectée.</li>
+      <li><em>Distinction des séries</em> : au-dessus de dE 12, les couleurs de graphiques se distinguent sans effort, daltonisme compris.</li>
+    </ul></div>`);
   </script>
   <script type="text/markdown">
-## Enseignements de la première itération
+## Ce que les mesures nous apprennent
 
-- La **continuité tempérée a un coût dataviz** : avec un chroma de caractère 0.55 et moins, pétrole et ardoise ne passent jamais le plancher de chroma dans la bande de clarté utile. Un scénario sobre doit soit assumer un catégoriel réduit, soit prévoir des variantes dataviz plus saturées de ses familles calmes.
-- Le **profil plateau casse la règle des paliers** : en poussant le chroma des paliers moyens, la garantie « écart 500 = AA » tombe à 4.25. La vivacité se paie en prévisibilité du contraste ; si le collectif choisit un scénario vif, la règle devient « écart 550 ».
-- **Resserré tient tête à médian** : 8 familles suffisent pour les mêmes garanties et un catégoriel équivalent (et meilleur en dark). Le passage de 11 à 8 se paie uniquement en finesse de thématisation.
-- La question de fond reste ouverte et se joue en réunion, pas en calcul : **quelle distance au pétrole voulons-nous ?** Continuité (dE 4), médiane (le pétrole est une famille parmi d'autres) ou rupture (dE 11, le logo n'est plus exactement représentable).
+- **La sobriété a un coût sur les graphiques.** Dans le scénario continuité, les bleus tempérés sont trop discrets pour la dataviz : le jeu de séries tombe à 4 couleurs. Un scénario sobre doit soit l'assumer, soit prévoir des variantes saturées dédiées aux graphiques.
+- **La vivacité a un coût sur la lisibilité garantie.** Dans le scénario vif, la règle « 500 paliers d'écart = texte lisible » s'affaiblit (contraste 4.25 au lieu de 4.5) : elle devient « 550 paliers d'écart ». L'énergie se paie en simplicité de la règle.
+- **Huit familles suffisent.** Le scénario resserré offre les mêmes garanties que le médian avec trois familles de moins : plus simple à gouverner. La seule contrepartie est une réserve de nuances moindre pour thématiser beaucoup de sujets.
 
-Consignation et arbitrages : carte Pawn, notes `exploration-couleurs.md` et `refonte-charte.md`.
+## Les questions à trancher en réunion
+
+1. **La distance au bleu actuel** : continuité (le logo vit dans le spectre), évolution, ou rupture assumée ? C'est une question politique et d'attachement, pas une question de calcul.
+2. **Le nombre de familles** : la richesse du médian (11) ou la simplicité du resserré (8) ?
+3. **Le niveau d'énergie** : accepter d'affaiblir un peu la règle de lisibilité pour gagner en vivacité ?
+4. **La finesse du nuancier** : 19 paliers (continuité avec l'existant technique) ou 11 (plus simple à manier au quotidien) ?
+
+Les décisions seront consignées dans la carte Pawn (`exploration-couleurs.md` et `refonte-charte.md`).
   </script>
 </notebook>

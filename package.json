@@ -6,7 +6,9 @@
   "scripts": {
     "preview": "notebooks preview --root notebooks",
     "build": "notebooks build --root notebooks -- notebooks/*.html",
-    "check": "node scripts/check.mjs"
+    "check": "node scripts/check.mjs",
+    "docs:preview": "notebooks preview --root docs",
+    "docs:build": "notebooks build --root docs -- docs/*.html"
   },
   "dependencies": {
     "@observablehq/notebook-kit": "^2.1.8",

@@ -7,7 +7,9 @@ export const SCENARIOS = {
   "continuite": {
     label: "Continuité : gravité pétrole",
     these:
-      "L'identité reste ancrée dans le bleu pétrole actuel. Peu de familles, chroma tempéré, les chaudes ne servent que d'accent. Répond à la crainte de rupture du camp analytique.",
+      "L'identité reste ancrée dans le bleu pétrole actuel. Peu de familles, saturation tempérée, les couleurs chaudes ne servent que d'accent. Répond à la crainte de rupture du camp analytique.",
+    implications:
+      "Le collectif reste immédiatement reconnaissable : le logo et les rapports existants ne détonnent pas. En contrepartie, les graphiques riches sont limités (4 séries distinctes au lieu de 6, car les bleus tempérés sont trop discrets pour la dataviz), et toute l'énergie visuelle repose sur le seul rouge coquelicot.",
     familles: {
       petrole: { H: 235, k: 0.55 },
       canard: { H: 195, k: 0.75 },
@@ -22,7 +24,9 @@ export const SCENARIOS = {
   "median-v01": {
     label: "Médian : draft v0.1",
     these:
-      "Le draft de la première passe, comme référence : 11 familles qui réconcilient tout l'existant (PSP, cartos, satellites), caractères de chroma différenciés.",
+      "Le draft de la première passe, comme référence : 11 familles qui réconcilient tout l'existant (PSP, cartos, satellites), avec un caractère de saturation propre à chaque famille.",
+    implications:
+      "Toutes les couleurs déjà utilisées (charte du Printemps, cartes interactives, sites satellites) trouvent une place dans le nouveau spectre : rien n'est renié, tout converge. En contrepartie, 11 familles font un système riche mais long à documenter et à faire respecter.",
     familles: {
       coquelicot: { H: 22, k: 1.0 },
       framboise: { H: 355, k: 0.95 },
@@ -42,7 +46,9 @@ export const SCENARIOS = {
   "resserre": {
     label: "Resserré : 8 familles",
     these:
-      "Un spectre minimal qui couvre quand même tous les usages : une seule famille par zone de teinte utile. Myosotis fusionne dans pétrole, améthyste dans framboise, olive disparaît. Moins à gouverner, moins à expliquer.",
+      "Un spectre minimal qui couvre quand même tous les usages : une seule famille par zone de teinte utile. Le bleu franc fusionne dans le pétrole, le violet dans la framboise, l'olive disparaît. Moins à gouverner, moins à expliquer.",
+    implications:
+      "Les mesures montrent que 8 familles offrent les mêmes garanties de lisibilité et des graphiques aussi bons que 11 : le système devient plus simple à expliquer, à maintenir et à transmettre. En contrepartie, moins de nuances disponibles le jour où il faut distinguer beaucoup de thématiques de politiques publiques.",
     familles: {
       coquelicot: { H: 22, k: 1.0 },
       framboise: { H: 345, k: 0.9 },
@@ -59,7 +65,9 @@ export const SCENARIOS = {
   "vif-rupture": {
     label: "Vif : rupture assumée",
     these:
-      "L'énergie militante prend la main : chroma poussé (profil plateau, les paliers moyens restent saturés), le coquelicot devient le centre de gravité, le pétrole reste présent mais redevient une couleur parmi d'autres.",
+      "L'énergie militante prend la main : saturation poussée sur toute la gamme, le rouge coquelicot devient le centre de gravité, le bleu pétrole reste présent mais redevient une couleur parmi d'autres.",
+    implications:
+      "L'identité gagne nettement en énergie et en présence, sur les réseaux comme en affiche. En contrepartie : le bleu actuel du logo n'est plus exactement représentable dans le spectre (rupture à assumer auprès des habitués), et la règle de lisibilité s'affaiblit un peu (il faut 550 paliers d'écart au lieu de 500 pour garantir un texte lisible).",
     familles: {
       coquelicot: { H: 22, k: 1.1 },
       framboise: { H: 355, k: 1.05 },
