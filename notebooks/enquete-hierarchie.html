@@ -4,7 +4,9 @@
   <script type="text/markdown">
 # Enquête hiérarchie : gabarit des figures web
 
-Le rapport de l'enquête « Hiérarchie et management » (sortie prévue septembre 2026) compte plus de 60 figures, produites en R par la chaîne d'analyse du collectif. Ce notebook pose le **gabarit des versions web** d'une sélection de figures phares : mêmes messages, habillage du futur spectre NSP, lisibilité daltonisme mesurée. Les valeurs affichées ici sont des **ordres de grandeur lus dans le rapport en cours de rédaction** (démonstration) ; les vraies figures se brancheront sur les exports agrégés de la chaîne R, jamais sur les réponses individuelles.
+Le rapport de l'enquête « Hiérarchie et management » (sortie prévue septembre 2026) compte plus de 60 figures, produites en R par la chaîne d'analyse du collectif. Ce notebook pose le **gabarit des versions web** d'une sélection de figures phares : mêmes messages, couleurs du spectre NSP, lisibilité vérifiée pour le daltonisme. Les figures définitives se brancheront sur les exports agrégés de la chaîne d'analyse, jamais sur les réponses individuelles.
+
+Les couleurs elles-mêmes : [notebook Spectre](./couleurs-showcase). La traduction complète de la charte des graphiques du rapport : [notebook Correspondance](./charte-graphiques).
   </script>
   <script type="module">
     import { Plot, html } from "./lib/deps.js";
@@ -17,7 +19,7 @@ Le rapport de l'enquête « Hiérarchie et management » (sortie prévue septemb
   <script type="text/markdown">
 ## L'archétype likert, colonne vertébrale du rapport
 
-L'immense majorité des figures du rapport suit la même forme : une question à quatre réponses graduées (bien, plutôt bien, plutôt mal, mal), croisée ou non avec un profil de répondant. La palette actuelle de la chaîne R oppose un vert et un rouge : pour un lecteur daltonien deutéranope (la forme la plus courante), **les deux pôles sont indiscernables** (écart perçu dE 7, sous le seuil de confusion). Le gabarit NSP oppose le canard (proche de l'identité du collectif) au coquelicot : l'audit passe dans les trois formes de daltonisme, vérifiable ci-dessous avec le sélecteur.
+L'immense majorité des figures du rapport suit la même forme : une question à quatre réponses graduées (bien, plutôt bien, plutôt mal, mal), croisée ou non avec un profil de répondant. La palette actuelle oppose un vert et un rouge : pour un lecteur daltonien, **les deux pôles se confondent**. Le gabarit oppose le canard (la couleur d'identité du collectif) au coquelicot : lisible dans les trois formes de daltonisme, vérifiable ci-dessous avec le sélecteur. La forme choisie ici, dite « en miroir », fait partir le négatif à gauche du trait et le positif à droite : l'équilibre d'une question se lit d'un coup d'oeil.
   </script>
   <script type="module">
     const visionChoisie = view(Inputs.select(
@@ -27,7 +29,7 @@ L'immense majorité des figures du rapport suit la même forme : une question à
   </script>
   <script type="module">
     // Question d'ouverture du rapport : « Comment vous sentez-vous, en général, et au travail ? »
-    // Ordres de grandeur du rapport (démonstration) : 74 % bien ou plutôt bien en général, 55 % au travail.
+    // Valeurs du rapport, hors non-réponses (6 %).
     const modalites = [
       { nom: "mal", couleur: teinte("coquelicot", 600), sens: -1 },
       { nom: "plutôt mal", couleur: teinte("coquelicot", 300), sens: -1 },
@@ -35,8 +37,8 @@ L'immense majorité des figures du rapport suit la même forme : une question à
       { nom: "bien", couleur: teinte("canard", 600), sens: 1 },
     ];
     const reponsesDemo = {
-      "en général": { mal: 7, "plutôt mal": 19, "plutôt bien": 57, bien: 17 },
-      "au travail": { mal: 14, "plutôt mal": 31, "plutôt bien": 45, bien: 10 },
+      "en général": { mal: 4, "plutôt mal": 16, "plutôt bien": 57, bien: 17 },
+      "au travail": { mal: 12, "plutôt mal": 31, "plutôt bien": 41, bien: 10 },
     };
     const segments = Object.entries(reponsesDemo).flatMap(([contexte, rep]) => {
       let gauche = -(rep["mal"] + rep["plutôt mal"]);
@@ -64,10 +66,10 @@ L'immense majorité des figures du rapport suit la même forme : une question à
     }));
     display(html`<figcaption style="max-width: 620px;">
       <strong>Comment vous sentez-vous, en général, et au travail ?</strong>
-      De gauche à droite : mal, plutôt mal, plutôt bien, bien. Valeurs de démonstration
-      (ordres de grandeur du rapport). Guide : le désaccord part à gauche du trait,
-      l'accord à droite ; l'écart entre les deux lignes est le message (on se sent
-      nettement moins bien au travail que dans la vie).
+      De gauche à droite : mal, plutôt mal, plutôt bien, bien. Valeurs du rapport,
+      hors non-réponses. Guide : le mal-être part à gauche du trait, le bien-être
+      à droite ; l'écart entre les deux lignes est le message (on se sent nettement
+      moins bien au travail que dans la vie).
     </figcaption>`);
     display(html`<div style="display:flex; gap:0.5em; margin-top:0.8em; flex-wrap:wrap;">
       ${modalites.map((m) => html`<span style="display:inline-flex; align-items:center; gap:0.35em; font-size:0.85em;">

@@ -1,15 +1,16 @@
 <!doctype html>
 <notebook>
-  <title>Spectre couleurs NSP</title>
+  <title>Le spectre de couleurs NSP</title>
   <script type="text/markdown">
-# Spectre couleurs NSP 2026
+# Le spectre de couleurs NSP
 
-Le spectre acté le 23 juillet 2026 (« resserré », 8 familles). Le sélecteur de vision simule le daltonisme sur tout le notebook.
+La gamme de couleurs du collectif, arrêtée le 23 juillet 2026 : **8 familles** (une teinte, déclinée du presque blanc au presque noir), repérées par des **paliers** de 50 (le plus clair) à 950 (le plus foncé). Toutes les combinaisons montrées ici sont vérifiées par calcul, y compris pour les trois formes de daltonisme : le sélecteur ci-dessous recolore tout le notebook comme les verrait un lecteur concerné.
   </script>
   <script type="module">
     import { Plot, html } from "./lib/deps.js";
     import { SCENARIOS, CATEGORIEL } from "./lib/scenarios.js";
     import { genSpectre, paliers, bestCategorical, simulate, dE } from "./lib/spectre.js";
+    import { bande, bandeNommee } from "./lib/bandes.js";
     import { franceMetropolitaine } from "./lib/carte.js";
     const topoShow = await FileAttachment("data/departements.json").json();
     const carteFond = franceMetropolitaine(topoShow);
@@ -17,7 +18,7 @@ Le spectre acté le 23 juillet 2026 (« resserré », 8 familles). Le sélecteur
   </script>
   <script type="module">
     const visionShow = view(Inputs.select(
-      new Map([["vision normale", "normal"], ["deutéranopie", "deutan"], ["protanopie", "protan"], ["tritanopie", "tritan"]]),
+      new Map([["vision normale", "normal"], ["deutéranopie (rouge-vert, la plus courante)", "deutan"], ["protanopie (rouge-vert)", "protan"], ["tritanopie (bleu-jaune, rare)", "tritan"]]),
       { label: "Vision" }
     ));
   </script>
@@ -25,42 +26,52 @@ Le spectre acté le 23 juillet 2026 (« resserré », 8 familles). Le sélecteur
     const spShow = genSpectre(SCENARIOS.resserre);
     const voir = (hex) => (visionShow === "normal" ? hex : simulate(hex, visionShow));
     const tShow = (fam, palier) => spShow[fam]?.[ps19.indexOf(palier)];
-    const encreShow = voir(tShow("ardoise", 800) ?? tShow("petrole", 800));
-    // pire écart entre aplats adjacents, daltonisme compris (confort au-dessus de 10)
-    const pireAdj = (hexes) => {
+    const encreShow = voir(tShow("ardoise", 800));
+    // écart perçu minimal entre deux couleurs voisines d'une gamme, daltonisme compris ;
+    // au-dessus de 10, on ne les confond pas
+    const ecart = (hexes) => {
       let w = Infinity;
       for (const m of ["normal", "protan", "deutan", "tritan"])
         for (let i = 0; i + 1 < hexes.length; i++)
           w = Math.min(w, dE(simulate(hexes[i], m), simulate(hexes[i + 1], m)));
-      return +w.toFixed(1);
+      return w.toFixed(0);
     };
-    const rangee = (titre, hexes, note = "") => html`<div style="margin: 0 0 12px;">
-      <div style="display:flex; align-items:baseline; gap:8px; margin-bottom:4px;">
-        <span style="font-size:0.82em; font-weight:600;">${titre}</span>
-        <span style="font-size:0.75em; color:#777;">${note}</span>
-      </div>
-      <div style="display:flex; gap:3px; max-width:520px;">
-        ${hexes.map((h) => html`<div style="flex:1; height:30px; border-radius:3px; background:${voir(h)};"></div>`)}
-      </div>
+    const gamme = (titre, hexes, note = "") => html`<div style="margin: 0 0 10px;">
+      <div style="font-size:0.82em; margin-bottom:2px;"><strong>${titre}</strong> <span style="color:#777;">${note}</span></div>
+      ${bande(hexes.map(voir))}
     </div>`;
   </script>
   <script type="text/markdown">
-## Spectre
+## Le nuancier
+
+Chaque case est une couleur du spectre. Survoler une case donne sa famille, son palier et son code.
   </script>
   <script type="module">
-    display(html`<div style="display:grid; gap:6px;">
-      ${Object.entries(spShow).map(([fam, arr]) => html`<div style="display:flex; align-items:center; gap:8px;">
-        <span style="width:6.5em; font-size:0.8em; text-align:right; color:#555;">${fam}</span>
-        <div style="display:flex; gap:3px; flex:1;">
-          ${arr.map((hex) => html`<div style="flex:1; aspect-ratio:1; border-radius:3px; background:${voir(hex)};"></div>`)}
-      </div>
-      </div>`)}
-    </div>`);
+    const cases = Object.entries(spShow).flatMap(([famille, arr]) =>
+      arr.map((hex, i) => ({ famille, palier: ps19[i], hex })));
+    display(Plot.plot({
+      width: 680, height: 8 * 30 + 46, marginLeft: 78,
+      x: { label: "palier (clair vers foncé)", tickValues: [50, 200, 350, 500, 650, 800, 950] },
+      y: { label: null, domain: Object.keys(spShow) },
+      color: { type: "identity" },
+      marks: [Plot.cell(cases, {
+        x: "palier", y: "famille", fill: (d) => voir(d.hex), rx: 3, inset: 1,
+        tip: true, title: (d) => `${d.famille} ${d.palier}\n${d.hex}`,
+      })],
+    }));
   </script>
   <script type="text/markdown">
-## Gammes
+## Les trois gammes des graphiques
 
-Séquentielle (une intensité), divergente (deux pôles, jamais rouge-vert), catégorielle (l'ordre est calculé). Les gammes discrètes affichent leur pire écart entre voisins, daltonisme compris (confort au-dessus de 10).
+Un graphique utilise la couleur pour répondre à une question, et chaque question a sa gamme. Sous les gammes à cases, un chiffre : le plus petit écart perçu entre deux voisines, daltonisme compris. Au-dessus de 10, on ne peut pas les confondre.
+
+**Représenter une quantité** (durée, densité, fréquence) : une seule famille, du clair au foncé.
+  </script>
+  <script type="module">
+    display(gamme("séquentielle (pétrole)", [150, 300, 450, 600, 750].map((p) => tShow("petrole", p))));
+  </script>
+  <script type="text/markdown">
+**Représenter une opinion entre deux pôles** : le chaud (coquelicot) porte le négatif, le froid (canard) le positif. Jamais de rouge contre vert : c'est la paire que le daltonisme efface. Autre piège mesuré : en 5 réponses, un milieu jaune-orangé se confond avec le pôle chaud, un milieu gris clair reste net.
   </script>
   <script type="module">
     const lik4 = [tShow("coquelicot", 600), tShow("coquelicot", 300), tShow("canard", 450), tShow("canard", 600)];
@@ -68,42 +79,38 @@ Séquentielle (une intensité), divergente (deux pôles, jamais rouge-vert), cat
     const lik5moutarde = [tShow("coquelicot", 600), tShow("coquelicot", 300), tShow("ambre", 300), tShow("canard", 450), tShow("canard", 600)];
     const ouiNon = [tShow("canard", 450), tShow("coquelicot", 500), tShow("ardoise", 150)];
     display(html`<div>
-      ${rangee("séquentielle", [150, 300, 450, 600, 750].map((p) => tShow("petrole", p)))}
-      ${rangee("likert 4", lik4, `écart ${pireAdj(lik4)}`)}
-      ${rangee("likert 5, pivot neutre", lik5, `écart ${pireAdj(lik5)}`)}
-      ${rangee("likert 5, pivot moutarde", lik5moutarde, `écart ${pireAdj(lik5moutarde)} : à éviter`)}
-      ${rangee("oui / non / ne sait pas", ouiNon, `écart ${pireAdj(ouiNon)}`)}
+      ${gamme("4 réponses graduées", lik4, `écart ${ecart(lik4)}`)}
+      ${gamme("5 réponses, milieu gris clair", lik5, `écart ${ecart(lik5)}`)}
+      ${gamme("5 réponses, milieu jaune-orangé", lik5moutarde, `écart ${ecart(lik5moutarde)} : à éviter`)}
+      ${gamme("oui, non, ne sait pas", ouiNon, `écart ${ecart(ouiNon)}`)}
     </div>`);
+  </script>
+  <script type="text/markdown">
+**Distinguer des choses sans ordre** (thématiques, services, régions) : six couleurs choisies dans une clarté moyenne et ordonnées par calcul pour que deux voisines restent reconnaissables, daltonisme compris.
   </script>
   <script type="module">
     const catShow = bestCategorical(spShow, CATEGORIEL.resserre, { mode: "light", ps: ps19 });
-    display(html`<div style="display:flex; gap:10px; flex-wrap:wrap;">
-      ${catShow.ordered.map((c) => html`<div style="text-align:center;">
-        <div style="width:64px; height:44px; border-radius:4px; background:${voir(c.hex)};"></div>
-        <div style="font-size:0.7em; color:#555; margin-top:3px;">${c.famille} ${c.palier}</div>
-      </div>`)}
-    </div>
-    <p style="font-size:0.78em; color:#777; margin-top:8px;">catégorielle, écart entre voisines ${catShow.adjacentMinDE}</p>`);
+    display(bandeNommee(catShow.ordered.map((c) => ({ nom: `${c.famille} ${c.palier}`, hex: voir(c.hex) }))));
   </script>
   <script type="text/markdown">
-## Fond sombre
+## Sur fond sombre
 
-Le même calcul, contraint pour tenir sur fond foncé (réseaux, écrans militants).
+Les mêmes six rôles, recalculés pour rester lisibles sur un fond foncé (réseaux sociaux, affiches).
   </script>
   <script type="module">
     const catSombre = bestCategorical(spShow, CATEGORIEL.resserre, { mode: "dark", ps: ps19 });
-    display(html`<div style="background:${tShow("ardoise", 900)}; border-radius:8px; padding:22px; display:flex; gap:10px; flex-wrap:wrap;">
-      ${catSombre.ordered.map((c) => html`<div style="text-align:center;">
-        <div style="width:64px; height:44px; border-radius:4px; background:${voir(c.hex)};"></div>
-        <div style="font-size:0.7em; color:#aab; margin-top:3px;">${c.famille} ${c.palier}</div>
-      </div>`)}
-    </div>`);
+    display(bandeNommee(
+      catSombre.ordered.map((c) => ({ nom: `${c.famille} ${c.palier}`, hex: voir(c.hex) })),
+      { fond: tShow("ardoise", 900) }
+    ));
   </script>
   <script type="text/markdown">
-## Carte
+## En situation : une carte
+
+La gamme « quantité » appliquée à une carte (valeurs fictives) : une seule famille, cinq niveaux de clarté.
   </script>
   <script type="module">
-    const famCarteShow = spShow.lavande ?? spShow.canard ?? spShow.petrole;
+    const famCarteShow = spShow.lavande;
     const rampShow = [2, 5, 8, 11, 14].map((i) => voir(famCarteShow[i]));
     const valShow = (f) => {
       let h = 0;
@@ -118,7 +125,9 @@ Le même calcul, contraint pour tenir sur fond foncé (réseaux, écrans militan
     }));
   </script>
   <script type="text/markdown">
-## Couvertures thématiques
+## En situation : des couvertures
+
+Une famille par politique publique, même gabarit : la collection se reconnaît en rayon.
   </script>
   <script type="module">
     const themesShow = ["Santé", "Éducation", "Transports", "Justice", "Logement", "Écologie"];
@@ -137,19 +146,22 @@ Le même calcul, contraint pour tenir sur fond foncé (réseaux, écrans militan
     </div>`);
   </script>
   <script type="text/markdown">
-## Séries
+## En situation : des séries
+
+La gamme « sans ordre » sur un graphique en barres (valeurs fictives) : une couleur par thématique.
   </script>
   <script type="module">
     const catSix = bestCategorical(spShow, CATEGORIEL.resserre, { mode: "light", ps: ps19 });
+    const themesSeries = ["Santé", "Éducation", "Transports", "Justice", "Logement", "Écologie"];
     const seriesShow = catSix.ordered.map((c, i) => ({
-      serie: `${c.famille} ${c.palier}`,
-      valeur: [34, 27, 22, 17, 12, 9][i] ?? 8,
+      serie: themesSeries[i],
+      valeur: [34, 27, 22, 17, 12, 9][i],
       couleur: c.sims[visionShow],
     }));
     display(Plot.plot({
-      width: 640, height: 60 + seriesShow.length * 38, marginLeft: 130,
+      width: 640, height: 60 + seriesShow.length * 38, marginLeft: 100,
       x: { label: "part (%)", grid: true },
-      y: { label: null },
+      y: { label: null, domain: themesSeries },
       color: { type: "identity" },
       marks: [
         Plot.barX(seriesShow, { y: "serie", x: "valeur", fill: "couleur" }),
@@ -158,37 +170,6 @@ Le même calcul, contraint pour tenir sur fond foncé (réseaux, écrans militan
     }));
   </script>
   <script type="text/markdown">
-## Sondage
-  </script>
-  <script type="module">
-    const modShow = [
-      { nom: "mal", c: tShow("coquelicot", 600) },
-      { nom: "plutôt mal", c: tShow("coquelicot", 300) },
-      { nom: "plutôt bien", c: tShow("canard", 450) },
-      { nom: "bien", c: tShow("canard", 600) },
-    ];
-    const repShow = {
-      "en général": { "mal": 7, "plutôt mal": 19, "plutôt bien": 57, "bien": 17 },
-      "au travail": { "mal": 14, "plutôt mal": 31, "plutôt bien": 45, "bien": 10 },
-    };
-    const segShow = Object.entries(repShow).flatMap(([ctx, rep]) => {
-      let gauche = -(rep["mal"] + rep["plutôt mal"]);
-      return modShow.map((m) => {
-        const seg = { ctx, x0: gauche, x1: gauche + rep[m.nom], c: voir(m.c), pct: rep[m.nom] };
-        gauche += rep[m.nom];
-        return seg;
-      });
-    });
-    display(Plot.plot({
-      width: 640, height: 150, marginLeft: 90,
-      x: { label: null, domain: [-60, 80], tickFormat: (d) => Math.abs(d) },
-      y: { label: null },
-      color: { type: "identity" },
-      marks: [
-        Plot.barX(segShow, { y: "ctx", x1: "x0", x2: "x1", fill: "c", insetTop: 6, insetBottom: 6 }),
-        Plot.text(segShow.filter((s) => s.pct >= 7), { y: "ctx", x: (s) => (s.x0 + s.x1) / 2, text: (s) => `${s.pct}`, fill: "white", fontWeight: 600 }),
-        Plot.ruleX([0], { stroke: encreShow }),
-      ],
-    }));
+Pour aller plus loin : [la traduction de la charte des graphiques du rapport](./charte-graphiques) (correspondance ligne à ligne, avant/après sur de vraies figures) et [le gabarit web des figures de l'enquête](./enquete-hierarchie).
   </script>
 </notebook>

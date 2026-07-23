@@ -2,14 +2,15 @@
 <notebook>
   <title>Charte graphiques : correspondance</title>
   <script type="text/markdown">
-# Charte couleurs graphiques : correspondance
+# Charte des graphiques : la correspondance
 
-Mapping direct de la « Charte couleurs graphiques » (Tram Anh, 21 juillet) vers le spectre acté. Sa taxonomie reste le cadre ; ses seize lignes se replient sur quatre règles.
+La « Charte couleurs graphiques » posée par Tram Anh pour le rapport classe les figures par type de donnée : c'est le bon cadre, on le garde. Cette page traduit chacune de ses lignes vers le spectre NSP, et montre que ses seize lignes se ramènent à quatre règles. Le détail des gammes et du nuancier : [notebook Spectre](./couleurs-showcase).
   </script>
   <script type="module">
     import { Plot, html } from "./lib/deps.js";
     import { SCENARIOS } from "./lib/scenarios.js";
-    import { genSpectre, paliers, simulate, dE } from "./lib/spectre.js";
+    import { genSpectre, paliers, simulate } from "./lib/spectre.js";
+    import { bande } from "./lib/bandes.js";
     import { REGLES, LIGNES, FIGURES } from "./lib/charte-tramanh.js";
     const psC = paliers(19);
     const spC = genSpectre(SCENARIOS.resserre);
@@ -17,25 +18,25 @@ Mapping direct de la « Charte couleurs graphiques » (Tram Anh, 21 juillet) ver
   </script>
   <script type="module">
     const visionC = view(Inputs.select(
-      new Map([["vision normale", "normal"], ["deutéranopie", "deutan"], ["protanopie", "protan"], ["tritanopie", "tritan"]]),
+      new Map([["vision normale", "normal"], ["deutéranopie (rouge-vert, la plus courante)", "deutan"], ["protanopie (rouge-vert)", "protan"], ["tritanopie (bleu-jaune, rare)", "tritan"]]),
       { label: "Vision" }
     ));
   </script>
   <script type="module">
     const voirC = (hex) => (visionC === "normal" ? hex : simulate(hex, visionC));
-    const pastilles = (hexes, size = 22) => html`<span style="display:inline-flex; gap:2px; vertical-align:middle;">
-      ${hexes.map((h) => html`<span style="width:${size}px; height:${size}px; border-radius:3px; background:${voirC(h)};"></span>`)}
-    </span>`;
+    const bandeV = (hexes, opts) => bande(hexes.map(voirC), opts);
   </script>
   <script type="text/markdown">
 ## Quatre règles au lieu de seize lignes
+
+Chaque figure du rapport relève d'un de ces quatre cas. Les écarts cités sont l'écart perçu entre deux couleurs voisines, mesuré daltonisme compris : au-dessus de 10, pas de confusion possible.
   </script>
   <script type="module">
-    display(html`<div style="display:grid; gap:14px; max-width:640px;">
+    display(html`<div style="display:grid; gap:14px; max-width:660px;">
       ${REGLES.map((r) => html`<div>
         <div style="display:flex; align-items:center; gap:10px;">
           <span style="font-weight:700; font-size:0.9em;">${r.id}. ${r.titre}</span>
-          ${pastilles(r.recette.map(hexDe))}
+          ${bandeV(r.recette.map(hexDe), { h: 20, cellW: 26 })}
         </div>
         <div style="font-size:0.8em; color:#666; margin-top:2px;">${r.resume}</div>
       </div>`)}
@@ -44,18 +45,18 @@ Mapping direct de la « Charte couleurs graphiques » (Tram Anh, 21 juillet) ver
   <script type="text/markdown">
 ## Ligne à ligne
 
-Chaque ligne du document d'origine, sa traduction. Les lignes « majorité » traduisaient des échelles de fréquence en divergentes déséquilibrées : elles passent en progression (règle 2), c'est la principale simplification.
+Chaque ligne du document d'origine (à gauche, ses couleurs), sa traduction (à droite). Les lignes « majorité » coloraient des échelles de fréquence comme des opinions déséquilibrées : elles passent en progression (règle 2), c'est la principale simplification.
   </script>
   <script type="module">
     const sections = [...new Set(LIGNES.map((l) => l.section))];
     display(html`<div style="display:grid; gap:6px;">
       ${sections.map((sec) => html`<div>
         <div style="font-size:0.78em; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#666; margin:10px 0 6px;">${sec}</div>
-        ${LIGNES.filter((l) => l.section === sec).map((l) => html`<div style="display:flex; align-items:center; gap:10px; padding:3px 0; border-bottom:1px solid #eee;">
+        ${LIGNES.filter((l) => l.section === sec).map((l) => html`<div style="display:flex; align-items:center; gap:10px; padding:2px 0; border-bottom:1px solid #eee;">
           <span style="width:19em; font-size:0.8em;">${l.nom}</span>
-          ${pastilles(l.avant, 18)}
+          ${bandeV(l.avant, { h: 16, cellW: 20 })}
           <span style="color:#999;">&rarr;</span>
-          ${pastilles(l.apres.map(hexDe), 18)}
+          ${bandeV(l.apres.map(hexDe), { h: 16, cellW: 20 })}
           <span style="font-size:0.72em; color:#888;">règle ${l.regle}${l.note ? ` · ${l.note}` : ""}</span>
         </div>`)}
       </div>`)}
@@ -64,7 +65,7 @@ Chaque ligne du document d'origine, sa traduction. Les lignes « majorité » tr
   <script type="text/markdown">
 ## Sur deux vraies figures du rapport
 
-Mêmes données, avant (couleurs actuelles) et après (spectre). Passer en deutéranopie : l'avant s'écrase, l'après tient.
+Mêmes données, couleurs actuelles puis couleurs du spectre. Passer en deutéranopie avec le sélecteur : la version actuelle devient illisible, la nouvelle tient.
   </script>
   <script type="module">
     const figChart = (fig, palette, label) => {
@@ -95,8 +96,8 @@ Mêmes données, avant (couleurs actuelles) et après (spectre). Passer en deut�
       display(html`<div style="margin: 0 0 8px;">
         <div style="font-weight:700; font-size:0.9em; margin:14px 0 6px;">${fig.titre}</div>
         <div style="font-size:0.75em; color:#888; margin-bottom:6px;">${fig.modalites.join(" · ")}</div>
-        ${figChart(fig, fig.avant, "avant")}
-        ${figChart(fig, fig.apres.map(hexDe), "après")}
+        ${figChart(fig, fig.avant, "couleurs actuelles")}
+        ${figChart(fig, fig.apres.map(hexDe), "couleurs du spectre")}
       </div>`);
     }
   </script>
