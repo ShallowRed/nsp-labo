@@ -31,7 +31,9 @@ gris4  <- "#E0E7EB"
 # Correspondance : rouge=coquelicot, vert=canard, jaune/orange=ambre, bleu=petrole, gris=ardoise
 # Points de passation (a confirmer ensemble) :
 # - pivot "ca depend" : l'ex-#ccbd2f servait a la fois de rouge4/vert4/jaune1/orange ;
-#   ici chaque variable a sa propre valeur -> utiliser jaune1 comme modalite mediane.
+#   ici chaque variable a sa propre valeur. Milieu d'une echelle a 3 etats : jaune1 (audite).
+#   Pivot d'un likert a 5 modalites : gris clair (gris4), un pivot jaune-orange se
+#   confond avec le pole chaud en daltonisme (mesure : dE 7 contre 15 en pivot neutre).
 # - "ne sait pas / non renseigne" : prendre gris3 ou gris4 (clairs), pas gris1 (fonce).
 # - encre (ex-noir -> bleu fonce) : bleu1 convient (texte et axes).
 # Audit daltonisme : OK (aucun conflit sous dE 10 en deutan/protan/tritan sur les archétypes likert, oui-non, 3 états, catégoriel).
