@@ -6,17 +6,11 @@
 <title>Charte NSP — système de couvertures thématiques (maquette)</title>
 <link rel="stylesheet" href="tokens-couleur.css">
 <link rel="stylesheet" href="tokens-typo.css">
+<link rel="stylesheet" href="chrome.css">
 <style>
   * { box-sizing: border-box; }
   body { margin: 0; background: #d9dde0; color: var(--c-ink); font-family: var(--f-body);
          -webkit-font-smoothing: antialiased; }
-  .toolbar { position: sticky; top: 0; z-index: 10; display: flex; gap: 10px; align-items: center;
-             padding: 10px 16px; background: #23282b; color: #fff; font-family: system-ui; font-size: 13px; }
-  .toolbar strong { font-weight: 600; }
-  .toolbar button { font: inherit; background: #3a4247; color: #fff; border: 1px solid #556066;
-                    border-radius: 6px; padding: 5px 11px; cursor: pointer; }
-  .toolbar button:hover { background: #4a545a; }
-  .toolbar .grp { display: flex; gap: 6px; } .toolbar .sep { flex: 1; } .toolbar .hint { opacity: .6; }
 
   .stage { padding: 34px; }
   .intro { max-width: 780px; margin: 0 auto 22px; font-family: var(--f-meta); font-size: 13px;
@@ -53,7 +47,7 @@
     <button onclick="setType('radicalite')">Radicalité</button>
   </div>
   <span class="sep"></span>
-  <span class="hint" id="whoami">couleur = spectre v0.1 · typo = consolidation</span>
+  <span class="hint" id="whoami">couleur = spectre acté · typo = consolidation</span>
 </div>
 
 <div class="stage">
@@ -93,9 +87,6 @@
   <p class="provisoire">Typographie et composition provisoires · couleur = fondation du spectre</p>
 </div>
 
-<script>
-  function setType(t){ document.documentElement.className='type-'+t;
-    document.getElementById('whoami').textContent='couleur = spectre v0.1 · typo = '+t; }
-</script>
+<script src="chrome.js"></script>
 </body>
 </html>

@@ -1,0 +1,12 @@
+/* Chrome commun des maquettes : barre d'outils (bascule des partis typo).
+   Hors charte : c'est l'outillage du labo, pas une surface. */
+.toolbar { position: sticky; top: 0; z-index: 10; display: flex; gap: 10px; align-items: center;
+           padding: 10px 16px; background: #23282b; color: #fff; font-family: system-ui; font-size: 13px; }
+.toolbar strong { font-weight: 600; }
+.toolbar button { font: inherit; background: #3a4247; color: #fff; border: 1px solid #556066;
+                  border-radius: 6px; padding: 5px 11px; cursor: pointer; }
+.toolbar button.on { background: var(--c-brand); border-color: var(--c-brand); }
+.toolbar button:hover { background: #4a545a; }
+.toolbar .grp { display: flex; gap: 6px; }
+.toolbar .sep { flex: 1; }
+.toolbar .hint { opacity: .6; }
