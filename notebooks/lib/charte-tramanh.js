@@ -79,7 +79,7 @@ export const FIGURES = [
     },
   },
   {
-    titre: "Pour faire votre travail correctement... (consignes, par catégorie)",
+    titre: "Appliquez-vous strictement les consignes pour faire votre travail ? (par catégorie statutaire A+, A, B, C)",
     modalites: ["applique strictement", "parfois autrement", "souvent autrement", "ne sait pas"],
     avant: ["#00913b", "#f1881d", "#cc5426", "#dadada"],
     apres: [["canard", 500], ["ambre", 300], ["coquelicot", 500], NEUTRE],

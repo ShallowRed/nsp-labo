@@ -15,7 +15,7 @@ Chaque section a son sélecteur de vision : « vision typique », ou l'une des t
   <script type="module">
     import { Plot, html, formatHex, clampChroma, converter, geoCentroid } from "./lib/deps.js";
     import { SCENARIOS, CATEGORIEL } from "./lib/scenarios.js";
-    import { genSpectre, paliers, bestCategorical, categorielEtendu, simulate, dE } from "./lib/spectre.js";
+    import { genSpectre, paliers, bestCategorical, categorielEtendu, simulate, dE, garanties } from "./lib/spectre.js";
     import { bande } from "./lib/bandes.js";
     import { FIGURES } from "./lib/charte-tramanh.js";
     import { franceMetropolitaine } from "./lib/carte.js";
@@ -29,6 +29,11 @@ Chaque section a son sélecteur de vision : « vision typique », ou l'une des t
       { label: "Vision" }
     );
     const simVoir = (mode) => (hex) => (mode === "normal" ? hex : simulate(hex, mode));
+    // le mapping thématique -> famille, le même partout (couvertures, carte)
+    const THEMES = [
+      ["Santé", "canard"], ["Éducation", "ambre"], ["Transports", "petrole"],
+      ["Justice", "lavande"], ["Logement", "coquelicot"], ["Écologie", "prairie"],
+    ];
     // écart perçu minimal entre deux couleurs voisines d'une gamme, daltonisme compris ;
     // au-dessus de 10, on ne les confond pas
     const ecart = (hexes) => {
@@ -63,26 +68,56 @@ Chaque case est une couleur du spectre. Survoler une case donne sa famille, son 
     }));
   </script>
   <script type="text/markdown">
+Les paliers ne sont pas décoratifs, ils portent une règle : **deux couleurs séparées d'au moins 500 paliers garantissent un texte lisible** (norme de contraste AA), quelle que soit la paire de familles. Le chiffre exact, recalculé sur le spectre :
+  </script>
+  <script type="module">
+    const voirR = simVoir(visionNuancier);
+    const g10 = garanties(spShow, [10]).find((g) => g.ecartCrans === 10);
+    const demoRegle = ["petrole", "coquelicot", "prairie", "ardoise"].map((f) => ({
+      fond: voirR(tShow(f, 600)), texte: voirR(tShow(f, 100)), nom: `${f} 100 sur ${f} 600`,
+    }));
+    display(html`<div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+      ${demoRegle.map((d) => html`<span style="background:${d.fond}; color:${d.texte}; border-radius:5px; padding:8px 12px; font-size:0.82em;">${d.nom}</span>`)}
+      <span style="font-size:0.78em; color:#777;">contraste minimal mesuré à cet écart : ${g10.contrasteMin} (AA = 4.5)</span>
+    </div>`);
+  </script>
+  <script type="text/markdown">
 ### Des sous-ensembles par identité
 
 La vertu d'un spectre large : on y découpe des sous-ensembles pour générer des identités variées mais cohérentes entre elles. L'identité cœur de Nos services publics, celle du Printemps des services publics, ou une identité proche de NSP mais légèrement particulière pour le rapport management.
   </script>
   <script type="module">
     const voirS = simVoir(visionNuancier);
-    const sousEnsemble = (titre, refs) => html`<div style="margin: 0 0 10px;">
-      <div style="font-size:0.82em; margin-bottom:2px;"><strong>${titre}</strong></div>
+    const sousEnsemble = (titre, pourquoi, refs) => html`<div style="margin: 0 0 12px;">
+      <div style="font-size:0.82em; margin-bottom:2px;"><strong>${titre}</strong> <span style="color:#777;">${pourquoi}</span></div>
       ${bande(refs.map(([f, p]) => voirS(tShow(f, p))))}
     </div>`;
     display(html`<div>
-      ${sousEnsemble("cœur Nos services publics", [["petrole", 700], ["petrole", 450], ["canard", 450], ["canard", 600], ["coquelicot", 500]])}
-      ${sousEnsemble("Printemps des services publics", [["prairie", 400], ["ambre", 300], ["coquelicot", 300], ["canard", 250]])}
-      ${sousEnsemble("rapport Hiérarchie et management", [["canard", 600], ["canard", 450], ["coquelicot", 300], ["coquelicot", 600], ["ardoise", 150]])}
+      ${sousEnsemble("cœur Nos services publics", "l'héritage pétrole-canard du logo, le coquelicot en accent",
+        [["petrole", 700], ["petrole", 450], ["canard", 450], ["canard", 600], ["coquelicot", 500]])}
+      ${sousEnsemble("Printemps des services publics", "le registre printanier : prairie, ambre, tons clairs",
+        [["prairie", 400], ["ambre", 300], ["coquelicot", 300], ["canard", 250]])}
+      ${sousEnsemble("rapport Hiérarchie et management", "proche de NSP mais particulière : la gamme d'opinion de l'enquête",
+        [["canard", 600], ["canard", 450], ["coquelicot", 300], ["coquelicot", 600], ["ardoise", 150]])}
     </div>`);
   </script>
   <script type="text/markdown">
 ### Un seul système, plusieurs sorties
 
 Le même spectre habille aussi les interfaces (boutons, fonds, bordures) : les couleurs ne sont **jamais codées en dur**, des rôles (fond, texte, accent, marque) pointent vers le spectre. Changer une teinte de marque devient **une seule référence à modifier**, pas une recherche partout dans le code. Le même mécanisme sert le print, le web et les graphiques : un seul système, plusieurs sorties.
+  </script>
+  <script type="module">
+    const voirRo = simVoir(visionNuancier);
+    const roles = [
+      ["marque", "petrole", 600], ["accent", "coquelicot", 500],
+      ["encre (texte)", "ardoise", 800], ["fond teinté", "petrole", 100],
+    ];
+    display(html`<div style="display:flex; gap:10px; flex-wrap:wrap;">
+      ${roles.map(([role, f, pl]) => html`<span style="display:inline-flex; align-items:center; gap:7px; border:1px solid #e3e3e3; border-radius:6px; padding:5px 10px; font-size:0.8em;">
+        <span style="width:17px; height:17px; border-radius:4px; background:${voirRo(tShow(f, pl))};"></span>
+        <code style="font-size:0.95em;">${role}</code> <span style="color:#888;">&rarr; ${f} ${pl}</span>
+      </span>`)}
+    </div>`);
   </script>
   <script type="text/markdown">
 ## Une famille par thématique de politique publique
@@ -94,11 +129,8 @@ Une famille de couleur par sujet : le classement se lit d'un coup d'œil, sans l
   </script>
   <script type="module">
     const voirT = simVoir(visionTheme);
-    const themesShow = ["Santé", "Éducation", "Transports", "Justice", "Logement", "Écologie"];
-    const famsShow = Object.keys(spShow).filter((f) => f !== "ardoise");
     display(html`<div style="display:flex; gap:14px; flex-wrap:wrap;">
-      ${themesShow.map((theme, i) => {
-        const f = famsShow[i % famsShow.length];
+      ${THEMES.map(([theme, f]) => {
         return html`<svg width="126" height="178" viewBox="0 0 150 212">
           <rect width="150" height="212" rx="4" fill="${voirT(tShow(f, 100))}"/>
           <rect width="150" height="132" rx="4" fill="${voirT(tShow(f, 550))}"/>
@@ -110,7 +142,7 @@ Une famille de couleur par sujet : le classement se lit d'un coup d'œil, sans l
     </div>`);
   </script>
   <script type="text/markdown">
-Et si demain un livrable demande beaucoup plus de catégories, le générateur sait **doubler la gamme** avec des teintes intermédiaires, à mi-chemin entre deux familles voisines, ordonnées pour que deux voisines restent toujours distinctes :
+Et si demain un livrable demande beaucoup plus de catégories qu'il n'y a de familles, le générateur sait **doubler la gamme** : les six couleurs d'origine, plus six teintes intermédiaires à mi-chemin entre deux familles voisines, le tout réordonné pour que deux couleurs côte à côte restent toujours distinctes :
   </script>
   <script type="module">
     const voirD = simVoir(visionTheme);
@@ -119,9 +151,9 @@ Et si demain un livrable demande beaucoup plus de catégories, le générateur s
     display(html`<p style="font-size:0.78em; color:#777; margin-top:4px;">Douze thématiques au lieu de six, même logique de vérification (écart entre voisines ${douze.adjacentMinDE}).</p>`);
   </script>
   <script type="text/markdown">
-## Sur une carte
+## Cartographies
 
-Même logique appliquée à une carte : une famille du spectre devient une échelle de densité. L'échelle divergente sert un autre message, l'écart à la moyenne nationale. Données illustratives.
+Même logique appliquée à une carte : la famille d'une thématique devient une échelle de densité. L'échelle divergente sert un autre message, l'écart à la moyenne nationale. Données illustratives : un temps d'accès qui augmente en s'éloignant des grandes villes.
   </script>
   <script type="module">
     const visionCarte = view(selVision());
@@ -180,8 +212,8 @@ Un graphique utilise la couleur pour répondre à une question, et chaque questi
     const voirE = simVoir(visionEchelles);
     display(Plot.legend({
       width: 340,
-      label: "intensité (ex. minutes)",
-      color: { type: "linear", domain: [0, 25, 50, 75, 100], range: [150, 300, 450, 600, 750].map((p) => voirE(tShow("petrole", p))) },
+      label: "temps d'accès (min), le même exemple que la carte",
+      color: { type: "linear", domain: [0, 10, 20, 30, 40], range: [150, 300, 450, 600, 750].map((p) => voirE(tShow("petrole", p))) },
     }));
   </script>
   <script type="text/markdown">
@@ -223,13 +255,15 @@ Les couleurs sont réglées dans un espace (**OKLCH**) construit pour correspond
   </script>
   <script type="module">
     const toRgbU = converter("rgb");
-    const huesU = [0, 60, 120, 180, 240, 300];
+    // les sept teintes chromatiques du spectre, dans chaque espace
+    const huesU = Object.entries(SCENARIOS.resserre.familles)
+      .filter(([n]) => n !== "ardoise").map(([, f]) => f.H).sort((a, b) => a - b);
     const rowHsl = huesU.map((h) => formatHex({ mode: "hsl", h, s: 0.75, l: 0.5 }));
     const rowOk = huesU.map((h) => formatHex(toRgbU(clampChroma({ mode: "oklch", l: 0.72, c: 0.14, h }, "rgb"))));
     display(html`<div>
-      <div style="font-size:0.82em; margin-bottom:2px;"><strong>HSL</strong> <span style="color:#777;">même « clarté » réglée, des couleurs perçues très inégales</span></div>
+      <div style="font-size:0.82em; margin-bottom:2px;"><strong>HSL</strong> <span style="color:#777;">les sept teintes du spectre à la même « clarté » réglée : perçues très inégales</span></div>
       ${bande(rowHsl)}
-      <div style="font-size:0.82em; margin:10px 0 2px;"><strong>OKLCH</strong> <span style="color:#777;">même clarté réglée, même clarté perçue</span></div>
+      <div style="font-size:0.82em; margin:10px 0 2px;"><strong>OKLCH</strong> <span style="color:#777;">les mêmes, même clarté réglée, même clarté perçue</span></div>
       ${bande(rowOk)}
     </div>`);
   </script>
