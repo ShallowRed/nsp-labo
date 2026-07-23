@@ -48,9 +48,18 @@ export function genScale({ H, k = 1 }, opts = {}) {
   } = opts;
   const ps = paliers(n);
   const fp = typeof profil === "function" ? profil : PROFILS[profil];
+  // La clarté est ancrée sur la VALEUR du palier (position entre 50 et 950), pas sur
+  // son index dans le tableau : "500" reste le même gris de clarté quel que soit le
+  // nombre de paliers exposés (19 ou 11). Sans cet ancrage, réduire à 11 paliers ne
+  // se contente pas d'exposer moins de crans d'une même courbe : ça déplace la clarté
+  // de tous les paliers hors du milieu (confirmé par scripts/compare-paliers.mjs).
+  // Le profil de chroma, lui, reste indexé (t = (i+1)/n) : c'est la paramétrisation
+  // sur laquelle les scénarios ont été calibrés, ancrer aussi ce terme changerait la
+  // forme des cloches sans corriger de bug.
   return ps.map((p, i) => {
     const t = (i + 1) / ps.length;
-    const L = L0 + (L1 - L0) * (i / (ps.length - 1));
+    const tp = (p - 50) / (950 - 50); // 0 au palier 50, 1 au palier 950, quel que soit n
+    const L = L0 + (L1 - L0) * tp;
     const C = cBase * k * kGlobal * fp(t);
     return formatHex(toRgb(clampChroma({ mode: "oklch", l: L, c: C, h: H }, "rgb")));
   });

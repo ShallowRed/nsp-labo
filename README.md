@@ -17,13 +17,33 @@ npm run check     # contrôles CLI des scénarios (mêmes calculs que le noteboo
 notebooks/                    # racine des notebooks (un .html = un notebook)
 ├── index.html                # sommaire
 ├── couleurs-scenarios.html   # scénarios de spectre : continuité, médian, resserré, vif
+├── couleurs-showcase.html    # version muette pour montrer (scénario + vision, visuels seuls)
+├── enquete-hierarchie.html   # gabarit des figures web du rapport enquête (likert, haltère)
 ├── lib/
 │   ├── spectre.js            # générateur OKLCH, contrastes, daltonisme, catégoriel sous contraintes
-│   └── scenarios.js          # les scénarios paramétrés et leurs thèses
-└── data/
-    └── sources.json          # palettes existantes relevées (cartos, charte PSP, ancres web)
-scripts/check.mjs             # batterie de mesures en CLI (npm run check)
+│   ├── scenarios.js          # les scénarios paramétrés et leurs thèses
+│   ├── carte.js              # fond de carte France métropolitaine
+│   └── deps.js               # imports bare des dépendances (jamais de npm: en cellule)
+└── data/                     # palettes relevées, TopoJSON départements
+scripts/
+├── check.mjs                 # batterie de mesures en CLI (npm run check)
+├── gen-theme-r.mjs           # génère exports/r/theme_nsp_couleurs.R depuis le spectre
+├── smoke-enquete.mjs         # smoke test jsdom des figures du notebook enquête
+├── finition-md.mjs           # finition typographique de l'export Markdown du gdoc
+└── build-web.mjs             # pendant web chapitré du rapport (même Markdown que l'ICML)
+exports/r/                    # kit de thémisation R pour la chaîne analyse_enquete_hm (cf. son README)
+exports/print/                # POC gdoc -> md -> ICML (cf. son README ; contenu gitignoré)
+exports/web/                  # pendant web généré (gitignoré, régénérable), index.html = sommaire
+mockups/                       # maquettes haute fidélité de la charte (cf. son README), index.html = sommaire
 ```
+
+## Racines servies
+
+Trois racines sont servies en local, chacune via une config du `launch.json` de garden :
+`notebooks/` (`npm run preview`), `exports/web/` (config `enquete-web-poc`) et `mockups/`
+(config `charte-mockups`). Chacune a un `index.html` qui sert de sommaire. Convention
+impérative : toute page ajoutée sous une racine servie est référencée dans son
+`index.html` dans la même modification, sinon elle reste invisible depuis la racine.
 
 ## Conventions
 

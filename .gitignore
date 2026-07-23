@@ -2,3 +2,8 @@ node_modules/
 dist/
 .DS_Store
 .observable/
+
+# contenu du rapport enquête non publié (régénérable : gdoc + build-web)
+exports/print/*
+!exports/print/README.md
+exports/web/

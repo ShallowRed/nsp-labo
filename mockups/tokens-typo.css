@@ -1,0 +1,41 @@
+/* COUCHE TYPO de la charte : trois partis sur l'axe proximité -> radicalité vis-à-vis
+   de l'actuel (NSP = Poppins + Merriweather). Concern indépendant du spectre :
+   on change de classe sur <html>, la couleur ne bouge pas. Polices Google Fonts. */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Public+Sans:wght@400;600;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,400&family=Archivo:wght@500;700&display=swap');
+
+/* Proximité — on garde l'esprit actuel : géométrique Poppins + serif de lecture.
+   Continuité rassurante, faible rupture. */
+.type-proximite {
+  --f-display: 'Poppins', system-ui, sans-serif;
+  --f-body: 'Merriweather', Georgia, serif;
+  --f-meta: 'Poppins', system-ui, sans-serif;
+  --f-display-weight: 700;
+  --f-display-spacing: -0.01em;
+  --f-body-size: 15px;
+  --f-body-leading: 1.62;
+}
+
+/* Consolidation — cran institutionnel-mais-vivant : grotesque humaniste Public Sans
+   (déjà dans la charte du Printemps, cohérence interne) + serif éditorial. */
+.type-consolidation {
+  --f-display: 'Public Sans', system-ui, sans-serif;
+  --f-body: 'Source Serif 4', Georgia, serif;
+  --f-meta: 'Public Sans', system-ui, sans-serif;
+  --f-display-weight: 800;
+  --f-display-spacing: -0.02em;
+  --f-body-size: 15.5px;
+  --f-body-leading: 1.6;
+}
+
+/* Radicalité — parti éditorial affirmé : serif contrasté Fraunces en display
+   (voix, caractère, tension militante) + grotesque neutre Archivo en corps. */
+.type-radicalite {
+  --f-display: 'Fraunces', Georgia, serif;
+  --f-body: 'Archivo', system-ui, sans-serif;
+  --f-meta: 'Archivo', system-ui, sans-serif;
+  --f-display-weight: 900;
+  --f-display-spacing: -0.015em;
+  --f-body-size: 15px;
+  --f-body-leading: 1.6;
+}

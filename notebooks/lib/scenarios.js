@@ -5,7 +5,7 @@
 
 export const SCENARIOS = {
   "continuite": {
-    label: "Continuité : gravité pétrole",
+    label: "1. Continuité \"pétrole\" : 6 familles",
     these:
       "L'identité reste ancrée dans le bleu pétrole actuel. Peu de familles, saturation tempérée, les couleurs chaudes ne servent que d'accent. Répond à la crainte de rupture du camp analytique.",
     implications:
@@ -22,7 +22,7 @@ export const SCENARIOS = {
   },
 
   "median-v01": {
-    label: "Médian : draft v0.1",
+    label: "2. V1 psp : 11 familles",
     these:
       "Le draft de la première passe, comme référence : 11 familles qui réconcilient tout l'existant (PSP, cartos, satellites), avec un caractère de saturation propre à chaque famille.",
     implications:
@@ -44,7 +44,7 @@ export const SCENARIOS = {
   },
 
   "resserre": {
-    label: "Resserré : 8 familles",
+    label: "3. Resserré : 8 familles",
     these:
       "Un spectre minimal qui couvre quand même tous les usages : une seule famille par zone de teinte utile. Le bleu franc fusionne dans le pétrole, le violet dans la framboise, l'olive disparaît. Moins à gouverner, moins à expliquer.",
     implications:
@@ -63,7 +63,7 @@ export const SCENARIOS = {
   },
 
   "vif-rupture": {
-    label: "Vif : rupture assumée",
+    label: "4. Rupture et vivacité : 10 familles",
     these:
       "L'énergie militante prend la main : saturation poussée sur toute la gamme, le rouge coquelicot devient le centre de gravité, le bleu pétrole reste présent mais redevient une couleur parmi d'autres.",
     implications:

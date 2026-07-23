@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Charte NSP — sommaire des maquettes</title>
+<link rel="stylesheet" href="tokens-couleur.css">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #eceef0; color: var(--c-ink); font-family: system-ui, sans-serif;
+         -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 40px 30px 60px; }
+  h1 { font-family: 'Public Sans', system-ui; font-weight: 800; font-size: 26px; margin: 0 0 6px; }
+  .lede { font-size: 14px; color: #4a5157; margin: 0 0 30px; max-width: 640px; line-height: 1.5; }
+  .lede code { background: #dfe2e4; padding: 1px 5px; border-radius: 3px; font-size: 12.5px; }
+
+  .group { margin-bottom: 30px; }
+  .group h2 { font-family: 'Public Sans', system-ui; font-weight: 700; font-size: 13px;
+              letter-spacing: .04em; text-transform: uppercase; color: var(--c-brand-deep);
+              margin: 0 0 12px; padding-bottom: 6px; border-bottom: 2px solid var(--c-brand); }
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  a.card { display: block; background: #fff; border-radius: 10px; padding: 16px 18px;
+           box-shadow: 0 3px 14px rgba(0,0,0,.08); text-decoration: none; color: inherit; }
+  a.card:hover { box-shadow: 0 4px 20px rgba(0,0,0,.13); }
+  a.card .name { font-family: 'Public Sans', system-ui; font-weight: 700; font-size: 15px;
+                 color: var(--c-ink); margin: 0 0 4px; }
+  a.card .desc { font-size: 12.5px; color: #6a7177; line-height: 1.4; }
+  .swatch { display: flex; gap: 3px; margin-top: 10px; }
+  .swatch span { width: 16px; height: 16px; border-radius: 3px; }
+
+  .foot { font-size: 12px; color: #7a8188; margin-top: 34px; line-height: 1.6; }
+  .foot code { background: #dfe2e4; padding: 1px 5px; border-radius: 3px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Charte NSP : maquettes haute fidélité</h1>
+  <p class="lede">Chaque surface consomme les mêmes tokens (<code>tokens-couleur.css</code> généré du spectre, <code>tokens-typo.css</code> pour les trois partis) : changer l'un ne touche pas l'autre. Détail de la méthode dans <code>README.md</code> et la note Pawn <code>productions-charte.md</code>.</p>
+
+  <div class="group">
+    <h2>Surfaces</h2>
+    <div class="cards">
+      <a class="card" href="rapport-spread.html">
+        <div class="name">Double-page rapport</div>
+        <div class="desc">Éditorial print : colonnes, lettrine, exergue, dataviz en situation, folios.</div>
+      </a>
+      <a class="card" href="militant.html">
+        <div class="name">Surfaces militantes</div>
+        <div class="desc">Affiche, tuile réseau social, bannière. Le pôle saturé, sans illustration.</div>
+      </a>
+      <a class="card" href="couvertures.html">
+        <div class="name">Couvertures thématiques</div>
+        <div class="desc">Une famille de couleur par politique publique, gabarit constant.</div>
+      </a>
+      <a class="card" href="dataviz.html">
+        <div class="name">Dataviz plein cadre</div>
+        <div class="desc">Carte choroplèthe recolorable, séries catégorielles, échelles.</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="group">
+    <h2>Outils de décision</h2>
+    <div class="cards">
+      <a class="card" href="typo-usages.html">
+        <div class="name">Typographie : spécimens et usages</div>
+        <div class="desc">Trois partis (proximité, consolidation, radicalité) en polices réelles, notés par usage.</div>
+      </a>
+    </div>
+  </div>
+
+  <p class="foot">
+    Couleur = spectre v0.1 (draft, en cours d'arbitrage). Régénérer après changement de scénario :
+    <code>node scripts/gen-tokens-css.mjs [scenario]</code> depuis la racine du repo.
+    Typographie et composition provisoires sur les surfaces couleur, sauf mention contraire.
+  </p>
+
+  <p class="foot">
+    Ce dossier est une racine servie parmi trois dans nsp-labo. Les notebooks Observable
+    (spectre, showcase, gabarit enquête) tournent sur <code>pnpm preview</code>, port 5173.
+    Le pendant web du rapport enquête tourne sur le port 18796
+    (<code>python3 -m http.server --directory exports/web 18796</code>). Voir le README
+    du repo pour le détail des commandes.
+  </p>
+</div>
+</body>
+</html>

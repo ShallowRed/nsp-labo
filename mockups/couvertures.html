@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="fr" class="type-consolidation">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Charte NSP — système de couvertures thématiques (maquette)</title>
+<link rel="stylesheet" href="tokens-couleur.css">
+<link rel="stylesheet" href="tokens-typo.css">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #d9dde0; color: var(--c-ink); font-family: var(--f-body);
+         -webkit-font-smoothing: antialiased; }
+  .toolbar { position: sticky; top: 0; z-index: 10; display: flex; gap: 10px; align-items: center;
+             padding: 10px 16px; background: #23282b; color: #fff; font-family: system-ui; font-size: 13px; }
+  .toolbar strong { font-weight: 600; }
+  .toolbar button { font: inherit; background: #3a4247; color: #fff; border: 1px solid #556066;
+                    border-radius: 6px; padding: 5px 11px; cursor: pointer; }
+  .toolbar button:hover { background: #4a545a; }
+  .toolbar .grp { display: flex; gap: 6px; } .toolbar .sep { flex: 1; } .toolbar .hint { opacity: .6; }
+
+  .stage { padding: 34px; }
+  .intro { max-width: 780px; margin: 0 auto 22px; font-family: var(--f-meta); font-size: 13px;
+           color: #4a5157; text-align: center; }
+  .grid { display: grid; grid-template-columns: repeat(3, 232px); gap: 26px; justify-content: center; }
+
+  .cover { width: 232px; height: 328px; background: var(--c-paper); box-shadow: 0 6px 26px rgba(0,0,0,.2);
+           display: flex; flex-direction: column; overflow: hidden; position: relative; }
+  .cover .top { height: 208px; background: var(--band); position: relative; overflow: hidden; padding: 18px; }
+  .cover .over { font-family: var(--f-meta); font-size: 10.5px; font-weight: 700; letter-spacing: .09em;
+                 text-transform: uppercase; color: #fff; opacity: .9; }
+  .cover .arc { position: absolute; width: 210px; height: 210px; border: 16px solid rgba(255,255,255,.28);
+                border-radius: 50%; border-right-color: transparent; border-bottom-color: transparent;
+                right: -70px; top: 44px; transform: rotate(45deg); }
+  .cover .theme { position: absolute; left: 18px; bottom: 16px; font-family: var(--f-display);
+                  font-weight: var(--f-display-weight); letter-spacing: var(--f-display-spacing);
+                  font-size: 30px; line-height: .98; color: #fff; }
+  .cover .bottom { flex: 1; padding: 16px 18px; display: flex; flex-direction: column; }
+  .cover .title { font-family: var(--f-body); font-size: 14px; line-height: 1.28; color: var(--c-ink); }
+  .cover .foot { margin-top: auto; display: flex; justify-content: space-between; align-items: center; }
+  .cover .wm { font-family: var(--f-meta); font-size: 11px; font-weight: 700; color: var(--band); }
+  .cover .yr { font-family: var(--f-meta); font-size: 11px; color: var(--c-ink-soft); }
+  .provisoire { text-align: center; font-family: system-ui; font-size: 9px; letter-spacing: .05em;
+                text-transform: uppercase; color: #9aa2a7; margin-top: 22px; }
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <strong>Charte NSP · couvertures thématiques</strong>
+  <span class="hint">Typo :</span>
+  <div class="grp">
+    <button onclick="setType('proximite')">Proximité</button>
+    <button onclick="setType('consolidation')">Consolidation</button>
+    <button onclick="setType('radicalite')">Radicalité</button>
+  </div>
+  <span class="sep"></span>
+  <span class="hint" id="whoami">couleur = spectre v0.1 · typo = consolidation</span>
+</div>
+
+<div class="stage">
+  <p class="intro">Une famille de couleur par politique publique. Même gabarit, la couleur porte le sujet : le système se lit d'un coup d'œil en rayon.</p>
+  <div class="grid">
+    <div class="cover" style="--band: var(--c-th-sante)">
+      <div class="top"><div class="over">Cahier thématique</div><div class="arc"></div><div class="theme">Santé</div></div>
+      <div class="bottom"><div class="title">Rapport sur l'état des services publics</div>
+        <div class="foot"><span class="wm">Nos services publics</span><span class="yr">2026</span></div></div>
+    </div>
+    <div class="cover" style="--band: var(--c-th-education)">
+      <div class="top"><div class="over">Cahier thématique</div><div class="arc"></div><div class="theme">Éducation</div></div>
+      <div class="bottom"><div class="title">Rapport sur l'état des services publics</div>
+        <div class="foot"><span class="wm">Nos services publics</span><span class="yr">2026</span></div></div>
+    </div>
+    <div class="cover" style="--band: var(--c-th-transports)">
+      <div class="top"><div class="over">Cahier thématique</div><div class="arc"></div><div class="theme">Transports</div></div>
+      <div class="bottom"><div class="title">Rapport sur l'état des services publics</div>
+        <div class="foot"><span class="wm">Nos services publics</span><span class="yr">2026</span></div></div>
+    </div>
+    <div class="cover" style="--band: var(--c-th-justice)">
+      <div class="top"><div class="over">Cahier thématique</div><div class="arc"></div><div class="theme">Justice</div></div>
+      <div class="bottom"><div class="title">Rapport sur l'état des services publics</div>
+        <div class="foot"><span class="wm">Nos services publics</span><span class="yr">2026</span></div></div>
+    </div>
+    <div class="cover" style="--band: var(--c-th-logement)">
+      <div class="top"><div class="over">Cahier thématique</div><div class="arc"></div><div class="theme">Logement</div></div>
+      <div class="bottom"><div class="title">Rapport sur l'état des services publics</div>
+        <div class="foot"><span class="wm">Nos services publics</span><span class="yr">2026</span></div></div>
+    </div>
+    <div class="cover" style="--band: var(--c-th-ecologie)">
+      <div class="top"><div class="over">Cahier thématique</div><div class="arc"></div><div class="theme">Écologie</div></div>
+      <div class="bottom"><div class="title">Rapport sur l'état des services publics</div>
+        <div class="foot"><span class="wm">Nos services publics</span><span class="yr">2026</span></div></div>
+    </div>
+  </div>
+  <p class="provisoire">Typographie et composition provisoires · couleur = fondation du spectre</p>
+</div>
+
+<script>
+  function setType(t){ document.documentElement.className='type-'+t;
+    document.getElementById('whoami').textContent='couleur = spectre v0.1 · typo = '+t; }
+</script>
+</body>
+</html>
