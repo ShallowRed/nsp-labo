@@ -253,3 +253,67 @@ export function bestCategorical(spectre, hues, { mode = "light", ps, maxOptions 
     })),
   };
 }
+
+// ---------------------------------------------------------------------------
+// Catégoriel étendu : doubler les teintes en générant des familles
+// intermédiaires (teinte à mi-chemin entre deux familles principales voisines,
+// même générateur), puis ordonner l'ensemble en glouton pour maximiser la
+// séparation des paires adjacentes, toutes visions confondues.
+export function categorielEtendu(scenario, huesPrincipales, { ps, opts = {} } = {}) {
+  const spectre = genSpectre(scenario);
+  const principal = bestCategorical(spectre, huesPrincipales, { ps }).ordered.map((c) => ({
+    nom: `${c.famille} ${c.palier}`,
+    hex: c.hex,
+    type: "principale",
+  }));
+
+  // teintes intermédiaires entre familles principales voisines sur le cercle
+  const fams = huesPrincipales
+    .map((n) => ({ n, ...scenario.familles[n] }))
+    .sort((a, b) => a.H - b.H);
+  const inters = fams.map((f, i) => {
+    const g = fams[(i + 1) % fams.length];
+    const H = i + 1 < fams.length ? (f.H + g.H) / 2 : ((f.H + g.H + 360) / 2) % 360;
+    return { nom: `${f.n}·${g.n}`, H, k: (f.k + g.k) / 2 };
+  });
+  // le palier des intermédiaires alterne la clarté (astuce Tableau 10 : les voisins
+  // de teinte se séparent aussi par la clarté), en restant dans la bande catégorielle
+  const paliersInter = [350, 550];
+  const scaleOpts = { ...scenario.options, ...opts };
+  const interSwatches = inters.map((f, i) => {
+    const scale = genScale({ H: f.H, k: f.k }, scaleOpts);
+    const p = paliersInter[i % paliersInter.length];
+    return { nom: `${f.nom} ${p}`, hex: scale[ps.indexOf(p)], type: "intermédiaire" };
+  });
+
+  // ordre glouton : partir de la première principale, toujours enchaîner sur la
+  // couleur restante la plus éloignée (pire vision comprise) de la précédente
+  const pool = [...principal, ...interSwatches].map((c) => ({
+    ...c,
+    sims: Object.fromEntries(
+      ["normal", "protan", "deutan", "tritan"].map((m) => [m, simulate(c.hex, m)])
+    ),
+  }));
+  const sep = (a, b) =>
+    Math.min(...["normal", "protan", "deutan", "tritan"].map((m) => dE(a.sims[m], b.sims[m])));
+  const ordered = [pool.shift()];
+  while (pool.length) {
+    let best = 0;
+    for (let i = 1; i < pool.length; i++)
+      if (sep(ordered[ordered.length - 1], pool[i]) > sep(ordered[ordered.length - 1], pool[best])) best = i;
+    ordered.push(pool.splice(best, 1)[0]);
+  }
+  let adjacentMinDE = Infinity;
+  let allPairsMinDE = Infinity;
+  for (let i = 0; i < ordered.length; i++)
+    for (let j = i + 1; j < ordered.length; j++) {
+      const d = sep(ordered[i], ordered[j]);
+      if (j === i + 1) adjacentMinDE = Math.min(adjacentMinDE, d);
+      allPairsMinDE = Math.min(allPairsMinDE, d);
+    }
+  return {
+    ordered,
+    adjacentMinDE: +adjacentMinDE.toFixed(1),
+    allPairsMinDE: +allPairsMinDE.toFixed(1),
+  };
+}

@@ -4,17 +4,19 @@
   <script type="text/markdown">
 # La gamme de couleurs NSP
 
-**Pourquoi une gamme.** Le collectif met régulièrement en forme des productions print et web, mais la gamme actuelle (autour d'un bleu pétrole) manque de vie, et rien ne couvre les usages récurrents : colorier des thématiques de politiques publiques, habiller des graphiques. Résultat, chaque projet réinvente ses couleurs.
+**Pourquoi poser une gamme de couleur.** Le collectif met régulièrement en forme des productions print et web, autour de l'identité graphique initiale NSP. La gamme existante (autour d'un bleu pétrole) est un chouille tristounette : elle mérite d'être à minima vivifiée, sinon remplacée, pour dynamiser l'image de marque du collectif. Elle ne prévoit pas non plus de règles pour couvrir des cas d'usages récurrents : colorier selon des thématiques de politique publique, représenter des graphiques. On se retrouve à réinventer des couleurs à chaque projet : chronophage et pas harmonieux. Enfin, NSP est souvent amené à participer ou coordonner des initiatives sous d'autres identités visuelles (campagnes ponctuelles, coalitions), qui gagneraient à être rapprochées visuellement pour créer plus de cohérence.
 
-**La proposition**, arrêtée le 23 juillet 2026 : un spectre complet de **8 familles** (une teinte déclinée du presque blanc au presque noir, repérée par des **paliers** de 50, le plus clair, à 950, le plus foncé), consolidé des expériences du Printemps des services publics et du RESP 2025. C'est une couche indépendante du reste de la refonte : on l'arrête, on l'applique au rapport de l'enquête comme premier cas d'usage, la typographie et la composition viendront par-dessus. Le même spectre sert le print, le web et les graphiques : les couleurs ne sont jamais codées en dur, des rôles nommés y pointent.
+**Ce dont on a besoin** : des couleurs plus **vives** et joyeuses ; des couleurs **nombreuses**, qui permettent des sous-ensembles par projet ; des couleurs adaptées au **multimédia** ; des couleurs **accessibles** by design ; un **cadre clair** pour leurs usages et déclinaisons.
+
+**La proposition**, arrêtée le 23 juillet 2026 : un spectre complet de couleurs, consolidé des expériences du Printemps des services publics et du RESP 2025. **8 familles** (une teinte déclinée du presque blanc au presque noir), repérées par des **paliers** de 50 (le plus clair) à 950 (le plus foncé). C'est une couche de design relativement indépendante de la suite de la refonte : on arrête maintenant une palette, on l'utilise dans le rapport management comme premier cas d'usage, on variabilise et on s'autorise à faire évoluer au besoin ; d'autres gestes de design (typos, compositions) viendront par-dessus.
 
 Chaque section a son sélecteur de vision : « vision typique », ou l'une des trois formes de daltonisme pour vérifier à l'œil que tout reste lisible.
   </script>
   <script type="module">
-    import { Plot, html, formatHex, clampChroma, converter } from "./lib/deps.js";
+    import { Plot, html, formatHex, clampChroma, converter, geoCentroid } from "./lib/deps.js";
     import { SCENARIOS, CATEGORIEL } from "./lib/scenarios.js";
-    import { genSpectre, paliers, bestCategorical, simulate, dE } from "./lib/spectre.js";
-    import { bande, bandeNommee } from "./lib/bandes.js";
+    import { genSpectre, paliers, bestCategorical, categorielEtendu, simulate, dE } from "./lib/spectre.js";
+    import { bande } from "./lib/bandes.js";
     import { FIGURES } from "./lib/charte-tramanh.js";
     import { franceMetropolitaine } from "./lib/carte.js";
     const topoShow = await FileAttachment("data/departements.json").json();
@@ -61,9 +63,31 @@ Chaque case est une couleur du spectre. Survoler une case donne sa famille, son 
     }));
   </script>
   <script type="text/markdown">
+### Des sous-ensembles par identité
+
+La vertu d'un spectre large : on y découpe des sous-ensembles pour générer des identités variées mais cohérentes entre elles. L'identité cœur de Nos services publics, celle du Printemps des services publics, ou une identité proche de NSP mais légèrement particulière pour le rapport management.
+  </script>
+  <script type="module">
+    const voirS = simVoir(visionNuancier);
+    const sousEnsemble = (titre, refs) => html`<div style="margin: 0 0 10px;">
+      <div style="font-size:0.82em; margin-bottom:2px;"><strong>${titre}</strong></div>
+      ${bande(refs.map(([f, p]) => voirS(tShow(f, p))))}
+    </div>`;
+    display(html`<div>
+      ${sousEnsemble("cœur Nos services publics", [["petrole", 700], ["petrole", 450], ["canard", 450], ["canard", 600], ["coquelicot", 500]])}
+      ${sousEnsemble("Printemps des services publics", [["prairie", 400], ["ambre", 300], ["coquelicot", 300], ["canard", 250]])}
+      ${sousEnsemble("rapport Hiérarchie et management", [["canard", 600], ["canard", 450], ["coquelicot", 300], ["coquelicot", 600], ["ardoise", 150]])}
+    </div>`);
+  </script>
+  <script type="text/markdown">
+### Un seul système, plusieurs sorties
+
+Le même spectre habille aussi les interfaces (boutons, fonds, bordures) : les couleurs ne sont **jamais codées en dur**, des rôles (fond, texte, accent, marque) pointent vers le spectre. Changer une teinte de marque devient **une seule référence à modifier**, pas une recherche partout dans le code. Le même mécanisme sert le print, le web et les graphiques : un seul système, plusieurs sorties.
+  </script>
+  <script type="text/markdown">
 ## Une famille par thématique de politique publique
 
-Une couleur par sujet, le même gabarit : la collection se reconnaît en rayon, sans légende.
+Une famille de couleur par sujet : le classement se lit d'un coup d'œil, sans légende.
   </script>
   <script type="module">
     const visionTheme = view(selVision());
@@ -86,59 +110,116 @@ Une couleur par sujet, le même gabarit : la collection se reconnaît en rayon, 
     </div>`);
   </script>
   <script type="text/markdown">
-La même logique sur une carte : la famille d'une thématique devient une échelle de densité (valeurs fictives).
+Et si demain un livrable demande beaucoup plus de catégories, le générateur sait **doubler la gamme** avec des teintes intermédiaires, à mi-chemin entre deux familles voisines, ordonnées pour que deux voisines restent toujours distinctes :
   </script>
   <script type="module">
-    const voirC2 = simVoir(visionTheme);
-    const famCarteShow = spShow.lavande;
-    const rampShow = [2, 5, 8, 11, 14].map((i) => voirC2(famCarteShow[i]));
-    const valShow = (f) => {
+    const voirD = simVoir(visionTheme);
+    const douze = categorielEtendu(SCENARIOS.resserre, CATEGORIEL.resserre, { ps: ps19 });
+    display(bande(douze.ordered.map((c) => voirD(c.hex)), { cellW: 42, h: 28 }));
+    display(html`<p style="font-size:0.78em; color:#777; margin-top:4px;">Douze thématiques au lieu de six, même logique de vérification (écart entre voisines ${douze.adjacentMinDE}).</p>`);
+  </script>
+  <script type="text/markdown">
+## Sur une carte
+
+Même logique appliquée à une carte : une famille du spectre devient une échelle de densité. L'échelle divergente sert un autre message, l'écart à la moyenne nationale. Données illustratives.
+  </script>
+  <script type="module">
+    const visionCarte = view(selVision());
+    const echelleCarte = view(Inputs.radio(
+      new Map([
+        ["monochrome canard (ex. santé)", "canard"],
+        ["monochrome lavande (ex. justice)", "lavande"],
+        ["monochrome ambre (ex. éducation)", "ambre"],
+        ["divergente : écart à la moyenne", "divergente"],
+      ]),
+      { label: "Échelle", value: "canard" }
+    ));
+  </script>
+  <script type="module">
+    const voirCa = simVoir(visionCarte);
+    // valeur illustrative mais réaliste : un gradient spatial (temps d'accès qui augmente
+    // en s'éloignant des grandes villes) plutôt qu'un bruit aléatoire
+    const villes = [[2.35, 48.85], [4.85, 45.75], [5.37, 43.3], [-0.58, 44.84], [3.06, 50.63], [7.75, 48.58], [-1.55, 47.22]];
+    const minutes = new Map(carteFond.features.map((f) => {
+      const [x, y] = geoCentroid(f);
+      const dmin = Math.min(...villes.map(([vx, vy]) => Math.hypot(x - vx, y - vy)));
       let h = 0;
-      for (const ch of f.properties.INSEE_DEP) h = (h * 31 + ch.charCodeAt(0)) % 997;
-      return 5 + (h % 26);
+      for (const ch of f.properties.INSEE_DEP) h = (h * 31 + ch.charCodeAt(0)) % 97;
+      return [f.properties.INSEE_DEP, Math.round(9 + dmin * 6.5 + (h % 9))];
+    }));
+    const moyenne = [...minutes.values()].reduce((a, b) => a + b, 0) / minutes.size;
+    const seq = (fam) => [100, 300, 500, 700, 850].map((p) => voirCa(tShow(fam, p)));
+    const divg = [tShow("canard", 600), tShow("canard", 300), tShow("ardoise", 100), tShow("coquelicot", 300), tShow("coquelicot", 600)].map(voirCa);
+    const enDivergente = echelleCarte === "divergente";
+    const valeur = (f) => {
+      const v = minutes.get(f.properties.INSEE_DEP);
+      return enDivergente ? v - moyenne : v;
     };
     display(Plot.plot({
       projection: { type: "conic-conformal", rotate: [-3, 0], parallels: [44, 49], domain: carteFond },
-      width: 480, height: 460,
-      color: { type: "quantile", n: 5, range: rampShow, label: "minutes (fictif)", legend: true },
-      marks: [Plot.geo(carteFond, { fill: (d) => valShow(d), stroke: voirC2(famCarteShow[14]), strokeWidth: 0.5 })],
+      width: 500, height: 470,
+      color: enDivergente
+        ? { type: "quantile", n: 5, range: divg, label: "écart à la moyenne (min)", legend: true, tickFormat: (d) => (d > 0 ? `+${d.toFixed(0)}` : d.toFixed(0)) }
+        : { type: "quantile", n: 5, range: seq(echelleCarte), label: "temps d'accès (min)", legend: true, tickFormat: (d) => d.toFixed(0) },
+      marks: [Plot.geo(carteFond, { fill: valeur, stroke: "white", strokeWidth: 0.5,
+        tip: true, title: (f) => `${f.properties.INSEE_DEP} : ${minutes.get(f.properties.INSEE_DEP)} min` })],
     }));
   </script>
   <script type="text/markdown">
 ## Les trois échelles des graphiques
 
-Un graphique utilise la couleur pour répondre à une question, et chaque question a son échelle. Sous les échelles, un chiffre : le plus petit écart perçu entre deux couleurs voisines, daltonisme compris. Au-dessus de 10, on ne peut pas les confondre.
+Un graphique utilise la couleur pour répondre à une question, et chaque question a son échelle. Sous les échelles discrètes, un chiffre : le plus petit écart perçu entre deux couleurs voisines, daltonisme compris. Au-dessus de 10, on ne peut pas les confondre.
   </script>
   <script type="module">
     const visionEchelles = view(selVision());
   </script>
+  <script type="text/markdown">
+**Séquentielle.** Une seule teinte, du clair au foncé : pour mesurer une **intensité** (durée, fréquence, densité...).
+  </script>
   <script type="module">
     const voirE = simVoir(visionEchelles);
-    const gamme = (titre, hexes, note = "") => html`<div style="margin: 0 0 10px;">
-      <div style="font-size:0.82em; margin-bottom:2px;"><strong>${titre}</strong> <span style="color:#777;">${note}</span></div>
-      ${bande(hexes.map(voirE))}
-    </div>`;
+    display(Plot.legend({
+      width: 340,
+      label: "intensité (ex. minutes)",
+      color: { type: "linear", domain: [0, 25, 50, 75, 100], range: [150, 300, 450, 600, 750].map((p) => voirE(tShow("petrole", p))) },
+    }));
+  </script>
+  <script type="text/markdown">
+**Catégorielle.** Des teintes différentes, sans ordre entre elles : pour distinguer des **catégories** (services, régions, réponses à une enquête...). Choisies et vérifiées pour rester lisibles même en daltonisme.
+  </script>
+  <script type="module">
+    const voirE2 = simVoir(visionEchelles);
+    const catShow = bestCategorical(spShow, CATEGORIEL.resserre, { mode: "light", ps: ps19 });
+    display(Plot.legend({
+      color: { domain: catShow.ordered.map((c) => `${c.famille} ${c.palier}`), range: catShow.ordered.map((c) => voirE2(c.hex)) },
+      swatchSize: 16,
+    }));
+    display(html`<p style="font-size:0.78em; color:#777; margin:4px 0 0;">écart entre voisines ${catShow.adjacentMinDE}</p>`);
+  </script>
+  <script type="text/markdown">
+**Divergente.** Deux pôles de part et d'autre d'un centre neutre : pour montrer un **écart** (au-dessus ou en dessous d'une moyenne, d'un objectif) ou une opinion graduée. Le chaud porte le négatif, le froid le positif : jamais de rouge contre vert, la paire que le daltonisme efface. En 5 réponses, un milieu gris clair plutôt que jaune-orangé, qui se confondrait avec le pôle chaud.
+  </script>
+  <script type="module">
+    const voirE3 = simVoir(visionEchelles);
     const lik4 = [tShow("coquelicot", 600), tShow("coquelicot", 300), tShow("canard", 450), tShow("canard", 600)];
     const lik5 = [tShow("coquelicot", 600), tShow("coquelicot", 300), tShow("ardoise", 100), tShow("canard", 450), tShow("canard", 600)];
     const lik5moutarde = [tShow("coquelicot", 600), tShow("coquelicot", 300), tShow("ambre", 300), tShow("canard", 450), tShow("canard", 600)];
     const ouiNon = [tShow("canard", 450), tShow("coquelicot", 500), tShow("ardoise", 150)];
-    const catShow = bestCategorical(spShow, CATEGORIEL.resserre, { mode: "light", ps: ps19 });
+    const legende = (domain, hexes, note) => html`<div style="margin:0 0 10px;">
+      ${Plot.legend({ color: { domain, range: hexes.map(voirE3) }, swatchSize: 16 })}
+      <div style="font-size:0.78em; color:#777;">${note}</div>
+    </div>`;
     display(html`<div>
-      <p style="margin:0 0 4px;"><strong>Séquentielle</strong>, pour une intensité (durée, fréquence, densité) : une seule famille, du clair au foncé.</p>
-      ${gamme("pétrole, 5 niveaux", [150, 300, 450, 600, 750].map((p) => tShow("petrole", p)))}
-      <p style="margin:14px 0 4px;"><strong>Catégorielle</strong>, pour distinguer des choses sans ordre : six couleurs de clarté moyenne, ordonnées par calcul pour que deux voisines restent reconnaissables.</p>
-      ${bandeNommee(catShow.ordered.map((c) => ({ nom: `${c.famille} ${c.palier}`, hex: voirE(c.hex) })))}
-      <p style="margin:14px 0 4px;"><strong>Divergente</strong>, pour une opinion entre deux pôles : le chaud (coquelicot) porte le négatif, le froid (canard) le positif. Jamais de rouge contre vert, la paire que le daltonisme efface. Et en 5 réponses, un milieu gris clair plutôt que jaune-orangé, qui se confondrait avec le pôle chaud :</p>
-      ${gamme("4 réponses graduées", lik4, `écart ${ecart(lik4)}`)}
-      ${gamme("5 réponses, milieu gris clair", lik5, `écart ${ecart(lik5)}`)}
-      ${gamme("5 réponses, milieu jaune-orangé", lik5moutarde, `écart ${ecart(lik5moutarde)} : à éviter`)}
-      ${gamme("oui, non, ne sait pas", ouiNon, `écart ${ecart(ouiNon)}`)}
+      ${legende(["mal", "plutôt mal", "plutôt bien", "bien"], lik4, `4 réponses graduées, écart ${ecart(lik4)}`)}
+      ${legende(["mal", "plutôt mal", "ça dépend", "plutôt bien", "bien"], lik5, `5 réponses, milieu gris clair, écart ${ecart(lik5)}`)}
+      ${legende(["mal", "plutôt mal", "ça dépend", "plutôt bien", "bien"], lik5moutarde, `5 réponses, milieu jaune-orangé, écart ${ecart(lik5moutarde)} : à éviter`)}
+      ${legende(["oui", "non", "ne sait pas"], ouiNon, `oui, non, ne sait pas, écart ${ecart(ouiNon)}`)}
     </div>`);
   </script>
   <script type="text/markdown">
 ## Des couleurs uniformément perceptibles
 
-Le spectre est réglé dans un espace de couleur (OKLCH) construit pour correspondre à ce que l'œil perçoit : deux couleurs au même réglage de clarté sont perçues aussi claires l'une que l'autre, quelle que soit la teinte. C'est ce qui rend les paliers et les garanties de contraste fiables par construction. L'espace classique (HSL) ne le garantit pas : ci-dessous, six teintes au même réglage de clarté dans chaque espace.
+Les couleurs sont réglées dans un espace (**OKLCH**) construit pour correspondre à ce que l'œil perçoit, pas à un calcul arbitraire. Deux couleurs à la même clarté réglée sont perçues **aussi claires l'une que l'autre**, quelle que soit leur teinte. C'est ce qui rend les paliers du nuancier et les garanties de contraste fiables mécaniquement, pas seulement ajustés à l'œil.
   </script>
   <script type="module">
     const toRgbU = converter("rgb");
@@ -153,9 +234,11 @@ Le spectre est réglé dans un espace de couleur (OKLCH) construit pour correspo
     </div>`);
   </script>
   <script type="text/markdown">
-## Accessible par construction
+À réglage de clarté identique, l'espace HSL (le plus courant) trompe l'œil ; OKLCH corrige ce défaut par construction.
 
-Aujourd'hui, la majorité des figures de l'enquête oppose un vert et un rouge : illisible pour un lecteur daltonien. Ci-dessous, une vraie figure du rapport, mêmes données, couleurs actuelles puis couleurs du spectre. Passer le sélecteur en deutéranopie : la version actuelle s'écrase, la nouvelle tient.
+## Accessibilité
+
+Aujourd'hui, la majorité des figures de l'enquête oppose un vert et un rouge : **illisible pour un lecteur daltonien**. Le spectre corrige ça par construction, preuve simulée à l'appui : ci-dessous, une vraie figure du rapport, mêmes données, couleurs actuelles puis couleurs du spectre. Passer le sélecteur en deutéranopie.
   </script>
   <script type="module">
     const visionFig = view(selVision());
@@ -196,6 +279,6 @@ Aujourd'hui, la majorité des figures de l'enquête oppose un vert et un rouge :
     </div>`);
   </script>
   <script type="text/markdown">
-Pour aller plus loin : [le gabarit des figures web de l'enquête](./enquete-hierarchie) (réponses graduées en miroir, haltère d'écart).
+Demain, ces briques se combinent : rapports, affiches, pages web, des compositions riches en couleur, cohérentes entre elles. Pour aller plus loin : [le gabarit des figures web de l'enquête](./enquete-hierarchie).
   </script>
 </notebook>

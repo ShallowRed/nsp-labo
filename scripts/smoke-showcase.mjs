@@ -6,7 +6,7 @@ globalThis.document = dom.window.document;
 globalThis.window = dom.window;
 Object.defineProperty(globalThis, "navigator", { value: dom.window.navigator, configurable: true });
 const Plot = await import("@observablehq/plot");
-const { genSpectre, paliers, bestCategorical, simulate, dE } = await import("../notebooks/lib/spectre.js");
+const { genSpectre, paliers, bestCategorical, categorielEtendu, simulate, dE } = await import("../notebooks/lib/spectre.js");
 const { SCENARIOS, CATEGORIEL } = await import("../notebooks/lib/scenarios.js");
 const { franceMetropolitaine } = await import("../notebooks/lib/carte.js");
 const { readFileSync } = await import("node:fs");
@@ -26,6 +26,10 @@ for (const id of Object.keys(SCENARIOS)) {
   for (const [k, v] of Object.entries(requis)) if (!v) { console.log(`MANQUE [${id}] ${k}`); pb++; }
   const cat = bestCategorical(sp, CATEGORIEL[id], { mode: "light", ps });
   if (!cat.ordered?.length || cat.ordered.some((c) => !c.sims?.deutan)) { console.log(`MANQUE [${id}] catégoriel`); pb++; }
+  const douze = categorielEtendu(SCENARIOS[id], CATEGORIEL[id], { ps });
+  if (douze.ordered.length !== 2 * CATEGORIEL[id].length || new Set(douze.ordered.map((c) => c.hex)).size !== douze.ordered.length || douze.adjacentMinDE < 10) {
+    console.log(`ETENDU KO [${id}] ${douze.ordered.length} teintes, adj ${douze.adjacentMinDE}`); pb++;
+  }
   // gamme divergente : le pivot neutre doit tenir là où le pivot moutarde casse
   const adj = (hexes) => {
     let w = Infinity;
@@ -46,7 +50,7 @@ for (const id of Object.keys(SCENARIOS)) {
   });
   const n = carte.querySelectorAll("path").length;
   if (n < 96) { console.log(`CARTE KO [${id}] ${n} paths`); pb++; }
-  console.log(`${id} : ok (${Object.keys(sp).length} familles, catégoriel ${cat.ordered.length}, carte ${n} paths)`);
+  console.log(`${id} : ok (${Object.keys(sp).length} familles, catégoriel ${cat.ordered.length} + étendu ${douze.ordered.length}, carte ${n} paths)`);
 }
 console.log(pb ? `SMOKE SHOWCASE : ${pb} problème(s)` : "SMOKE SHOWCASE : tout passe");
 process.exit(pb ? 1 : 0);

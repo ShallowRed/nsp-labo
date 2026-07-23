@@ -5,3 +5,4 @@
 export * as Plot from "@observablehq/plot";
 export { html } from "htl";
 export { formatHex, clampChroma, converter } from "culori";
+export { geoCentroid } from "d3-geo";
