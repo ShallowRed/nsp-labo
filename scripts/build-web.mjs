@@ -146,13 +146,12 @@ chapitres.forEach((c, i) => {
 const sommaire = `<h1>Rapport linéaire</h1>
 <p>Pendant numérique du rapport de l'enquête « Hiérarchie et management » : mêmes chapitres,
 même texte, même manifeste de figures que le PDF, générés du même export Markdown.
-POC du 2026-07-18, valeurs et habillage non définitifs (spectre en cours d'arbitrage).</p>
+POC du 2026-07-18, habillage aux couleurs du spectre acté, valeurs non définitives.</p>
 <nav class="chapitres"><ol>
 ${chapitres.map((c, i) => `<li><a href="${slug(c.titre, i)}.html">${c.titre}</a></li>`).join("\n")}
 </ol></nav>
-<p class="autres-racines">nsp-labo sert trois racines distinctes, chacune sur son port :
-ce pendant web (ici), les notebooks Observable (<code>pnpm preview</code>, port 5173)
-et les maquettes de charte (<code>python3 -m http.server --directory mockups</code>,
-port 18798). Voir le README du repo pour les commandes de lancement.</p>`;
+<p class="autres-racines">nsp-labo sert deux racines distinctes : ce pendant web (ici)
+et les notebooks Observable (<code>npm run preview</code>, port 5173). Voir le README
+du repo pour les commandes de lancement.</p>`;
 writeFileSync(join(sortieDir, "index.html"), page("Sommaire", sommaire, ""));
 console.log(`Écrit exports/web/ : ${chapitres.length} chapitres + sommaire + 1 figure branchée (M1_D_x_E)`);

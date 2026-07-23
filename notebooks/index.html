@@ -8,15 +8,12 @@ Expérimentations du collectif Nos Services Publics, en notebooks Observable (No
 
 ## Notebooks
 
-- [Spectre couleurs NSP](./couleurs-showcase) : le spectre acté le 23 juillet 2026 (resserré, 8 familles) en situation ; nuancier, carte, couvertures, séries, sondage, avec simulation du daltonisme. L'exploration comparative qui a mené à la décision est consignée dans la carte Pawn (le notebook comparateur a été retiré, git garde l'historique).
+- [Spectre couleurs NSP](./couleurs-showcase) : le spectre acté le 23 juillet 2026 (resserré, 8 familles) décliné sur les usages courants : nuancier, les trois gammes de dataviz (séquentielle, divergente, catégorielle) avec leurs écarts mesurés, catégoriel étendu à douze séries par teintes intermédiaires, fond sombre, carte, couvertures, sondage ; simulation du daltonisme sur tout le notebook. L'exploration comparative qui a mené à la décision est consignée dans la carte Pawn (le notebook comparateur a été retiré, git garde l'historique).
 - [Enquête hiérarchie : gabarit des figures web](./enquete-hierarchie) : archétypes likert divergent et haltère d'écart aux couleurs du spectre, daltonisme simulé ; le kit R miroir pour la chaîne d'analyse est dans `exports/r/`.
 
-## Autres racines servies
+## Autre racine servie
 
-Ce serveur (`pnpm preview`, port 5173) ne sert que ce dossier `notebooks/` : c'est un serveur Observable Notebook Kit, il ne peut pas exposer le reste du repo. Deux autres racines existent, chacune sur son port :
-
-- Maquettes de charte (`mockups/`) : `python3 -m http.server --directory mockups 18798` (ou la config `charte-mockups` du `launch.json` de garden), sommaire sur `http://localhost:18798/`.
-- Pendant web du rapport enquête (`exports/web/`) : `python3 -m http.server --directory exports/web 18796` (config `enquete-web-poc`), sommaire sur `http://localhost:18796/`.
+Ce serveur (`npm run preview`, port 5173) ne sert que ce dossier `notebooks/` : c'est un serveur Observable Notebook Kit, il ne peut pas exposer le reste du repo. Le pendant web du rapport enquête (`exports/web/`) tourne à part : `python3 -m http.server --directory exports/web 18796` (config `enquete-web-poc`), sommaire sur `http://localhost:18796/`.
 
 ## Contexte
 

@@ -5,11 +5,9 @@
   "description": "Expérimentations Nos Services Publics : notebooks Observable (couleurs, dataviz)",
   "scripts": {
     "preview": "notebooks preview --root notebooks",
-    "mockups": "pnpx live-server ./mockups",
     "build": "notebooks build --root notebooks -- notebooks/*.html",
     "check": "node scripts/check.mjs",
-    "gen:r": "node scripts/gen-r.mjs",
-    "gen:tokens": "node scripts/gen-tokens-css.mjs"
+    "gen:r": "node scripts/gen-r.mjs"
   },
   "dependencies": {
     "@observablehq/notebook-kit": "^2.1.8",
