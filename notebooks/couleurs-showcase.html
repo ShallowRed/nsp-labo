@@ -4,12 +4,12 @@
   <script type="text/markdown">
 # Spectre couleurs NSP 2026
 
-Le spectre acté le 23 juillet 2026 (« resserré », 8 familles), décliné sur les usages courants. Le sélecteur de vision simule les trois formes de daltonisme : tout le notebook se recolore, les garanties se vérifient à l'œil.
+Le spectre acté le 23 juillet 2026 (« resserré », 8 familles). Le sélecteur de vision simule le daltonisme sur tout le notebook.
   </script>
   <script type="module">
     import { Plot, html } from "./lib/deps.js";
     import { SCENARIOS, CATEGORIEL } from "./lib/scenarios.js";
-    import { genSpectre, paliers, bestCategorical, categorielEtendu, simulate, dE } from "./lib/spectre.js";
+    import { genSpectre, paliers, bestCategorical, simulate, dE } from "./lib/spectre.js";
     import { franceMetropolitaine } from "./lib/carte.js";
     const topoShow = await FileAttachment("data/departements.json").json();
     const carteFond = franceMetropolitaine(topoShow);
@@ -26,7 +26,7 @@ Le spectre acté le 23 juillet 2026 (« resserré », 8 familles), décliné sur
     const voir = (hex) => (visionShow === "normal" ? hex : simulate(hex, visionShow));
     const tShow = (fam, palier) => spShow[fam]?.[ps19.indexOf(palier)];
     const encreShow = voir(tShow("ardoise", 800) ?? tShow("petrole", 800));
-    // pire écart entre aplats adjacents, daltonisme compris (seuil de confort : 10)
+    // pire écart entre aplats adjacents, daltonisme compris (confort au-dessus de 10)
     const pireAdj = (hexes) => {
       let w = Infinity;
       for (const m of ["normal", "protan", "deutan", "tritan"])
@@ -34,8 +34,7 @@ Le spectre acté le 23 juillet 2026 (« resserré », 8 familles), décliné sur
           w = Math.min(w, dE(simulate(hexes[i], m), simulate(hexes[i + 1], m)));
       return +w.toFixed(1);
     };
-    // rangée de nuancier annotée, réutilisée par toutes les gammes
-    const rangee = (titre, hexes, note = "") => html`<div style="margin: 0 0 14px;">
+    const rangee = (titre, hexes, note = "") => html`<div style="margin: 0 0 12px;">
       <div style="display:flex; align-items:baseline; gap:8px; margin-bottom:4px;">
         <span style="font-size:0.82em; font-weight:600;">${titre}</span>
         <span style="font-size:0.75em; color:#777;">${note}</span>
@@ -46,7 +45,7 @@ Le spectre acté le 23 juillet 2026 (« resserré », 8 familles), décliné sur
     </div>`;
   </script>
   <script type="text/markdown">
-## Le spectre
+## Spectre
   </script>
   <script type="module">
     display(html`<div style="display:grid; gap:6px;">
@@ -54,44 +53,27 @@ Le spectre acté le 23 juillet 2026 (« resserré », 8 familles), décliné sur
         <span style="width:6.5em; font-size:0.8em; text-align:right; color:#555;">${fam}</span>
         <div style="display:flex; gap:3px; flex:1;">
           ${arr.map((hex) => html`<div style="flex:1; aspect-ratio:1; border-radius:3px; background:${voir(hex)};"></div>`)}
-        </div>
+      </div>
       </div>`)}
     </div>`);
   </script>
   <script type="text/markdown">
-## Trois gammes pour trois questions
+## Gammes
 
-Tout graphique pose une des trois questions suivantes, et chaque question a sa gamme, dérivée du spectre. Les gammes discrètes affichent leur pire écart entre voisins, daltonisme compris (dE, confort au-dessus de 10).
-
-**Combien ?** Une intensité (durée, densité, fréquence) : gamme **séquentielle**, une seule famille du clair au foncé. Chaque famille fournit la sienne, ce qui permet de thémiser par sujet.
-  </script>
-  <script type="module">
-    const seq = (fam) => [150, 300, 450, 600, 750].map((p) => tShow(fam, p));
-    display(html`<div>
-      ${rangee("pétrole", seq("petrole"))}
-      ${rangee("canard", seq("canard"))}
-      ${rangee("framboise", seq("framboise"))}
-    </div>`);
-  </script>
-  <script type="text/markdown">
-**De quel côté ?** Un axe négatif-positif (opinion, écart à une cible) : gamme **divergente**, deux pôles autour d'un centre. Le pôle chaud est le coquelicot, le pôle froid le canard (la couleur d'identité) : pas d'axe rouge-vert, illisible en daltonisme. Autre piège mesuré ici : en 5 modalités, un pivot moutarde se confond avec le pôle chaud (dE 7) là où un pivot neutre clair tient (dE 15).
+Séquentielle (une intensité), divergente (deux pôles, jamais rouge-vert), catégorielle (l'ordre est calculé). Les gammes discrètes affichent leur pire écart entre voisins, daltonisme compris (confort au-dessus de 10).
   </script>
   <script type="module">
     const lik4 = [tShow("coquelicot", 600), tShow("coquelicot", 300), tShow("canard", 450), tShow("canard", 600)];
     const lik5 = [tShow("coquelicot", 600), tShow("coquelicot", 300), tShow("ardoise", 100), tShow("canard", 450), tShow("canard", 600)];
     const lik5moutarde = [tShow("coquelicot", 600), tShow("coquelicot", 300), tShow("ambre", 300), tShow("canard", 450), tShow("canard", 600)];
     const ouiNon = [tShow("canard", 450), tShow("coquelicot", 500), tShow("ardoise", 150)];
-    const cont7 = [tShow("coquelicot", 700), tShow("coquelicot", 450), tShow("coquelicot", 200), tShow("ardoise", 100), tShow("canard", 200), tShow("canard", 450), tShow("canard", 700)];
     display(html`<div>
-      ${rangee("4 modalités (likert)", lik4, `pire écart ${pireAdj(lik4)}`)}
-      ${rangee("5 modalités, pivot neutre", lik5, `pire écart ${pireAdj(lik5)}`)}
-      ${rangee("5 modalités, pivot moutarde (contre-exemple)", lik5moutarde, `pire écart ${pireAdj(lik5moutarde)} : à éviter`)}
-      ${rangee("oui / non / ne sait pas", ouiNon, `pire écart ${pireAdj(ouiNon)}`)}
-      ${rangee("continue (7 classes ordonnées)", cont7, "la lecture est l'ordre, pas l'identification")}
+      ${rangee("séquentielle", [150, 300, 450, 600, 750].map((p) => tShow("petrole", p)))}
+      ${rangee("likert 4", lik4, `écart ${pireAdj(lik4)}`)}
+      ${rangee("likert 5, pivot neutre", lik5, `écart ${pireAdj(lik5)}`)}
+      ${rangee("likert 5, pivot moutarde", lik5moutarde, `écart ${pireAdj(lik5moutarde)} : à éviter`)}
+      ${rangee("oui / non / ne sait pas", ouiNon, `écart ${pireAdj(ouiNon)}`)}
     </div>`);
-  </script>
-  <script type="text/markdown">
-**Qui est qui ?** Des catégories sans ordre (thématiques, services, régions) : gamme **catégorielle**. Le jeu et son ordre sont calculés sous contraintes (bande de clarté, plancher de saturation, séparation en vision daltonienne comprise), pas choisis à l'œil.
   </script>
   <script type="module">
     const catShow = bestCategorical(spShow, CATEGORIEL.resserre, { mode: "light", ps: ps19 });
@@ -101,52 +83,24 @@ Tout graphique pose une des trois questions suivantes, et chaque question a sa g
         <div style="font-size:0.7em; color:#555; margin-top:3px;">${c.famille} ${c.palier}</div>
       </div>`)}
     </div>
-    <p style="font-size:0.78em; color:#777; margin-top:8px;">Six séries, pire écart entre voisines ${catShow.adjacentMinDE} toutes visions confondues.</p>`);
-  </script>
-  <script type="text/markdown">
-## Doubler les catégories : douze séries
-
-Quand six séries ne suffisent pas, le générateur fabrique des teintes **intermédiaires** (à mi-chemin de deux familles voisines, clarté alternée), puis désordonne l'ensemble pour que deux voisines restent toujours très distinctes. L'effet est riche mais reste organisé : mêmes courbes de clarté, même saturation de référence.
-  </script>
-  <script type="module">
-    const douze = categorielEtendu(SCENARIOS.resserre, CATEGORIEL.resserre, { ps: ps19 });
-    const douzeSeries = douze.ordered.map((c, i) => ({
-      serie: c.nom,
-      valeur: [34, 31, 28, 26, 23, 21, 18, 16, 13, 11, 9, 7][i] ?? 6,
-      couleur: visionShow === "normal" ? c.hex : c.sims[visionShow],
-    }));
-    display(Plot.plot({
-      width: 640, height: 60 + douzeSeries.length * 30, marginLeft: 170,
-      x: { label: "part (%)", grid: true },
-      y: { label: null },
-      color: { type: "identity" },
-      marks: [
-        Plot.barX(douzeSeries, { y: "serie", x: "valeur", fill: "couleur", sort: null }),
-        Plot.text(douzeSeries, { y: "serie", x: "valeur", text: (d) => `${d.valeur}`, dx: 12, fill: encreShow }),
-      ],
-    }));
-    display(html`<p style="font-size:0.78em; color:#777;">Pire écart entre voisines ${douze.adjacentMinDE} (toutes visions). Honnêteté : sur douze séries, toutes les paires ne peuvent plus être garanties en daltonisme (${douze.allPairsMinDE} au pire entre deux séries éloignées) : au-delà de six catégories, l'identification passe par la légende et l'adjacence, c'est vrai de tout système de couleurs.</p>`);
+    <p style="font-size:0.78em; color:#777; margin-top:8px;">catégorielle, écart entre voisines ${catShow.adjacentMinDE}</p>`);
   </script>
   <script type="text/markdown">
 ## Fond sombre
 
-Le même calcul, contraint sur la bande de clarté qui tient sur un fond foncé : les surfaces sombres (réseaux sociaux, écrans militants) ont leur jeu catégoriel dédié, dérivé du même spectre.
+Le même calcul, contraint pour tenir sur fond foncé (réseaux, écrans militants).
   </script>
   <script type="module">
     const catSombre = bestCategorical(spShow, CATEGORIEL.resserre, { mode: "dark", ps: ps19 });
-    const fondSombre = tShow("ardoise", 900);
-    display(html`<div style="background:${fondSombre}; border-radius:8px; padding:22px;">
-      <div style="display:flex; gap:10px; flex-wrap:wrap;">
-        ${catSombre.ordered.map((c) => html`<div style="text-align:center;">
-          <div style="width:64px; height:44px; border-radius:4px; background:${voir(c.hex)};"></div>
-          <div style="font-size:0.7em; color:#aab; margin-top:3px;">${c.famille} ${c.palier}</div>
-        </div>`)}
-      </div>
-    </div>
-    <p style="font-size:0.78em; color:#777; margin-top:8px;">Pire écart entre voisines ${catSombre.adjacentMinDE} sur fond ardoise 900.</p>`);
+    display(html`<div style="background:${tShow("ardoise", 900)}; border-radius:8px; padding:22px; display:flex; gap:10px; flex-wrap:wrap;">
+      ${catSombre.ordered.map((c) => html`<div style="text-align:center;">
+        <div style="width:64px; height:44px; border-radius:4px; background:${voir(c.hex)};"></div>
+        <div style="font-size:0.7em; color:#aab; margin-top:3px;">${c.famille} ${c.palier}</div>
+      </div>`)}
+    </div>`);
   </script>
   <script type="text/markdown">
-## En situation : carte
+## Carte
   </script>
   <script type="module">
     const famCarteShow = spShow.lavande ?? spShow.canard ?? spShow.petrole;
@@ -164,7 +118,7 @@ Le même calcul, contraint sur la bande de clarté qui tient sur un fond foncé 
     }));
   </script>
   <script type="text/markdown">
-## En situation : couvertures thématiques
+## Couvertures thématiques
   </script>
   <script type="module">
     const themesShow = ["Santé", "Éducation", "Transports", "Justice", "Logement", "Écologie"];
@@ -183,7 +137,7 @@ Le même calcul, contraint sur la bande de clarté qui tient sur un fond foncé 
     </div>`);
   </script>
   <script type="text/markdown">
-## En situation : séries et sondage
+## Séries
   </script>
   <script type="module">
     const catSix = bestCategorical(spShow, CATEGORIEL.resserre, { mode: "light", ps: ps19 });
@@ -202,6 +156,9 @@ Le même calcul, contraint sur la bande de clarté qui tient sur un fond foncé 
         Plot.text(seriesShow, { y: "serie", x: "valeur", text: (d) => `${d.valeur}`, dx: 14, fill: encreShow }),
       ],
     }));
+  </script>
+  <script type="text/markdown">
+## Sondage
   </script>
   <script type="module">
     const modShow = [

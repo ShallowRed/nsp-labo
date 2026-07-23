@@ -8,7 +8,7 @@ qu'elle génère pour chaque destinataire.
 ## Source unique et générateurs
 
 Tout part de `notebooks/lib/spectre.js` (générateur OKLCH, contrastes, daltonisme, catégoriel
-sous contraintes, catégoriel étendu par teintes intermédiaires) et `notebooks/lib/scenarios.js`
+sous contraintes) et `notebooks/lib/scenarios.js`
 (les paramètres du spectre acté). Si une teinte évolue : modifier `scenarios.js`, relancer les
 générateurs, tout suit.
 
@@ -37,7 +37,7 @@ npm run gen:r     # régénère le kit R
 ```
 notebooks/                    # racine servie 1 (npm run preview)
 ├── index.html                # sommaire
-├── couleurs-showcase.html    # le spectre acté décliné : gammes, catégoriel étendu, situations
+├── couleurs-showcase.html    # le spectre acté : gammes mesurées, fond sombre, situations
 ├── enquete-hierarchie.html   # gabarit des figures web du rapport (likert, haltère)
 ├── lib/                      # spectre.js, scenarios.js, carte.js, deps.js
 └── data/                     # TopoJSON départements, palettes relevées
