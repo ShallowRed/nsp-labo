@@ -95,10 +95,10 @@ La vertu d'un spectre large : on y découpe des sous-ensembles pour générer de
     display(html`<div>
       ${sousEnsemble("cœur Nos services publics", "l'héritage pétrole-canard du logo, le coquelicot en accent",
         [["petrole", 700], ["petrole", 450], ["canard", 450], ["canard", 600], ["coquelicot", 500]])}
-      ${sousEnsemble("Printemps des services publics", "le registre printanier : prairie, ambre, tons clairs",
-        [["prairie", 400], ["ambre", 300], ["coquelicot", 300], ["canard", 250]])}
-      ${sousEnsemble("rapport Hiérarchie et management", "proche de NSP mais particulière : la gamme d'opinion de l'enquête",
-        [["canard", 600], ["canard", 450], ["coquelicot", 300], ["coquelicot", 600], ["ardoise", 150]])}
+      ${sousEnsemble("Printemps des services publics", "sa charte a des familles cousines des nôtres : fuchsia (notre framboise) en primaire, lavande en secondaire",
+        [["framboise", 600], ["framboise", 300], ["lavande", 450], ["lavande", 150], ["coquelicot", 450]])}
+      ${sousEnsemble("rapport Hiérarchie et management", "la maquette du rapport : lavande en primaire (titres, fonds de section), coquelicot en accent",
+        [["lavande", 750], ["lavande", 450], ["lavande", 100], ["coquelicot", 450], ["ardoise", 150]])}
     </div>`);
   </script>
   <script type="text/markdown">
@@ -215,6 +215,28 @@ Un graphique utilise la couleur pour répondre à une question, et chaque questi
       label: "temps d'accès (min), le même exemple que la carte",
       color: { type: "linear", domain: [0, 10, 20, 30, 40], range: [150, 300, 450, 600, 750].map((p) => voirE(tShow("petrole", p))) },
     }));
+    // et sa forme discrète : une échelle de fréquence de l'enquête, du clair (jamais)
+    // au foncé (très fréquemment), ordres de grandeur du rapport
+    const modEnnui = ["jamais", "parfois", "souvent", "très fréquemment", "ne sait pas"];
+    const colEnnui = [tShow("petrole", 100), tShow("petrole", 250), tShow("petrole", 450), tShow("petrole", 700), tShow("ardoise", 150)].map(voirE);
+    const ennui = { "FPE": [48, 29, 13, 7, 3], "FPT": [47, 30, 14, 6, 3], "FPH": [57, 29, 8, 3, 3] };
+    const segEnnui = Object.entries(ennui).flatMap(([ctx, vals]) => {
+      let x = 0;
+      return vals.map((v, i) => { const o = { ctx, x0: x, x1: x + v, c: colEnnui[i], v, m: modEnnui[i] }; x += v; return o; });
+    });
+    display(html`<div style="margin-top:10px;">
+      <div style="font-size:0.82em; margin-bottom:2px;"><strong>Vous arrive-t-il de vous ennuyer au travail ?</strong> <span style="color:#777;">par versant, ordres de grandeur du rapport ; plus c'est foncé, plus c'est fréquent</span></div>
+      ${Plot.plot({
+        width: 620, height: 130, marginLeft: 44,
+        x: { label: null, domain: [0, 100] },
+        y: { label: null, domain: Object.keys(ennui) },
+        color: { type: "identity" },
+        marks: [
+          Plot.barX(segEnnui, { y: "ctx", x1: "x0", x2: "x1", fill: "c", insetTop: 3, insetBottom: 3, tip: true, title: (d) => `${d.m} : ${d.v} %` }),
+          Plot.text(segEnnui.filter((d) => d.v >= 6), { y: "ctx", x: (d) => (d.x0 + d.x1) / 2, text: (d) => `${d.v}`, fill: (d) => (d.x0 >= 40 ? "white" : voirE(tShow("ardoise", 800))), fontSize: 11 }),
+        ],
+      })}
+    </div>`);
   </script>
   <script type="text/markdown">
 **Catégorielle.** Des teintes différentes, sans ordre entre elles : pour distinguer des **catégories** (services, régions, réponses à une enquête...). Choisies et vérifiées pour rester lisibles même en daltonisme.
@@ -227,6 +249,25 @@ Un graphique utilise la couleur pour répondre à une question, et chaque questi
       swatchSize: 16,
     }));
     display(html`<p style="font-size:0.78em; color:#777; margin:4px 0 0;">écart entre voisines ${catShow.adjacentMinDE}</p>`);
+    // en situation : des catégories sans ordre entre elles, les trois versants
+    const versants = [
+      { nom: "FPE (État)", part: 44 },
+      { nom: "FPT (territoriale)", part: 34 },
+      { nom: "FPH (hospitalière)", part: 22 },
+    ].map((d, i) => ({ ...d, c: voirE2(catShow.ordered[i].hex) }));
+    display(html`<div style="margin-top:10px;">
+      <div style="font-size:0.82em; margin-bottom:2px;"><strong>Répartition des agents par versant de la fonction publique</strong> <span style="color:#777;">ordre de grandeur national</span></div>
+      ${Plot.plot({
+        width: 620, height: 130, marginLeft: 130,
+        x: { label: "part (%)", domain: [0, 50], grid: true },
+        y: { label: null, domain: versants.map((d) => d.nom) },
+        color: { type: "identity" },
+        marks: [
+          Plot.barX(versants, { y: "nom", x: "part", fill: "c" }),
+          Plot.text(versants, { y: "nom", x: "part", text: (d) => `${d.part}`, dx: 12, fill: voirE2(tShow("ardoise", 800)) }),
+        ],
+      })}
+    </div>`);
   </script>
   <script type="text/markdown">
 **Divergente.** Deux pôles de part et d'autre d'un centre neutre : pour montrer un **écart** (au-dessus ou en dessous d'une moyenne, d'un objectif) ou une opinion graduée. Le chaud porte le négatif, le froid le positif : jamais de rouge contre vert, la paire que le daltonisme efface. En 5 réponses, un milieu gris clair plutôt que jaune-orangé, qui se confondrait avec le pôle chaud.
@@ -246,6 +287,33 @@ Un graphique utilise la couleur pour répondre à une question, et chaque questi
       ${legende(["mal", "plutôt mal", "ça dépend", "plutôt bien", "bien"], lik5, `5 réponses, milieu gris clair, écart ${ecart(lik5)}`)}
       ${legende(["mal", "plutôt mal", "ça dépend", "plutôt bien", "bien"], lik5moutarde, `5 réponses, milieu jaune-orangé, écart ${ecart(lik5moutarde)} : à éviter`)}
       ${legende(["oui", "non", "ne sait pas"], ouiNon, `oui, non, ne sait pas, écart ${ecart(ouiNon)}`)}
+    </div>`);
+    // en situation : la figure croisée du rapport, par tranche d'âge (valeurs du rapport ;
+    // les petites parts de « mal », non étiquetées dans la maquette, sont déduites des totaux)
+    const modMoral = ["ne sait pas", "mal", "plutôt mal", "plutôt bien", "bien"];
+    const colMoral = [tShow("ardoise", 150), tShow("coquelicot", 600), tShow("coquelicot", 300), tShow("canard", 450), tShow("canard", 600)].map(voirE3);
+    const moral = {
+      "0-34 ans": [5, 3, 12, 62, 18],
+      "35-44 ans": [6, 3, 16, 58, 17],
+      "45-54 ans": [6, 5, 17, 57, 15],
+      "55 ans et plus": [8, 5, 17, 53, 17],
+    };
+    const segMoral = Object.entries(moral).flatMap(([ctx, vals]) => {
+      let x = 0;
+      return vals.map((v, i) => { const o = { ctx, x0: x, x1: x + v, c: colMoral[i], v, m: modMoral[i] }; x += v; return o; });
+    });
+    display(html`<div style="margin-top:10px;">
+      <div style="font-size:0.82em; margin-bottom:2px;"><strong>Comment vous sentez-vous en général ? par tranche d'âge</strong> <span style="color:#777;">valeurs du rapport</span></div>
+      ${Plot.plot({
+        width: 620, height: 160, marginLeft: 94,
+        x: { label: null, domain: [0, 100] },
+        y: { label: null, domain: Object.keys(moral) },
+        color: { type: "identity" },
+        marks: [
+          Plot.barX(segMoral, { y: "ctx", x1: "x0", x2: "x1", fill: "c", insetTop: 3, insetBottom: 3, tip: true, title: (d) => `${d.m} : ${d.v} %` }),
+          Plot.text(segMoral.filter((d) => d.v >= 8), { y: "ctx", x: (d) => (d.x0 + d.x1) / 2, text: (d) => `${d.v}`, fill: "white", fontSize: 11 }),
+        ],
+      })}
     </div>`);
   </script>
   <script type="text/markdown">
