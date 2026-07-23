@@ -1,0 +1,103 @@
+<!doctype html>
+<notebook>
+  <title>Charte graphiques : correspondance</title>
+  <script type="text/markdown">
+# Charte couleurs graphiques : correspondance
+
+Mapping direct de la « Charte couleurs graphiques » (Tram Anh, 21 juillet) vers le spectre acté. Sa taxonomie reste le cadre ; ses seize lignes se replient sur quatre règles.
+  </script>
+  <script type="module">
+    import { Plot, html } from "./lib/deps.js";
+    import { SCENARIOS } from "./lib/scenarios.js";
+    import { genSpectre, paliers, simulate, dE } from "./lib/spectre.js";
+    import { REGLES, LIGNES, FIGURES } from "./lib/charte-tramanh.js";
+    const psC = paliers(19);
+    const spC = genSpectre(SCENARIOS.resserre);
+    const hexDe = ([fam, palier]) => spC[fam][psC.indexOf(palier)];
+  </script>
+  <script type="module">
+    const visionC = view(Inputs.select(
+      new Map([["vision normale", "normal"], ["deutéranopie", "deutan"], ["protanopie", "protan"], ["tritanopie", "tritan"]]),
+      { label: "Vision" }
+    ));
+  </script>
+  <script type="module">
+    const voirC = (hex) => (visionC === "normal" ? hex : simulate(hex, visionC));
+    const pastilles = (hexes, size = 22) => html`<span style="display:inline-flex; gap:2px; vertical-align:middle;">
+      ${hexes.map((h) => html`<span style="width:${size}px; height:${size}px; border-radius:3px; background:${voirC(h)};"></span>`)}
+    </span>`;
+  </script>
+  <script type="text/markdown">
+## Quatre règles au lieu de seize lignes
+  </script>
+  <script type="module">
+    display(html`<div style="display:grid; gap:14px; max-width:640px;">
+      ${REGLES.map((r) => html`<div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span style="font-weight:700; font-size:0.9em;">${r.id}. ${r.titre}</span>
+          ${pastilles(r.recette.map(hexDe))}
+        </div>
+        <div style="font-size:0.8em; color:#666; margin-top:2px;">${r.resume}</div>
+      </div>`)}
+    </div>`);
+  </script>
+  <script type="text/markdown">
+## Ligne à ligne
+
+Chaque ligne du document d'origine, sa traduction. Les lignes « majorité » traduisaient des échelles de fréquence en divergentes déséquilibrées : elles passent en progression (règle 2), c'est la principale simplification.
+  </script>
+  <script type="module">
+    const sections = [...new Set(LIGNES.map((l) => l.section))];
+    display(html`<div style="display:grid; gap:6px;">
+      ${sections.map((sec) => html`<div>
+        <div style="font-size:0.78em; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#666; margin:10px 0 6px;">${sec}</div>
+        ${LIGNES.filter((l) => l.section === sec).map((l) => html`<div style="display:flex; align-items:center; gap:10px; padding:3px 0; border-bottom:1px solid #eee;">
+          <span style="width:19em; font-size:0.8em;">${l.nom}</span>
+          ${pastilles(l.avant, 18)}
+          <span style="color:#999;">&rarr;</span>
+          ${pastilles(l.apres.map(hexDe), 18)}
+          <span style="font-size:0.72em; color:#888;">règle ${l.regle}${l.note ? ` · ${l.note}` : ""}</span>
+        </div>`)}
+      </div>`)}
+    </div>`);
+  </script>
+  <script type="text/markdown">
+## Sur deux vraies figures du rapport
+
+Mêmes données, avant (couleurs actuelles) et après (spectre). Passer en deutéranopie : l'avant s'écrase, l'après tient.
+  </script>
+  <script type="module">
+    const figChart = (fig, palette, label) => {
+      const cols = palette.map(voirC);
+      const seg = Object.entries(fig.lignes).flatMap(([ctx, vals]) => {
+        let x = 0;
+        return vals.map((v, i) => {
+          const s = { ctx, x0: x, x1: x + v, c: cols[i], v };
+          x += v;
+          return s;
+        });
+      });
+      return html`<div style="margin:0 0 18px;">
+        <div style="font-size:0.78em; font-weight:600; color:#666; margin-bottom:2px;">${label}</div>
+        ${Plot.plot({
+          width: 620, height: 34 + Object.keys(fig.lignes).length * 32, marginLeft: 84,
+          x: { label: null, domain: [0, 100] },
+          y: { label: null, domain: Object.keys(fig.lignes) },
+          color: { type: "identity" },
+          marks: [
+            Plot.barX(seg, { y: "ctx", x1: "x0", x2: "x1", fill: "c", insetTop: 3, insetBottom: 3 }),
+            Plot.text(seg.filter((s) => s.v >= 6), { y: "ctx", x: (s) => (s.x0 + s.x1) / 2, text: (s) => `${s.v}`, fill: "white", fontSize: 11 }),
+          ],
+        })}
+      </div>`;
+    };
+    for (const fig of FIGURES) {
+      display(html`<div style="margin: 0 0 8px;">
+        <div style="font-weight:700; font-size:0.9em; margin:14px 0 6px;">${fig.titre}</div>
+        <div style="font-size:0.75em; color:#888; margin-bottom:6px;">${fig.modalites.join(" · ")}</div>
+        ${figChart(fig, fig.avant, "avant")}
+        ${figChart(fig, fig.apres.map(hexDe), "après")}
+      </div>`);
+    }
+  </script>
+</notebook>
