@@ -16,7 +16,7 @@ mkdirSync(join(sortieDir, "figures"), { recursive: true });
 // --- Couleurs : depuis la source unique du spectre (scénario médian, draft) ---
 const { genSpectre, paliers } = await import(join(racine, "notebooks/lib/spectre.js"));
 const { SCENARIOS } = await import(join(racine, "notebooks/lib/scenarios.js"));
-const spectre = genSpectre(SCENARIOS["median-v01"]);
+const spectre = genSpectre(SCENARIOS.resserre);
 const ps = paliers(19);
 const teinte = (f, p) => spectre[f][ps.indexOf(p)];
 

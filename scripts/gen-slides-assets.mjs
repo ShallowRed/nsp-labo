@@ -12,7 +12,7 @@ const { SCENARIOS, CATEGORIEL } = await import("/Users/lucaspoulain/Projects/nsp
 const { franceMetropolitaine } = await import("/Users/lucaspoulain/Projects/nsp-labo/notebooks/lib/carte.js");
 const OUT = "/Users/lucaspoulain/Projects/nuxt-slides/public/images/nsp-refonte/";
 
-const sc = "resserre" in SCENARIOS ? "resserre" : "median-v01";
+const sc = "resserre"; // spectre acté le 23 juillet 2026
 const spectre = genSpectre(SCENARIOS[sc]);
 const ps = paliers(19);
 const t = (f, p) => spectre[f]?.[ps.indexOf(p)];
@@ -192,8 +192,7 @@ console.log("diagrammes écrits");
 
   // catégorielle : le jeu validé daltonisme du scénario retenu (bestCategorical)
   {
-    const catKey = CATEGORIEL[sc] ? sc : Object.keys(CATEGORIEL)[0];
-    const cat = bestCategorical(spectre, CATEGORIEL[catKey], { mode: "light", ps });
+    const cat = bestCategorical(spectre, CATEGORIEL[sc], { mode: "light", ps });
     writeFileSync(OUT + "echelle-categorielle.svg", barre(cat.ordered.map((c) => c.hex), 640, 90));
   }
 

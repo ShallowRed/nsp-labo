@@ -5,10 +5,10 @@ décisions suivantes (typo, composition) en gardant les concerns séparés.
 
 ## Séparation des concerns : deux jeux de variables indépendants
 
-- `tokens-couleur.css` : la COUCHE COULEUR, générée du spectre par
-  `node scripts/gen-tokens-css.mjs [scenario]`. Primitifs `--sp-<famille>-<palier>` +
-  rôles sémantiques `--c-*` (ink, brand, accent, thématiques, dataviz). Changer de
-  scénario = régénérer ce fichier, les maquettes suivent.
+- `tokens-couleur.css` : la COUCHE COULEUR, générée du spectre acté par
+  `npm run gen:tokens`. Primitifs `--sp-<famille>-<palier>` + rôles sémantiques
+  `--c-*` (ink, brand, accent, thématiques, dataviz). Si le spectre évolue,
+  régénérer ce fichier suffit, les maquettes suivent.
 - `tokens-typo.css` : la COUCHE TYPO, trois partis sur l'axe proximité -> radicalité
   (classes `.type-proximite`, `.type-consolidation`, `.type-radicalite` sur `<html>`).
 

@@ -10,7 +10,7 @@ Le rapport de l'enquête « Hiérarchie et management » (sortie prévue septemb
     import { Plot, html } from "./lib/deps.js";
     import { genSpectre, paliers, simulate } from "./lib/spectre.js";
     import { SCENARIOS } from "./lib/scenarios.js";
-    const spectreEnq = genSpectre(SCENARIOS["median-v01"]);
+    const spectreEnq = genSpectre(SCENARIOS.resserre);
     const paliersEnq = paliers(19);
     const teinte = (fam, palier) => spectreEnq[fam][paliersEnq.indexOf(palier)];
   </script>

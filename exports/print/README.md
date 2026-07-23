@@ -40,7 +40,7 @@ pandoc -s -f markdown -t icml exports/print/module-1-finition.md -o exports/prin
 
 `node scripts/build-web.mjs` génère `exports/web/` depuis le même Markdown finalisé :
 sommaire + 9 pages chapitrées, notes de fin rattachées à leur chapitre, habillage aux
-couleurs du spectre (scénario médian, draft), figure 01 branchée en vrai SVG Plot via
+couleurs du spectre acté, figure 01 branchée en vrai SVG Plot via
 le manifeste, les autres en emplacements stylés. Prévisualisation : serveur statique
 sur `exports/web/` (config `enquete-web-poc` du launch.json de garden, port 18796).
 

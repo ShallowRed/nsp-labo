@@ -1,16 +1,15 @@
 // Génère mockups/tokens-couleur.css : la COUCHE COULEUR de la charte, depuis le spectre.
 // Primitifs (familles x paliers) + rôles sémantiques + thématiques + dataviz.
-// Les maquettes consomment les rôles (--c-*), jamais les primitifs : changer de
-// scénario de spectre = régénérer ce fichier, les maquettes suivent (concern couleur isolé).
-// Usage : node scripts/gen-tokens-css.mjs [scenario]   (défaut : resserre, décidé le 2026-07-21)
+// Les maquettes consomment les rôles (--c-*), jamais les primitifs : si le spectre
+// évolue, régénérer ce fichier suffit, les maquettes suivent (concern couleur isolé).
+// Usage : npm run gen:tokens
 import { writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { genSpectre, paliers, bestCategorical } from "../notebooks/lib/spectre.js";
 import { SCENARIOS, CATEGORIEL } from "../notebooks/lib/scenarios.js";
 
-const id = process.argv[2] ?? "resserre";
-if (!SCENARIOS[id]) { console.error(`Scénario inconnu : ${id}`); process.exit(1); }
+const id = "resserre"; // spectre acté le 23 juillet 2026
 const sp = genSpectre(SCENARIOS[id]);
 const ps = paliers(19);
 const fams = Object.keys(sp);

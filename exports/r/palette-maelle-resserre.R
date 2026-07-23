@@ -1,4 +1,4 @@
-# Palette NSP — spectre unifié, scénario « 3. Resserré : 8 familles » (ACTÉ le 23 juillet 2026).
+# Palette NSP — spectre unifié « resserré » (ACTÉ le 23 juillet 2026).
 # Drop-in : remplace ton bloc de couleurs, les palettes pal_M* s'adaptent seules.
 # Convention conservée : 1 = le plus foncé, 4 = le plus clair (y compris les gris).
 
@@ -20,7 +20,7 @@ bleu2  <- "#2B8CB9"
 bleu3  <- "#7AC4EC"
 bleu4  <- "#C6EDFF"
 
-orange <- "#A86100"
+orange <- "#C77C1F"
 
 gris1  <- "#6A777F"
 gris2  <- "#B0BCC3"

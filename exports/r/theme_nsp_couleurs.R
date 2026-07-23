@@ -1,6 +1,6 @@
 # theme_nsp_couleurs.R : GÉNÉRÉ, ne pas éditer à la main.
-# Source : nsp-labo, node scripts/gen-theme-r.mjs resserre (2026-07-23)
-# Scénario de spectre : resserre (ACTÉ le 23 juillet 2026 : l'enquête part sur ce
+# Source : nsp-labo, node scripts/gen-r.mjs (2026-07-23)
+# Spectre NSP « resserré » (ACTÉ le 23 juillet 2026 : l'enquête part sur ce
 # spectre ; si une teinte évolue, régénérer ce fichier suffit, rien d'autre ne change).
 #
 # Audit daltonisme des archétypes de palettes de l'enquête :

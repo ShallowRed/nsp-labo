@@ -8,7 +8,7 @@ globalThis.Node = dom.window.Node;
 const Plot = await import("@observablehq/plot");
 const { genSpectre, paliers, simulate } = await import("/Users/lucaspoulain/Projects/nsp-labo/notebooks/lib/spectre.js");
 const { SCENARIOS } = await import("/Users/lucaspoulain/Projects/nsp-labo/notebooks/lib/scenarios.js");
-const spectreEnq = genSpectre(SCENARIOS["median-v01"]);
+const spectreEnq = genSpectre(SCENARIOS.resserre);
 const paliersEnq = paliers(19);
 const teinte = (f, p) => spectreEnq[f][paliersEnq.indexOf(p)];
 

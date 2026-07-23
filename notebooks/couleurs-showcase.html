@@ -1,8 +1,10 @@
 <!doctype html>
 <notebook>
-  <title>Spectre couleurs : showcase</title>
+  <title>Spectre couleurs NSP</title>
   <script type="text/markdown">
 # Spectre couleurs NSP 2026
+
+Le spectre acté le 23 juillet 2026 (« resserré », 8 familles), en situation. Le sélecteur de vision simule les trois formes de daltonisme.
   </script>
   <script type="module">
     import { Plot, html } from "./lib/deps.js";
@@ -14,17 +16,13 @@
     const ps19 = paliers(19);
   </script>
   <script type="module">
-    const scChoisi = view(Inputs.select(
-      new Map(Object.entries(SCENARIOS).map(([id, s]) => [s.label, id])),
-      { label: "Scénario", value: "resserre" }
-    ));
     const visionShow = view(Inputs.select(
       new Map([["vision normale", "normal"], ["deutéranopie", "deutan"], ["protanopie", "protan"], ["tritanopie", "tritan"]]),
       { label: "Vision" }
     ));
   </script>
   <script type="module">
-    const spShow = genSpectre(SCENARIOS[scChoisi]);
+    const spShow = genSpectre(SCENARIOS.resserre);
     const voir = (hex) => (visionShow === "normal" ? hex : simulate(hex, visionShow));
     const tShow = (fam, palier) => spShow[fam]?.[ps19.indexOf(palier)];
     const encreShow = voir(tShow("ardoise", 800) ?? tShow("petrole", 800));
@@ -83,7 +81,7 @@
 ## Séries
   </script>
   <script type="module">
-    const catShow = bestCategorical(spShow, CATEGORIEL[scChoisi], { mode: "light", ps: ps19 });
+    const catShow = bestCategorical(spShow, CATEGORIEL.resserre, { mode: "light", ps: ps19 });
     const seriesShow = catShow.ordered.map((c, i) => ({
       serie: `${c.famille} ${c.palier}`,
       valeur: [34, 27, 22, 17, 12, 9][i] ?? 8,
