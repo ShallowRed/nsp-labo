@@ -14,10 +14,10 @@ générateurs, tout suit.
 
 | Destinataire | Objet | Générateur |
 |--------------|-------|------------|
-| Tout le monde (visuels de référence) | notebook `couleurs-showcase` : gammes, usages, garanties | `npm run preview` |
+| Tout le monde (visuels de référence) | notebook `couleurs-showcase` : l'article autoportant (nuancier, échelles, accessibilité) | `npm run preview` |
 | Maëlle (chaîne R de l'enquête) | `exports/r/palette-maelle-resserre.R` (drop-in) + kit complet, cf. `exports/r/README.md` | `npm run gen:r` |
 | Deck de présentation | SVG dans `nuxt-slides/public/images/nsp-refonte/` | `node scripts/gen-slides-assets.mjs` |
-| Tram Anh (charte graphiques, InDesign) | table de correspondance dans la carte Pawn (`passation-couleurs-graphiques.md`) | - |
+| Tram Anh (charte graphiques, InDesign) | recettes dans `notebooks/lib/charte-tramanh.js` (auditées par `smoke-charte.mjs`) + table dans la carte Pawn | - |
 
 Les maquettes HTML (`mockups/`) et la couche de tokens CSS ont été retirées le 23 juillet
 (premier jet redondant avec les notebooks ; git garde tout, générateur de tokens compris,
@@ -37,7 +37,7 @@ npm run gen:r     # régénère le kit R
 ```
 notebooks/                    # racine servie 1 (npm run preview)
 ├── index.html                # sommaire
-├── couleurs-showcase.html    # le spectre acté : gammes mesurées, fond sombre, situations
+├── couleurs-showcase.html    # l'article de référence de la gamme (trame de la présentation)
 ├── enquete-hierarchie.html   # gabarit des figures web du rapport (likert, haltère)
 ├── lib/                      # spectre.js, scenarios.js, carte.js, deps.js
 └── data/                     # TopoJSON départements, palettes relevées

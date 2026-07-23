@@ -26,8 +26,6 @@ for (const id of Object.keys(SCENARIOS)) {
   for (const [k, v] of Object.entries(requis)) if (!v) { console.log(`MANQUE [${id}] ${k}`); pb++; }
   const cat = bestCategorical(sp, CATEGORIEL[id], { mode: "light", ps });
   if (!cat.ordered?.length || cat.ordered.some((c) => !c.sims?.deutan)) { console.log(`MANQUE [${id}] catégoriel`); pb++; }
-  const catSombre = bestCategorical(sp, CATEGORIEL[id], { mode: "dark", ps });
-  if (!catSombre.ordered?.length) { console.log(`MANQUE [${id}] catégoriel sombre`); pb++; }
   // gamme divergente : le pivot neutre doit tenir là où le pivot moutarde casse
   const adj = (hexes) => {
     let w = Infinity;
@@ -48,7 +46,7 @@ for (const id of Object.keys(SCENARIOS)) {
   });
   const n = carte.querySelectorAll("path").length;
   if (n < 96) { console.log(`CARTE KO [${id}] ${n} paths`); pb++; }
-  console.log(`${id} : ok (${Object.keys(sp).length} familles, catégoriel ${cat.ordered.length} + sombre ${catSombre.ordered.length}, carte ${n} paths)`);
+  console.log(`${id} : ok (${Object.keys(sp).length} familles, catégoriel ${cat.ordered.length}, carte ${n} paths)`);
 }
 console.log(pb ? `SMOKE SHOWCASE : ${pb} problème(s)` : "SMOKE SHOWCASE : tout passe");
 process.exit(pb ? 1 : 0);
