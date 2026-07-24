@@ -549,3 +549,21 @@ Les échelles proposées sont conçues pour rester lisibles par tous, y compris 
       ${figChart(fig.apres.map(hexDe), "couleurs du spectre")}
     </div>`);
   </script>
+  <script type="text/markdown">
+## Télécharger la gamme
+
+Pour la mise en page (InDesign, Illustrator) : le **nuancier `.ase`**, à charger dans le panneau Nuancier (menu du panneau → *Charger un nuancier...*). Les 8 familles y sont groupées à leurs paliers nommés, et sept groupes de recettes toutes prêtes pour les graphiques (opinion, fréquence, catégories, ne sait pas), nommées par modalité. Les couleurs sont importées en couleurs globales : en modifier une met à jour tout le document.
+
+Le **`.csv`** liste les 152 valeurs, pour tout autre outil. Les deux fichiers sont générés à l'instant, depuis la même source que cette page.
+  </script>
+  <script type="module">
+    const { buildAse, buildCsv } = await import("./lib/ase.js");
+    const boutonTelecharger = (data, type, nom, libelle) => {
+      const url = URL.createObjectURL(new Blob([data], { type }));
+      return html`<a href=${url} download=${nom} style="display:inline-flex; align-items:center; gap:8px; padding:10px 16px; border-radius:8px; background:${tShow("petrole", 600)}; color:white; text-decoration:none; font-size:0.9em; font-weight:600;">${libelle}</a>`;
+    };
+    display(html`<div style="display:flex; gap:12px; flex-wrap:wrap; margin:6px 0;">
+      ${boutonTelecharger(buildAse(spShow), "application/octet-stream", "spectre-nsp.ase", "↓  Nuancier Adobe (.ase)")}
+      ${boutonTelecharger(buildCsv(spShow), "text/csv;charset=utf-8", "spectre-nsp.csv", "↓  Table des couleurs (.csv)")}
+    </div>`);
+  </script>
