@@ -17,7 +17,7 @@ générateurs, tout suit.
 | Tout le monde (visuels de référence) | notebook `couleurs-showcase` : l'article autoportant (nuancier, échelles, accessibilité) | `npm run preview` |
 | Maëlle (chaîne R de l'enquête) | `exports/r/palette-maelle-resserre.R` (drop-in) + kit complet, cf. `exports/r/README.md` | `npm run gen:r` |
 | Deck de présentation | SVG dans `nuxt-slides/public/images/nsp-refonte/` | `node scripts/gen-slides-assets.mjs` |
-| Tram Anh (charte graphiques, InDesign) | recettes dans `notebooks/lib/charte-tramanh.js` (auditées par `smoke-charte.mjs`) + table dans la carte Pawn | - |
+| Tram Anh (charte graphiques, InDesign) | `exports/spectre/spectre-nsp.ase` (nuancier importable, cf. son README) + CSV ; recettes auditées par `smoke-charte.mjs` | `npm run gen:ase` |
 
 Les maquettes HTML (`mockups/`) et la couche de tokens CSS ont été retirées le 23 juillet
 (premier jet redondant avec les notebooks ; git garde tout, générateur de tokens compris,
@@ -43,11 +43,13 @@ notebooks/                    # racine servie 1 (npm run preview)
 └── data/                     # TopoJSON départements, palettes relevées
 exports/
 ├── r/                        # kit R (cf. son README) : la passation Maëlle
+├── spectre/                  # nuancier .ase + CSV (cf. son README) : la passation Tram Anh
 ├── print/                    # POC gdoc -> md -> ICML (cf. son README ; contenu gitignoré)
 └── web/                      # pendant web du rapport, généré (racine servie 2, port 18796)
 scripts/
 ├── check.mjs                 # mesures CLI (npm run check)
 ├── gen-r.mjs                 # kit R (theme + drop-in, correspondance et audit uniques)
+├── gen-ase.mjs               # nuancier Adobe (.ase) + CSV du spectre
 ├── gen-slides-assets.mjs     # SVG du deck (nuancier, échelles, daltonisme, OKLCH vs HSL)
 ├── finition-md.mjs           # finition typographique de l'export Markdown du gdoc
 ├── build-web.mjs             # pendant web chapitré du rapport (même Markdown que l'ICML)
