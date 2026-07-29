@@ -1,26 +1,26 @@
-# Palette NSP — spectre unifié « resserré » (ACTÉ le 23 juillet 2026).
-# Drop-in : remplace ton bloc de couleurs, les palettes pal_M* s'adaptent seules.
-# Convention conservée : 1 = le plus foncé, 4 = le plus clair (y compris les gris).
+# Palette NSP « canard et coquelicot », retenue par le collectif le 24 juillet 2026.
+# Drop-in : remplace le bloc de couleurs, les noms de variables ne changent pas.
+# Convention : 1 = le plus foncé, 4 = le plus clair, sauf rouge3 (voir plus bas).
 
-rouge1 <- "#9B2E33"
-rouge2 <- "#C24146"
-rouge3 <- "#FF7F7E"
+rouge1 <- "#C24146"
+rouge2 <- "#E45C5F"
+rouge3 <- "#F6BB81"
 rouge4 <- "#FFD3CF"
 
-vert1  <- "#006C6D"
-vert2  <- "#009899"
-vert3  <- "#55CFCF"
+vert1  <- "#007B7C"
+vert2  <- "#2DC2C2"
+vert3  <- "#77DCDB"
 vert4  <- "#BAF3F2"
 
 jaune1 <- "#E29A4E"
-jaune2 <- "#F6BB81"
+jaune2 <- "#FECC9E"
 
 bleu1  <- "#0B4862"
 bleu2  <- "#2B8CB9"
 bleu3  <- "#7AC4EC"
 bleu4  <- "#C6EDFF"
 
-orange <- "#C77C1F"
+orange <- "#A86100"
 
 gris1  <- "#6A777F"
 gris2  <- "#B0BCC3"
@@ -28,12 +28,23 @@ gris3  <- "#D0D9DE"
 gris4  <- "#E0E7EB"
 
 
-# Correspondance : rouge=coquelicot, vert=canard, jaune/orange=ambre, bleu=petrole, gris=ardoise
-# Points de passation (a confirmer ensemble) :
-# - pivot "ca depend" : l'ex-#ccbd2f servait a la fois de rouge4/vert4/jaune1/orange ;
-#   ici chaque variable a sa propre valeur. Milieu d'une echelle a 3 etats : jaune1 (audite).
-#   Pivot d'un likert a 5 modalites : gris clair (gris4), un pivot jaune-orange se
-#   confond avec le pole chaud en daltonisme (mesure : dE 7 contre 15 en pivot neutre).
-# - "ne sait pas / non renseigne" : prendre gris3 ou gris4 (clairs), pas gris1 (fonce).
-# - encre (ex-noir -> bleu fonce) : bleu1 convient (texte et axes).
+# Echelle d'opinion a 4 modalites, dans cet ordre :
+#   vert1  bien
+#   vert2  plutot bien
+#   rouge3 plutot mal
+#   rouge1 mal
+#   gris4  ne sait pas, non renseigne
+#
+# Deux variables ont change de teinte sans changer de nom :
+# - rouge3 est un abricot et non plus un rouge clair : c'est le "plutot mal" adouci,
+#   qui donne le continuum demande sans que la figure devienne illisible en daltonisme.
+# - gris4 porte les non-reponses (gris2 est trop proche de vert2 en protanopie).
+#
+# Autres cas :
+# - milieu d'une echelle a 3 etats : jaune1.
+# - pivot d'un likert a 5 modalites : gris4, pas un jaune-orange (il se confondrait
+#   avec le pole chaud en daltonisme : ecart mesure 7 contre 15 avec un pivot neutre).
+# - progression "jamais -> toujours" : bleu4, bleu3, bleu2, bleu1 (une seule famille).
+# - encre des textes et des axes : bleu1.
+# - familles : rouge=coquelicot, vert=canard, jaune/orange=ambre, bleu=petrole, gris=ardoise.
 # Audit daltonisme : OK (aucun conflit sous dE 10 en deutan/protan/tritan sur les archétypes likert, oui-non, 3 états, catégoriel).

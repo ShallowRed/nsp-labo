@@ -1,5 +1,5 @@
 # theme_nsp_couleurs.R : GÉNÉRÉ, ne pas éditer à la main.
-# Source : nsp-labo, node scripts/gen-r.mjs (2026-07-23)
+# Source : nsp-labo, node scripts/gen-r.mjs (2026-07-28)
 # Spectre NSP « resserré » (ACTÉ le 23 juillet 2026 : l'enquête part sur ce
 # spectre ; si une teinte évolue, régénérer ce fichier suffit, rien d'autre ne change).
 #
@@ -28,21 +28,21 @@ nsp_seq <- function(n, famille = nsp_petrole) {
 # Correspondance avec les constantes de utils_rapports.R ----
 # (pôle positif = canard, négatif = coquelicot, bleu et séquentiel = petrole,
 #  jaune et orange = ambre, gris = ardoise)
-nsp_rouge1 <- "#9B2E33"  # coquelicot 600
-nsp_rouge2 <- "#C24146"  # coquelicot 500
-nsp_rouge3 <- "#FF7F7E"  # coquelicot 300
+nsp_rouge1 <- "#C24146"  # coquelicot 500
+nsp_rouge2 <- "#E45C5F"  # coquelicot 400
+nsp_rouge3 <- "#F6BB81"  # ambre 200
 nsp_rouge4 <- "#FFD3CF"  # coquelicot 100
-nsp_vert1 <- "#006C6D"  # canard 600
-nsp_vert2 <- "#009899"  # canard 450
-nsp_vert3 <- "#55CFCF"  # canard 250
+nsp_vert1 <- "#007B7C"  # canard 550
+nsp_vert2 <- "#2DC2C2"  # canard 300
+nsp_vert3 <- "#77DCDB"  # canard 200
 nsp_vert4 <- "#BAF3F2"  # canard 100
 nsp_jaune1 <- "#E29A4E"  # ambre 300
-nsp_jaune2 <- "#F6BB81"  # ambre 200
+nsp_jaune2 <- "#FECC9E"  # ambre 150
 nsp_bleu1 <- "#0B4862"  # petrole 700
 nsp_bleu2 <- "#2B8CB9"  # petrole 450
 nsp_bleu3 <- "#7AC4EC"  # petrole 250
 nsp_bleu4 <- "#C6EDFF"  # petrole 100
-nsp_orange <- "#C77C1F"  # ambre 400
+nsp_orange <- "#A86100"  # ambre 500
 nsp_gris1 <- "#6A777F"  # ardoise 500
 nsp_gris2 <- "#B0BCC3"  # ardoise 250
 nsp_gris3 <- "#D0D9DE"  # ardoise 150

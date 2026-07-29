@@ -21,17 +21,20 @@ const hex = (fam, palier) => {
 };
 
 // Correspondance sémantique constantes enquête -> spectre NSP (source unique).
-// Pôle positif = canard (identité NSP), négatif = coquelicot, bleu et séquentiel
-// = petrole, jaune et orange = ambre, gris = ardoise. Convention 1 = foncé.
+// Palette « canard et coquelicot » retenue par le collectif le 24 juillet 2026.
+// Les noms de variables sont ceux de la chaîne d'analyse et ne bougent pas, même
+// quand la teinte change : rouge3 est désormais un abricot (le « plutôt mal »
+// adouci demandé), et gris2 le gris des non-réponses. Convention 1 = le plus foncé,
+// à cette exception près.
 const CORRESPONDANCE = {
-  rouge1: ["coquelicot", 600], rouge2: ["coquelicot", 500],
-  rouge3: ["coquelicot", 300], rouge4: ["coquelicot", 100],
-  vert1: ["canard", 600], vert2: ["canard", 450],
-  vert3: ["canard", 250], vert4: ["canard", 100],
-  jaune1: ["ambre", 300], jaune2: ["ambre", 200],
+  rouge1: ["coquelicot", 500], rouge2: ["coquelicot", 400],
+  rouge3: ["ambre", 200], rouge4: ["coquelicot", 100],
+  vert1: ["canard", 550], vert2: ["canard", 300],
+  vert3: ["canard", 200], vert4: ["canard", 100],
+  jaune1: ["ambre", 300], jaune2: ["ambre", 150],
   bleu1: ["petrole", 700], bleu2: ["petrole", 450],
   bleu3: ["petrole", 250], bleu4: ["petrole", 100],
-  orange: ["ambre", 400], // pas 500 : à 500 l'audit détecte un conflit orange/rouge2 en deutan et tritan
+  orange: ["ambre", 500],
   gris1: ["ardoise", 500], gris2: ["ardoise", 250],
   gris3: ["ardoise", 150], gris4: ["ardoise", 100],
 };
@@ -44,8 +47,8 @@ const SEQ_FAMILLE = "petrole";
 const dE = differenceCiede2000();
 const SEUIL = 10; // en dessous : risque de confusion entre aplats adjacents
 const archetypes = {
-  "likert 4 pôles + gris": ["vert1", "vert2", "rouge3", "rouge1", "gris2"],
-  "oui / non": ["vert2", "rouge2", "gris2"],
+  "likert 4 pôles + gris": ["vert1", "vert2", "rouge3", "rouge1", "gris4"],
+  "oui / non": ["vert2", "rouge2", "gris4"],
   "3 états (bien / moyen / mal)": ["vert2", "jaune1", "rouge2"],
   "catégoriel bleu / vert / rouge": ["bleu1", "vert1", "rouge2"],
   "catégoriel large (M5)": ["vert1", "bleu1", "jaune2", "rouge2", "orange"],
@@ -107,9 +110,9 @@ writeFileSync(join(outDir, "theme_nsp_couleurs.R"), r);
 
 // --- palette-maelle-resserre.R : le bloc exact de Maëlle, prêt à coller ---
 const groupes = [["rouge", 4], ["vert", 4], ["jaune", 2], ["bleu", 4], ["orange", 1], ["gris", 4]];
-let bloc = `# Palette NSP — spectre unifié « resserré » (ACTÉ le 23 juillet 2026).
-# Drop-in : remplace ton bloc de couleurs, les palettes pal_M* s'adaptent seules.
-# Convention conservée : 1 = le plus foncé, 4 = le plus clair (y compris les gris).
+let bloc = `# Palette NSP « canard et coquelicot », retenue par le collectif le 24 juillet 2026.
+# Drop-in : remplace le bloc de couleurs, les noms de variables ne changent pas.
+# Convention : 1 = le plus foncé, 4 = le plus clair, sauf rouge3 (voir plus bas).
 
 `;
 for (const [base, n] of groupes) {
@@ -121,14 +124,25 @@ for (const [base, n] of groupes) {
   bloc += "\n";
 }
 bloc += `
-# Correspondance : rouge=coquelicot, vert=canard, jaune/orange=ambre, bleu=petrole, gris=ardoise
-# Points de passation (a confirmer ensemble) :
-# - pivot "ca depend" : l'ex-#ccbd2f servait a la fois de rouge4/vert4/jaune1/orange ;
-#   ici chaque variable a sa propre valeur. Milieu d'une echelle a 3 etats : jaune1 (audite).
-#   Pivot d'un likert a 5 modalites : gris clair (gris4), un pivot jaune-orange se
-#   confond avec le pole chaud en daltonisme (mesure : dE 7 contre 15 en pivot neutre).
-# - "ne sait pas / non renseigne" : prendre gris3 ou gris4 (clairs), pas gris1 (fonce).
-# - encre (ex-noir -> bleu fonce) : bleu1 convient (texte et axes).
+# Echelle d'opinion a 4 modalites, dans cet ordre :
+#   vert1  bien
+#   vert2  plutot bien
+#   rouge3 plutot mal
+#   rouge1 mal
+#   gris4  ne sait pas, non renseigne
+#
+# Deux variables ont change de teinte sans changer de nom :
+# - rouge3 est un abricot et non plus un rouge clair : c'est le "plutot mal" adouci,
+#   qui donne le continuum demande sans que la figure devienne illisible en daltonisme.
+# - gris4 porte les non-reponses (gris2 est trop proche de vert2 en protanopie).
+#
+# Autres cas :
+# - milieu d'une echelle a 3 etats : jaune1.
+# - pivot d'un likert a 5 modalites : gris4, pas un jaune-orange (il se confondrait
+#   avec le pole chaud en daltonisme : ecart mesure 7 contre 15 avec un pivot neutre).
+# - progression "jamais -> toujours" : bleu4, bleu3, bleu2, bleu1 (une seule famille).
+# - encre des textes et des axes : bleu1.
+# - familles : rouge=coquelicot, vert=canard, jaune/orange=ambre, bleu=petrole, gris=ardoise.
 `;
 bloc += conflits
   ? `# Audit daltonisme : ${conflits} conflit(s) sous dE ${SEUIL}, voir theme_nsp_couleurs.R\n`
