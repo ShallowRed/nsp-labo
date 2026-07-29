@@ -18,7 +18,7 @@
     };
     const OPTIONS = [
       { nom: "maquette actuelle", hex: ["#438F44", "#8DA83A", "#F1881D", "#CC5426", "#DADADA"] },
-      { nom: "canard et coquelicot", refs: [["canard", 550], ["canard", 300], ["ambre", 200], ["coquelicot", 500], ["ardoise", 150]] },
+      { nom: "canard et coquelicot", refs: [["canard", 550], ["canard", 300], ["ambre", 200], ["coquelicot", 500], ["ardoise", 100]] },
       { nom: "pétrole et coquelicot", refs: [["petrole", 700], ["petrole", 350], ["ambre", 200], ["coquelicot", 500], ["ardoise", 150]] },
       { nom: "lavande et coquelicot", refs: [["lavande", 700], ["lavande", 300], ["ambre", 200], ["coquelicot", 550], ["ardoise", 150]] },
     ].map((o) => ({ ...o, hex: o.hex ?? o.refs.map(([f, p]) => tR(f, p).toUpperCase()) }));
@@ -70,7 +70,7 @@
     ${Plot.legend({ color: { domain: MODALITES, range: cols }, swatchSize: 14 })}</div>`);
   </script>
   <script type="module">
-    const blocR = ["vert1", "vert2", "rouge3", "rouge1", "gris2"]
+    const blocR = ["vert1", "vert2", "rouge3", "rouge1", "gris4"]
       .map((v, i) => `${v.padEnd(6)} <- "${option.hex[i]}"   # ${MODALITES[i]}`).join("\n");
     const bouton = html`<button style="font:inherit; font-size:0.82em; padding:5px 12px; border-radius:6px; border:1px solid ${tR("petrole", 300)}; background:${tR("petrole", 100)}; color:${tR("petrole", 800)}; cursor:pointer;">copier pour R</button>`;
     bouton.onclick = async () => {
