@@ -83,4 +83,32 @@
       ${bouton}
     </div>`);
   </script>
+  <script type="text/markdown">
+### Bloc complet
+  </script>
+  <script type="module">
+    const voirB = (h) => (vision === "normal" ? h : simulate(h, vision));
+    const BLOC = [
+      ["rouge", [["rouge1", "coquelicot", 500], ["rouge2", "coquelicot", 400], ["rouge3", "ambre", 200], ["rouge4", "coquelicot", 100]]],
+      ["vert", [["vert1", "canard", 550], ["vert2", "canard", 300], ["vert3", "canard", 200], ["vert4", "canard", 100]]],
+      ["jaune, orange", [["jaune1", "ambre", 300], ["jaune2", "ambre", 150], ["orange", "ambre", 500]]],
+      ["bleu", [["bleu1", "petrole", 700], ["bleu2", "petrole", 450], ["bleu3", "petrole", 250], ["bleu4", "petrole", 100]]],
+      ["gris", [["gris1", "ardoise", 500], ["gris2", "ardoise", 250], ["gris3", "ardoise", 150], ["gris4", "ardoise", 100]]],
+    ];
+    const OPINION = { vert1: "bien", vert2: "plutôt bien", rouge3: "plutôt mal", rouge1: "mal", gris4: "ne sait pas" };
+    display(html`<div style="display:flex; gap:28px; flex-wrap:wrap; font-size:0.8em;">
+      ${BLOC.map(([groupe, vars]) => html`<div>
+        <div style="color:#8a9199; margin-bottom:5px;">${groupe}</div>
+        ${vars.map(([nom, fam, pal]) => {
+          const hex = tR(fam, pal).toUpperCase();
+          return html`<div style="display:flex; align-items:center; gap:7px; margin-bottom:3px;">
+            <span style="width:26px; height:20px; border-radius:3px; background:${voirB(hex)}; outline:${OPINION[nom] ? `2px solid ${tR("petrole", 700)}` : "none"}; outline-offset:1px;"></span>
+            <code style="font-size:0.95em;">${nom}</code>
+            <span style="color:#8a9199;">${hex}</span>
+            <span style="color:#8a9199;">${OPINION[nom] ?? `${fam} ${pal}`}</span>
+          </div>`;
+        })}
+      </div>`)}
+    </div>`);
+  </script>
 </notebook>
