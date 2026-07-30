@@ -32,8 +32,8 @@ const CORRESPONDANCE = {
   vert1: ["canard", 550], vert2: ["canard", 300],
   vert3: ["canard", 200], vert4: ["canard", 100],
   jaune1: ["ambre", 300], jaune2: ["ambre", 150],
-  bleu1: ["petrole", 700], bleu2: ["petrole", 450],
-  bleu3: ["petrole", 250], bleu4: ["petrole", 100],
+  bleu1: ["petrole", 700], bleu2: ["petrole", 550],
+  bleu3: ["petrole", 400], bleu4: ["petrole", 250], bleu5: ["petrole", 100],
   orange: ["ambre", 500],
   gris1: ["ardoise", 500], gris2: ["ardoise", 250],
   gris3: ["ardoise", 150], gris4: ["ardoise", 100],
@@ -109,7 +109,7 @@ for (const [cst, [fam, palier]] of Object.entries(CORRESPONDANCE)) {
 writeFileSync(join(outDir, "theme_nsp_couleurs.R"), r);
 
 // --- palette-maelle-resserre.R : le bloc exact de Maëlle, prêt à coller ---
-const groupes = [["rouge", 4], ["vert", 4], ["jaune", 2], ["bleu", 4], ["orange", 1], ["gris", 4]];
+const groupes = [["rouge", 4], ["vert", 4], ["jaune", 2], ["bleu", 5], ["orange", 1], ["gris", 4]];
 let bloc = `# Palette NSP « canard et coquelicot », retenue par le collectif le 24 juillet 2026.
 # Drop-in : remplace le bloc de couleurs, les noms de variables ne changent pas.
 # Convention : 1 = le plus foncé, 4 = le plus clair, sauf rouge3 (voir plus bas).
@@ -123,6 +123,11 @@ for (const [base, n] of groupes) {
   }
   bloc += "\n";
 }
+bloc += `# Categories sans ordre et sans connotation (ex. FPE / FPT / FPH) :
+neutre2 <- c("${hex("ardoise", 600)}", "${hex("ardoise", 300)}")
+neutre3 <- c("${hex("ardoise", 700)}", "${hex("ardoise", 450)}", "${hex("ardoise", 200)}")
+
+`;
 bloc += `
 # Echelle d'opinion a 4 modalites, dans cet ordre :
 #   vert1  bien
@@ -140,8 +145,8 @@ bloc += `
 # - milieu d'une echelle a 3 etats : jaune1.
 # - pivot d'un likert a 5 modalites : gris4, pas un jaune-orange (il se confondrait
 #   avec le pole chaud en daltonisme : ecart mesure 7 contre 15 avec un pivot neutre).
-# - progression "jamais -> toujours" : bleu4, bleu3, bleu2, bleu1 (une seule famille).
-# - encre des textes et des axes : bleu1.
+# - progression "jamais -> toujours" : bleu5, bleu4, bleu3, bleu2, bleu1 (une seule famille).
+# - encre des textes, etiquettes et axes : bleu1, comme recommande par Tram Anh.
 # - familles : rouge=coquelicot, vert=canard, jaune/orange=ambre, bleu=petrole, gris=ardoise.
 `;
 bloc += conflits

@@ -1,5 +1,5 @@
 # theme_nsp_couleurs.R : GÉNÉRÉ, ne pas éditer à la main.
-# Source : nsp-labo, node scripts/gen-r.mjs (2026-07-28)
+# Source : nsp-labo, node scripts/gen-r.mjs (2026-07-29)
 # Spectre NSP « resserré » (ACTÉ le 23 juillet 2026 : l'enquête part sur ce
 # spectre ; si une teinte évolue, régénérer ce fichier suffit, rien d'autre ne change).
 #
@@ -39,9 +39,10 @@ nsp_vert4 <- "#BAF3F2"  # canard 100
 nsp_jaune1 <- "#E29A4E"  # ambre 300
 nsp_jaune2 <- "#FECC9E"  # ambre 150
 nsp_bleu1 <- "#0B4862"  # petrole 700
-nsp_bleu2 <- "#2B8CB9"  # petrole 450
-nsp_bleu3 <- "#7AC4EC"  # petrole 250
-nsp_bleu4 <- "#C6EDFF"  # petrole 100
+nsp_bleu2 <- "#107098"  # petrole 550
+nsp_bleu3 <- "#3C9AC8"  # petrole 400
+nsp_bleu4 <- "#7AC4EC"  # petrole 250
+nsp_bleu5 <- "#C6EDFF"  # petrole 100
 nsp_orange <- "#A86100"  # ambre 500
 nsp_gris1 <- "#6A777F"  # ardoise 500
 nsp_gris2 <- "#B0BCC3"  # ardoise 250

@@ -16,9 +16,10 @@ jaune1 <- "#E29A4E"
 jaune2 <- "#FECC9E"
 
 bleu1  <- "#0B4862"
-bleu2  <- "#2B8CB9"
-bleu3  <- "#7AC4EC"
-bleu4  <- "#C6EDFF"
+bleu2  <- "#107098"
+bleu3  <- "#3C9AC8"
+bleu4  <- "#7AC4EC"
+bleu5  <- "#C6EDFF"
 
 orange <- "#A86100"
 
@@ -26,6 +27,10 @@ gris1  <- "#6A777F"
 gris2  <- "#B0BCC3"
 gris3  <- "#D0D9DE"
 gris4  <- "#E0E7EB"
+
+# Categories sans ordre et sans connotation (ex. FPE / FPT / FPH) :
+neutre2 <- c("#515C63", "#A1AEB6")
+neutre3 <- c("#3B4348", "#77848C", "#BFCAD1")
 
 
 # Echelle d'opinion a 4 modalites, dans cet ordre :
@@ -44,7 +49,7 @@ gris4  <- "#E0E7EB"
 # - milieu d'une echelle a 3 etats : jaune1.
 # - pivot d'un likert a 5 modalites : gris4, pas un jaune-orange (il se confondrait
 #   avec le pole chaud en daltonisme : ecart mesure 7 contre 15 avec un pivot neutre).
-# - progression "jamais -> toujours" : bleu4, bleu3, bleu2, bleu1 (une seule famille).
-# - encre des textes et des axes : bleu1.
+# - progression "jamais -> toujours" : bleu5, bleu4, bleu3, bleu2, bleu1 (une seule famille).
+# - encre des textes, etiquettes et axes : bleu1, comme recommande par Tram Anh.
 # - familles : rouge=coquelicot, vert=canard, jaune/orange=ambre, bleu=petrole, gris=ardoise.
 # Audit daltonisme : OK (aucun conflit sous dE 10 en deutan/protan/tritan sur les archétypes likert, oui-non, 3 états, catégoriel).
