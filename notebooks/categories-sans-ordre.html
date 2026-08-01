@@ -1,0 +1,78 @@
+<!doctype html>
+<notebook>
+  <title>Catégories sans ordre</title>
+  <script type="text/markdown">
+# Catégories sans ordre
+  </script>
+  <script type="module">
+    import { Plot, html } from "./lib/deps.js";
+    import { SCENARIOS } from "./lib/scenarios.js";
+    import { genSpectre, paliers, bestCategorical, simulate, dE } from "./lib/spectre.js";
+    const spC = genSpectre(SCENARIOS.resserre);
+    const psC = paliers(19);
+    const VIS = ["normal", "protan", "deutan", "tritan"];
+    const TRIOS = [
+      ["framboise", "lavande", "prairie"],
+      ["framboise", "petrole", "prairie"],
+      ["lavande", "petrole", "prairie"],
+      ["framboise", "lavande", "petrole"],
+    ].map((familles) => {
+      const couleurs = bestCategorical(spC, familles, { mode: "light", ps: psC }).ordered;
+      let sep = Infinity;
+      for (const v of VIS) {
+        const s = couleurs.map((c) => (v === "normal" ? c.hex : simulate(c.hex, v)));
+        for (let i = 0; i < s.length; i++)
+          for (let j = i + 1; j < s.length; j++) sep = Math.min(sep, dE(s[i], s[j]));
+      }
+      return { familles, couleurs, sep };
+    }).sort((a, b) => b.sep - a.sep);
+    // Figure du rapport : « avez-vous l'occasion de vous exprimer sur le management ? »,
+    // par versant. Les cinq réponses les plus citées.
+    const VERSANTS = ["FPE", "FPT", "FPH"];
+    const EXPRESSION = [
+      ["avec des collègues", 46, 44, 48],
+      ["informellement, au N+1", 28, 33, 23],
+      ["en échange formalisé", 23, 31, 20],
+      ["non", 23, 19, 23],
+      ["aux syndicats", 20, 15, 21],
+    ].flatMap(([item, ...v]) => VERSANTS.map((versant, i) => ({ item, versant, part: v[i] })));
+  </script>
+  <script type="module">
+    const vision = view(Inputs.select(
+      new Map([["vision typique", "normal"], ["deutéranopie (la plus courante)", "deutan"], ["protanopie", "protan"], ["tritanopie", "tritan"]]),
+      { label: "Vision" }
+    ));
+  </script>
+  <script type="module">
+    const voir = (h) => (vision === "normal" ? h : simulate(h, vision));
+    const encre = voir(spC.petrole[psC.indexOf(700)]);
+    const figure = (cols) => Plot.plot({
+      width: 430, height: 250, marginLeft: 128, marginRight: 30, marginTop: 20, marginBottom: 4,
+      fy: { label: null, domain: [...new Set(EXPRESSION.map((d) => d.item))], paddingOuter: 0.3 },
+      y: { axis: null, domain: VERSANTS, padding: 0.2 },
+      x: { label: null, domain: [0, 50], ticks: [0, 25, 50], axis: "top", grid: true },
+      color: { domain: VERSANTS, range: cols },
+      marks: [
+        Plot.barX(EXPRESSION, { fy: "item", y: "versant", x: "part", fill: "versant" }),
+        Plot.text(EXPRESSION, { fy: "item", y: "versant", x: "part", text: (d) => `${d.part}`, textAnchor: "start", dx: 4, fill: encre, fontSize: 9 }),
+      ],
+    });
+    display(html`<div style="display:flex; flex-wrap:wrap; gap:26px 34px;">
+      ${TRIOS.map((t) => {
+        const cols = t.couleurs.map((c) => voir(c.hex));
+        return html`<div>
+          <div style="display:flex; align-items:baseline; gap:8px; font-size:0.82em;">
+            <!--- <span style="color:${t.sep >= 20 ? "#1d2022" : "#b04a4a"};">${t.sep.toFixed(1)}</span> --->
+            <span style="color:#5c666d;">${t.familles.join(", ")}</span>
+          </div>
+          <div style="display:flex; gap:12px; font-size:0.78em; margin:5px 0 6px;">
+            ${VERSANTS.map((v, i) => html`<span style="display:inline-flex; align-items:center; gap:5px;">
+              <span style="width:22px; height:15px; border-radius:3px; background:${cols[i]};"></span>
+              <span style="color:#5c666d;">${v}</span></span>`)}
+          </div>
+          ${figure(cols)}
+        </div>`;
+      })}
+    </div>`);
+  </script>
+</notebook>

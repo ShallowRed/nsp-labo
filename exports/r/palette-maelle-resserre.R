@@ -28,9 +28,13 @@ gris2  <- "#B0BCC3"
 gris3  <- "#D0D9DE"
 gris4  <- "#E0E7EB"
 
-# Categories sans ordre et sans connotation (ex. FPE / FPT / FPH) :
-neutre2 <- c("#515C63", "#A1AEB6")
-neutre3 <- c("#3B4348", "#77848C", "#BFCAD1")
+# Categories sans ordre et sans connotation (ex. FPE / FPT / FPH, ou deux usages
+# d'un meme outil). Teintes prises hors des familles que l'echelle d'opinion occupe
+# deja (ni canard, ni coquelicot, ni ambre), pour qu'un aplat neutre ne se lise
+# jamais comme un "bien" ou un "mal" ailleurs dans le rapport.
+# A CONFIRMER : trois trios sont possibles, celui-ci est le mieux separe.
+neutre2 <- c("#EA85C0", "#7FBF71")
+neutre3 <- c("#EA85C0", "#7FBF71", "#554C9F")
 
 
 # Echelle d'opinion a 4 modalites, dans cet ordre :

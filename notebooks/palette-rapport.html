@@ -94,7 +94,6 @@
       ["jaune, orange", [["jaune1", "ambre", 300], ["jaune2", "ambre", 150], ["orange", "ambre", 500]]],
       ["bleu", [["bleu1", "petrole", 700], ["bleu2", "petrole", 550], ["bleu3", "petrole", 400], ["bleu4", "petrole", 250], ["bleu5", "petrole", 100]]],
       ["gris", [["gris1", "ardoise", 500], ["gris2", "ardoise", 250], ["gris3", "ardoise", 150], ["gris4", "ardoise", 100]]],
-      ["neutres, catégories sans ordre", [["neutre3[1]", "ardoise", 700], ["neutre3[2]", "ardoise", 450], ["neutre3[3]", "ardoise", 200]]],
     ];
     const OPINION = { vert1: "bien", vert2: "plutôt bien", rouge3: "plutôt mal", rouge1: "mal", gris4: "ne sait pas" };
     display(html`<div style="display:flex; gap:28px; flex-wrap:wrap; font-size:0.8em;">
@@ -111,5 +110,8 @@
         })}
       </div>`)}
     </div>`);
+  </script>
+  <script type="text/markdown">
+Les catégories sans ordre (versants, usages) sont traitées à part : [Catégories sans ordre](./categories-sans-ordre).
   </script>
 </notebook>

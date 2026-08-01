@@ -8,7 +8,7 @@ import { writeFileSync, mkdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { differenceCiede2000 } from "culori";
-import { genSpectre, paliers, simulate } from "../notebooks/lib/spectre.js";
+import { genSpectre, paliers, simulate, bestCategorical } from "../notebooks/lib/spectre.js";
 import { SCENARIOS } from "../notebooks/lib/scenarios.js";
 
 const scenario = "resserre"; // spectre acté le 23 juillet 2026
@@ -38,7 +38,19 @@ const CORRESPONDANCE = {
   gris1: ["ardoise", 500], gris2: ["ardoise", 250],
   gris3: ["ardoise", 150], gris4: ["ardoise", 100],
 };
-const val = Object.fromEntries(Object.entries(CORRESPONDANCE).map(([k, [f, p]]) => [k, hex(f, p)]));
+// Palettes « neutres » : des catégories sans ordre ni connotation (FPE / FPT / FPH,
+// deux usages d'un même outil), prises hors des familles que l'échelle d'opinion
+// occupe déjà. Les nuances sont résolues par le même solveur que le notebook
+// « Catégories sans ordre », pour que les deux ne divergent jamais.
+// TRIO_NEUTRE reste à arbitrer : les trois autres candidats sont
+// ["framboise","petrole","prairie"], ["lavande","petrole","prairie"] et
+// ["framboise","lavande","petrole"] (le seul sans vert, mais sous le seuil).
+const TRIO_NEUTRE = ["framboise", "lavande", "prairie"];
+const neutres = bestCategorical(spectre, TRIO_NEUTRE, { mode: "light", ps }).ordered;
+const NEUTRES = Object.fromEntries(neutres.map((c, i) => [`neutre_${"abc"[i]}`, [c.famille, c.palier]]));
+const val = Object.fromEntries(
+  Object.entries({ ...CORRESPONDANCE, ...NEUTRES }).map(([k, [f, p]]) => [k, hex(f, p)])
+);
 
 // Séquentielle qui remplace brewer.pal(n, "Blues") : petrole, du clair au foncé.
 const SEQ_FAMILLE = "petrole";
@@ -52,6 +64,8 @@ const archetypes = {
   "3 états (bien / moyen / mal)": ["vert2", "jaune1", "rouge2"],
   "catégoriel bleu / vert / rouge": ["bleu1", "vert1", "rouge2"],
   "catégoriel large (M5)": ["vert1", "bleu1", "jaune2", "rouge2", "orange"],
+  "neutres à 3 (FPE / FPT / FPH)": ["neutre_a", "neutre_b", "neutre_c"],
+  "neutres à 2": ["neutre_a", "neutre_b"],
 };
 let audit = "";
 let conflits = 0;
@@ -106,6 +120,12 @@ nsp_seq <- function(n, famille = nsp_${SEQ_FAMILLE}) {
 for (const [cst, [fam, palier]] of Object.entries(CORRESPONDANCE)) {
   r += `nsp_${cst} <- "${hex(fam, palier)}"  # ${fam} ${palier}\n`;
 }
+r += `
+# Catégories sans ordre ni connotation (FPE / FPT / FPH…) ----
+# Hors familles de l'échelle d'opinion, clartés proches : aucun classement suggéré.
+nsp_neutre2 <- c(${Object.values(NEUTRES).slice(0, 2).map(([f, p]) => `"${hex(f, p)}"`).join(", ")})
+nsp_neutre3 <- c(${Object.values(NEUTRES).map(([f, p]) => `"${hex(f, p)}"`).join(", ")})
+`;
 writeFileSync(join(outDir, "theme_nsp_couleurs.R"), r);
 
 // --- palette-maelle-resserre.R : le bloc exact de Maëlle, prêt à coller ---
@@ -123,9 +143,13 @@ for (const [base, n] of groupes) {
   }
   bloc += "\n";
 }
-bloc += `# Categories sans ordre et sans connotation (ex. FPE / FPT / FPH) :
-neutre2 <- c("${hex("ardoise", 600)}", "${hex("ardoise", 300)}")
-neutre3 <- c("${hex("ardoise", 700)}", "${hex("ardoise", 450)}", "${hex("ardoise", 200)}")
+bloc += `# Categories sans ordre et sans connotation (ex. FPE / FPT / FPH, ou deux usages
+# d'un meme outil). Teintes prises hors des familles que l'echelle d'opinion occupe
+# deja (ni canard, ni coquelicot, ni ambre), pour qu'un aplat neutre ne se lise
+# jamais comme un "bien" ou un "mal" ailleurs dans le rapport.
+# A CONFIRMER : trois trios sont possibles, celui-ci est le mieux separe.
+neutre2 <- c(${Object.values(NEUTRES).slice(0, 2).map(([f, p]) => `"${hex(f, p)}"`).join(", ")})
+neutre3 <- c(${Object.values(NEUTRES).map(([f, p]) => `"${hex(f, p)}"`).join(", ")})
 
 `;
 bloc += `

@@ -2,21 +2,10 @@
 <notebook>
   <title>nsp-labo</title>
   <script type="text/markdown">
-# nsp-labo
+## Notebooks NSP
 
-Expérimentations du collectif Nos Services Publics, en notebooks Observable (Notebook Kit v2, Plot, D3). Chaque exploration est un notebook autonome ; la logique partagée vit dans `lib/`, les données figées dans `data/` avec leur provenance.
-
-## Notebooks
-
-- [La gamme de couleurs NSP](./couleurs-showcase) : **l'article de référence**, autoportant, qui suit la trame de la présentation : pourquoi une gamme, le nuancier, les thématiques (couvertures, carte), les trois échelles des graphiques avec leurs écarts mesurés, l'uniformité perceptive (OKLCH), et l'accessibilité prouvée sur une vraie figure du rapport. Un sélecteur de daltonisme par section.
-- [Enquête hiérarchie : gabarit des figures web](./enquete-hierarchie) : **la forme des futures figures web**. Les deux formes qui couvrent l'essentiel du rapport (réponses graduées en miroir, haltère d'écart), aux couleurs du spectre ; le kit R miroir pour la chaîne d'analyse est dans `exports/r/`.
-
-## Autre racine servie
-
-Ce serveur (`npm run preview`, port 5173) ne sert que ce dossier `notebooks/` : c'est un serveur Observable Notebook Kit, il ne peut pas exposer le reste du repo. Le pendant web du rapport enquête (`exports/web/`) tourne à part : `python3 -m http.server --directory exports/web 18796` (config `enquete-web-poc`), sommaire sur `http://localhost:18796/`.
-
-## Contexte
-
-La mémoire de travail du chantier (couches constat / partagé / positions) est dans la carte Pawn `shallowred-garden/agents/workspace-pawn/content/projets/nos-services-publics/`.
+- [La gamme de couleurs NSP](./couleurs-showcase)
+- [Palette des graphiques du rapport](./palette-rapport)
+- [Catégories sans ordre](./categories-sans-ordre)
   </script>
 </notebook>

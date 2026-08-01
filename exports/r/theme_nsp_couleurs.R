@@ -1,5 +1,5 @@
 # theme_nsp_couleurs.R : GÉNÉRÉ, ne pas éditer à la main.
-# Source : nsp-labo, node scripts/gen-r.mjs (2026-07-29)
+# Source : nsp-labo, node scripts/gen-r.mjs
 # Spectre NSP « resserré » (ACTÉ le 23 juillet 2026 : l'enquête part sur ce
 # spectre ; si une teinte évolue, régénérer ce fichier suffit, rien d'autre ne change).
 #
@@ -48,3 +48,8 @@ nsp_gris1 <- "#6A777F"  # ardoise 500
 nsp_gris2 <- "#B0BCC3"  # ardoise 250
 nsp_gris3 <- "#D0D9DE"  # ardoise 150
 nsp_gris4 <- "#E0E7EB"  # ardoise 100
+
+# Catégories sans ordre ni connotation (FPE / FPT / FPH…) ----
+# Hors familles de l'échelle d'opinion, clartés proches : aucun classement suggéré.
+nsp_neutre2 <- c("#EA85C0", "#7FBF71")
+nsp_neutre3 <- c("#EA85C0", "#7FBF71", "#554C9F")

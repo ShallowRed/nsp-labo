@@ -38,7 +38,8 @@ npm run gen:r     # régénère le kit R
 notebooks/                    # racine servie 1 (npm run preview)
 ├── index.html                # sommaire
 ├── couleurs-showcase.html    # l'article de référence de la gamme (trame de la présentation)
-├── enquete-hierarchie.html   # gabarit des figures web du rapport (likert, haltère)
+├── palette-rapport.html      # la palette de l'enquête, en situation, + bloc R
+├── categories-sans-ordre.html # les trios pour les modalités qu'on ne peut pas classer
 ├── lib/                      # spectre.js, scenarios.js, carte.js, deps.js
 └── data/                     # TopoJSON départements, palettes relevées
 exports/
