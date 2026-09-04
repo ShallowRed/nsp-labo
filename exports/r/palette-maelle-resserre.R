@@ -3,25 +3,25 @@
 # Convention : 1 = le plus foncé, 4 = le plus clair, sauf rouge3 (voir plus bas).
 
 rouge1 <- "#C24146"
-rouge2 <- "#E45C5F"
-rouge3 <- "#F6BB81"
-rouge4 <- "#FFD3CF"
+rouge2 <- "#DF6263"
+rouge3 <- "#EBBF95"
+rouge4 <- "#FCDEDC"
 
-vert1  <- "#007B7C"
-vert2  <- "#2DC2C2"
-vert3  <- "#77DCDB"
-vert4  <- "#BAF3F2"
+vert1  <- "#007777"
+vert2  <- "#32C2C2"
+vert3  <- "#8CD8D7"
+vert4  <- "#CDEEED"
 
-jaune1 <- "#E29A4E"
-jaune2 <- "#FECC9E"
+jaune1 <- "#DE9B58"
+jaune2 <- "#F1D0B2"
 
 bleu1  <- "#0B4862"
 bleu2  <- "#107098"
 bleu3  <- "#3C9AC8"
 bleu4  <- "#7AC4EC"
-bleu5  <- "#C6EDFF"
+bleu5  <- "#D1EBF9"
 
-orange <- "#A86100"
+orange <- "#A66200"
 
 gris1  <- "#6A777F"
 gris2  <- "#B0BCC3"
@@ -33,8 +33,8 @@ gris4  <- "#E0E7EB"
 # deja (ni canard, ni coquelicot, ni ambre), pour qu'un aplat neutre ne se lise
 # jamais comme un "bien" ou un "mal" ailleurs dans le rapport.
 # A CONFIRMER : trois trios sont possibles, celui-ci est le mieux separe.
-neutre2 <- c("#EA85C0", "#7FBF71")
-neutre3 <- c("#EA85C0", "#7FBF71", "#554C9F")
+neutre2 <- c("#554C9F", "#E08DBC")
+neutre3 <- c("#554C9F", "#E08DBC", "#5FA350")
 
 
 # Echelle d'opinion a 4 modalites, dans cet ordre :

@@ -6,13 +6,13 @@
 import { writeFileSync, mkdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
-import { genSpectre, paliers } from "../notebooks/lib/spectre.js";
+import { genSpectre, genSpectreDetail, paliers } from "../notebooks/lib/spectre.js";
 import { SCENARIOS } from "../notebooks/lib/scenarios.js";
 import { buildAse, buildCsv, nbCouleurs } from "../notebooks/lib/ase.js";
 
 const spectre = genSpectre(SCENARIOS.resserre);
 const ase = buildAse(spectre);
-const csv = buildCsv(spectre);
+const csv = buildCsv(spectre, genSpectreDetail(SCENARIOS.resserre));
 
 const outDir = join(dirname(fileURLToPath(import.meta.url)), "..", "exports", "spectre");
 mkdirSync(outDir, { recursive: true });

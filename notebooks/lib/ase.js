@@ -4,32 +4,34 @@
 // donc le fichier téléchargé est exactement celui qui est audité.
 // Le .ase s'importe dans le nuancier InDesign/Illustrator ; les couleurs sont
 // "globales" (type 0) : modifier une couleur du nuancier met à jour tout le document.
-import { paliers } from "./spectre.js";
+import { paliers, oklchCss } from "./spectre.js";
 
 const ps19 = paliers(19);
 const ps11 = paliers(11); // les 11 paliers nommés : vocabulaire de référence
 
 // Groupes d'usage pour les graphiques (recettes de la charte, noms par modalité :
 // mêmes valeurs que le kit R de la chaîne d'analyse).
+// Recettes des graphiques : la même table que CORRESPONDANCE dans scripts/gen-r.mjs
+// (palette « canard et coquelicot » retenue le 24 juillet 2026). Les deux doivent bouger ensemble.
 export const USAGES = [
   ["graphiques · opinion 4 réponses", [
-    ["mal", "coquelicot", 600], ["plutôt mal", "coquelicot", 300],
-    ["plutôt bien", "canard", 450], ["bien", "canard", 600],
+    ["mal", "coquelicot", 500], ["plutôt mal", "ambre", 200],
+    ["plutôt bien", "canard", 300], ["bien", "canard", 550],
   ]],
   ["graphiques · opinion 5 réponses", [
-    ["mal", "coquelicot", 600], ["plutôt mal", "coquelicot", 300],
+    ["mal", "coquelicot", 500], ["plutôt mal", "ambre", 200],
     ["ça dépend (pivot)", "ardoise", 100],
-    ["plutôt bien", "canard", 450], ["bien", "canard", 600],
+    ["plutôt bien", "canard", 300], ["bien", "canard", 550],
   ]],
   ["graphiques · oui, non", [
-    ["oui", "canard", 450], ["non", "coquelicot", 500],
+    ["oui", "canard", 550], ["non", "coquelicot", 500],
   ]],
   ["graphiques · milieu d'une échelle à 3 états", [
     ["milieu (3 états)", "ambre", 300],
   ]],
   ["graphiques · fréquence (progression)", [
-    ["jamais", "petrole", 100], ["parfois", "petrole", 250],
-    ["souvent", "petrole", 450], ["très fréquemment", "petrole", 700],
+    ["jamais", "petrole", 100], ["rarement", "petrole", 250], ["parfois", "petrole", 400],
+    ["souvent", "petrole", 550], ["toujours", "petrole", 700],
   ]],
   ["graphiques · catégories sans ordre (dans cet ordre)", [
     ["catégorie 1", "coquelicot", 500], ["catégorie 2", "canard", 450],
@@ -37,7 +39,7 @@ export const USAGES = [
     ["catégorie 5", "framboise", 600], ["catégorie 6", "prairie", 300],
   ]],
   ["graphiques · ne sait pas, non renseigné", [
-    ["ne sait pas", "ardoise", 150],
+    ["ne sait pas", "ardoise", 100],
   ]],
 ];
 
@@ -76,12 +78,16 @@ export function buildAse(spectre) {
   return Uint8Array.from([...ascii("ASEF"), ...u16(1), ...u16(0), ...u32(blocs.length), ...blocs.flat()]);
 }
 
-// CSV de référence (les 19 crans, avec le vocabulaire nommé signalé) → string
-export function buildCsv(spectre) {
+// CSV de référence (les 19 crans, avec le vocabulaire nommé signalé) → string.
+// `detail` (genSpectreDetail) ajoute la notation oklch exacte, sans l'arrondi du hex.
+export function buildCsv(spectre, detail = null) {
   const hexDe = resolveur(spectre);
-  let csv = "famille,palier,hex,palier nomme\n";
+  let csv = "famille,palier,hex,palier nomme" + (detail ? ",oklch" : "") + "\n";
   for (const fam of Object.keys(spectre))
-    for (const p of ps19) csv += `${fam},${p},${hexDe(fam, p)},${ps11.includes(p) ? "oui" : "non"}\n`;
+    for (const p of ps19) {
+      const ok = detail ? `,${oklchCss(detail[fam][ps19.indexOf(p)])}` : "";
+      csv += `${fam},${p},${hexDe(fam, p)},${ps11.includes(p) ? "oui" : "non"}${ok}\n`;
+    }
   return csv;
 }
 

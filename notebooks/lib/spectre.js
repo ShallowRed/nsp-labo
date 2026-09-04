@@ -37,7 +37,7 @@ export const PROFILS = {
 // ---------------------------------------------------------------------------
 // Génération
 // ---------------------------------------------------------------------------
-export function genScale({ H, k = 1 }, opts = {}) {
+export function genScaleDetail({ H, k = 1 }, opts = {}) {
   const {
     n = 19,
     L0 = 0.97,
@@ -45,6 +45,8 @@ export function genScale({ H, k = 1 }, opts = {}) {
     profil = "cloche",
     kGlobal = 1,
     cBase = 0.17,
+    plafond = null,
+    ecretage = "rgb",
   } = opts;
   const ps = paliers(n);
   const fp = typeof profil === "function" ? profil : PROFILS[profil];
@@ -56,19 +58,44 @@ export function genScale({ H, k = 1 }, opts = {}) {
   // Le profil de chroma, lui, reste indexé (t = (i+1)/n) : c'est la paramétrisation
   // sur laquelle les scénarios ont été calibrés, ancrer aussi ce terme changerait la
   // forme des cloches sans corriger de bug.
+  // `plafond(L)` borne le chroma demandé (l'extrémité claire de la cloche dépasse le
+  // gamut sRGB de la plupart des teintes). `ecretage` règle ce qui arrive hors gamut :
+  // "rgb" écrête les canaux sRGB (la teinte dérive, c'est le comportement des valeurs
+  // actées), "oklch" réduit le chroma à teinte constante.
   return ps.map((p, i) => {
     const t = (i + 1) / ps.length;
     const tp = (p - 50) / (950 - 50); // 0 au palier 50, 1 au palier 950, quel que soit n
     const L = L0 + (L1 - L0) * tp;
-    const C = cBase * k * kGlobal * fp(t);
-    return formatHex(toRgb(clampChroma({ mode: "oklch", l: L, c: C, h: H }, "rgb")));
+    let C = cBase * k * kGlobal * fp(t);
+    if (plafond) C = Math.min(C, plafond(L));
+    const ok = toOklch(clampChroma({ mode: "oklch", l: L, c: C, h: H }, ecretage));
+    return { hex: formatHex(toRgb(ok)), l: ok.l, c: ok.c ?? 0, h: ok.h ?? H };
   });
 }
+
+// La même échelle en hex seulement (l'entrée de la plupart des consommateurs).
+export function genScale(famille, opts = {}) {
+  return genScaleDetail(famille, opts).map((d) => d.hex);
+}
+
+// Notation CSS de l'échelle : les mêmes couleurs sans l'arrondi 8 bits du hex.
+export function genScaleCss(famille, opts = {}) {
+  return genScaleDetail(famille, opts).map(oklchCss);
+}
+
+export const oklchCss = ({ l, c, h }) => `oklch(${(l * 100).toFixed(1)}% ${c.toFixed(4)} ${h.toFixed(1)})`;
 
 export function genSpectre(scenario, overrides = {}) {
   const opts = { ...scenario.options, ...overrides };
   return Object.fromEntries(
     Object.entries(scenario.familles).map(([name, f]) => [name, genScale(f, opts)])
+  );
+}
+
+export function genSpectreDetail(scenario, overrides = {}) {
+  const opts = { ...scenario.options, ...overrides };
+  return Object.fromEntries(
+    Object.entries(scenario.familles).map(([name, f]) => [name, genScaleDetail(f, opts)])
   );
 }
 

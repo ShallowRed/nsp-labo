@@ -6,7 +6,9 @@ Deux fichiers, générés depuis la source unique du spectre (`node scripts/gen-
   Import : panneau **Nuancier > menu du panneau > Charger un nuancier...** et choisir le
   fichier. Les couleurs arrivent groupées et nommées, en couleurs globales (modifier une
   couleur du nuancier met à jour tout ce qui l'utilise).
-- **`spectre-nsp.csv`** : la référence complète (152 valeurs hex), pour tout autre outil.
+- **`spectre-nsp.csv`** : la référence complète (152 valeurs, hex et notation `oklch()` exacte), pour tout autre outil.
+- **`epreuve-cmjn.csv`** et **`epreuve-cmjn.html`** : séparations Coated FOGRA39 et écart ΔE2000 de chaque couleur (`scripts/epreuve-cmjn.py`).
+- **`bascule-rapport/`** : le kit pour faire passer un rapport InDesign de la règle d'origine du spectre à la règle courante (cf. son LISEZMOI).
 
 ## Ce que contient le nuancier
 

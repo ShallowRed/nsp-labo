@@ -1,0 +1,86 @@
+<!doctype html>
+<notebook>
+  <title>Teintes claires : les variantes comparées</title>
+  <script type="module">
+    import { Plot, html } from "./lib/deps.js";
+    import { SCENARIOS, VARIANTES } from "./lib/scenarios.js";
+    import { genSpectre, paliers, okOf, dE, garanties } from "./lib/spectre.js";
+    const ps19 = paliers(19);
+    const spectres = Object.fromEntries(Object.entries(VARIANTES).map(([id, v]) => [id, genSpectre(SCENARIOS.resserre, v.options)]));
+    const reference = spectres["ecretage-srgb"];
+    const familles = Object.keys(reference);
+  </script>
+  <script type="text/markdown">
+# Teintes claires : les variantes comparées
+
+Aux paliers 50 et 100, la cloche de chroma demande plus que ce que l'écran (gamut sRGB) affiche pour la plupart des teintes. Dans la règle d'origine, c'est l'écrêtage des canaux sRGB qui décidait de la couleur à cet endroit : la teinte dérivait (pétrole 50 tirait vers le cyan, 17° d'écart) et le chroma variait d'une famille à l'autre. Six règles ont été comparées ici et sur le site en cours de refonte ; la règle retenue est la dernière (écrêtage à teinte constante et cloche plafonnée à 0,45·(1−L) sur toute l'échelle), désormais celle du scénario `resserre`. Les valeurs du rapport « Hiérarchie et management » restent celles de la règle d'origine.
+
+## Le nuancier selon la variante
+
+Les cases cerclées diffèrent de la règle d'origine.
+  </script>
+  <script type="module">
+    const variante = view(Inputs.select(
+      new Map(Object.entries(VARIANTES).map(([id, v]) => [v.label, id])),
+      { label: "Variante", value: "teinte-constante-plafond-continu" }
+    ));
+  </script>
+  <script type="module">
+    const sp = spectres[variante];
+    const cases = familles.flatMap((famille) => sp[famille].map((hex, i) => ({ famille, palier: ps19[i], hex, avant: reference[famille][i] })));
+    display(Plot.plot({
+      width: 680, height: 8 * 30 + 46, marginLeft: 78,
+      x: { label: "palier (clair vers foncé)", tickValues: [50, 200, 350, 500, 650, 800, 950] },
+      y: { label: null, domain: familles },
+      color: { type: "identity" },
+      marks: [
+        Plot.cell(cases, { x: "palier", y: "famille", fill: "hex", rx: 3, inset: 1, tip: true, title: (d) => `${d.famille} ${d.palier}\n${d.hex}${d.hex !== d.avant ? ` (origine ${d.avant})` : ""}` }),
+        Plot.cell(cases.filter((d) => d.hex !== d.avant), { x: "palier", y: "famille", fill: "none", stroke: "#141516", strokeWidth: 1.5, rx: 3, inset: 1 }),
+      ],
+    }));
+    const n = cases.filter((d) => d.hex !== d.avant).length;
+    display(html`<p style="font-size:0.85em;color:#555;margin:4px 0 12px;">${n} valeur${n > 1 ? "s" : ""} sur 152 diffèrent de la règle d'origine.</p>`);
+  </script>
+  <script type="text/markdown">
+## Les paliers clairs, toutes variantes côte à côte
+  </script>
+  <script type="module">
+    const paliersClairs = [50, 100, 150, 200, 300];
+    const casesAll = Object.entries(VARIANTES).flatMap(([id, v]) =>
+      familles.flatMap((famille) => paliersClairs.map((p) => ({ variante: v.label, famille, palier: p, hex: spectres[id][famille][ps19.indexOf(p)] })))
+    );
+    display(Plot.plot({
+      width: 680, height: 8 * 22 * Object.keys(VARIANTES).length + 80, marginLeft: 78, marginRight: 230,
+      x: { label: "palier", tickValues: paliersClairs },
+      y: { label: null, domain: familles },
+      fy: { label: null, domain: Object.values(VARIANTES).map((v) => v.label), axis: "right" },
+      color: { type: "identity" },
+      marks: [Plot.cell(casesAll, { x: "palier", y: "famille", fy: "variante", fill: "hex", rx: 3, inset: 1, tip: true, title: (d) => `${d.famille} ${d.palier}\n${d.hex}` })],
+    }));
+  </script>
+  <script type="text/markdown">
+## Ce que chaque variante préserve
+
+Trois composantes de l'uniformité perceptuelle : la clarté (écart maximal de L entre familles à palier égal), la teinte (dérive maximale aux paliers 50 et 100 par rapport à la teinte nominale) et la régularité des pas (ΔE2000 entre paliers voisins, sur les paliers 50 à 200). Les garanties de contraste sont mesurées pour 10 crans d'écart.
+  </script>
+  <script type="module">
+    const mesures = Object.entries(VARIANTES).map(([id, v]) => {
+      const sp = spectres[id];
+      const chroma = familles.filter((f) => f !== "ardoise");
+      let dL = 0;
+      for (let i = 0; i < 19; i++) { const Ls = familles.map((f) => okOf(sp[f][i]).L); dL = Math.max(dL, Math.max(...Ls) - Math.min(...Ls)); }
+      const pas = chroma.flatMap((f) => [0, 1, 2].map((i) => dE(sp[f][i], sp[f][i + 1])));
+      const derive = Math.max(...chroma.flatMap((f) => [0, 1].map((i) => { let d = Math.abs(okOf(sp[f][i]).H - SCENARIOS.resserre.familles[f].H); return d > 180 ? 360 - d : d; })));
+      const c50 = chroma.map((f) => okOf(sp[f][0]).C);
+      return {
+        variante: v.label,
+        "écart de L max": +dL.toFixed(3),
+        "dérive de teinte (°)": Math.round(derive),
+        "pas max 50→200 (ΔE)": +Math.max(...pas).toFixed(1),
+        "chroma à 50 (min–max)": `${Math.min(...c50).toFixed(3)}–${Math.max(...c50).toFixed(3)}`,
+        "contraste Δ10 crans": garanties(sp, [10])[0].contrasteMin,
+      };
+    });
+    display(Inputs.table(mesures, { width: 680 }));
+  </script>
+</notebook>

@@ -10,7 +10,10 @@ qu'elle génère pour chaque destinataire.
 Tout part de `notebooks/lib/spectre.js` (générateur OKLCH, contrastes, daltonisme, catégoriel
 sous contraintes) et `notebooks/lib/scenarios.js`
 (les paramètres du spectre acté). Si une teinte évolue : modifier `scenarios.js`, relancer les
-générateurs, tout suit.
+générateurs, tout suit. Depuis le 4 septembre 2026, hors gamut sRGB le chroma est réduit à teinte
+constante et la cloche est plafonnée (notebook `variantes-teintes-claires`) : les teintes claires
+diffèrent de celles utilisées dans le rapport « Hiérarchie et management », qui gardent la règle
+d'origine.
 
 | Destinataire | Objet | Générateur |
 |--------------|-------|------------|
@@ -30,6 +33,9 @@ npm install
 npm run preview   # notebooks en local (vite, port 5173)
 npm run check     # mesures CLI du spectre (garanties de contraste, catégoriel, daltonisme)
 npm run gen:r     # régénère le kit R
+npm run gen:variantes  # CSV par variante de teintes claires (exports/spectre/variantes/)
+.venv/bin/python scripts/epreuve-cmjn.py  # épreuve CMJN FOGRA39 du spectre (Pillow requis, cf. l'en-tête du script)
+python3 scripts/bascule-rapport.py <rapport.idml> <Links>  # kit de bascule d'un rapport InDesign (exports/spectre/bascule-rapport/)
 ```
 
 ## Structure
@@ -52,6 +58,8 @@ scripts/
 ├── gen-r.mjs                 # kit R (theme + drop-in, correspondance et audit uniques)
 ├── gen-ase.mjs               # nuancier Adobe (.ase) + CSV du spectre
 ├── gen-slides-assets.mjs     # SVG du deck (nuancier, échelles, daltonisme, OKLCH vs HSL)
+├── epreuve-cmjn.py           # épreuve écran CMJN du spectre (séparations, ΔE2000 par couleur)
+├── bascule-rapport.py        # recolorage des SVG liés + script InDesign de mise à jour des nuances
 ├── finition-md.mjs           # finition typographique de l'export Markdown du gdoc
 ├── build-web.mjs             # pendant web chapitré du rapport (même Markdown que l'ICML)
 └── smoke-*.mjs               # smoke tests jsdom des notebooks
