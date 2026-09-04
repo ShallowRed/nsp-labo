@@ -8,3 +8,6 @@ exports/print/*
 !exports/print/README.md
 exports/web/
 
+
+.venv/
+__pycache__/
