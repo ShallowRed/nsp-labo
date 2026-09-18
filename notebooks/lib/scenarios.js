@@ -2,9 +2,11 @@
 // Chaque famille = { H : teinte OKLCH constante, k : caractère de chroma (1 = vif) }.
 // Les scénarios écartés (continuité, v1 psp, vif-rupture) sont documentés dans la
 // carte Pawn (exploration-couleurs.md) ; git garde leurs paramètres si besoin.
-// Hors gamut sRGB, le chroma est réduit à teinte constante et la cloche est plafonnée
-// à 0,45·(1−L), sous le gamut de toutes les teintes : les teintes claires gardent leur
-// teinte et un chroma homogène entre familles (notebook variantes-teintes-claires).
+// Hors gamut sRGB, le chroma est réduit à teinte constante : la clarté et la teinte
+// restent exactes, seule la saturation cède. Le plafond de cloche `plafondGamut` n'est
+// plus appliqué au scénario acté, il ne sert plus qu'aux variantes : posé sous le gamut
+// de la teinte la plus étroite, il tenait toute la branche claire à la même valeur et
+// coûtait 9,4 % de chroma (notebook variantes-teintes-claires).
 
 const plafondGamut = (L) => 0.45 * (1 - L);
 const plafondClair = (L) => (L >= 0.92 ? plafondGamut(L) : Infinity);

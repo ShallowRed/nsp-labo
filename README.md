@@ -10,10 +10,10 @@ qu'elle génère pour chaque destinataire.
 Tout part de `notebooks/lib/spectre.js` (générateur OKLCH, contrastes, daltonisme, catégoriel
 sous contraintes) et `notebooks/lib/scenarios.js`
 (les paramètres du spectre acté). Si une teinte évolue : modifier `scenarios.js`, relancer les
-générateurs, tout suit. Depuis le 4 septembre 2026, hors gamut sRGB le chroma est réduit à teinte
-constante et la cloche est plafonnée (notebook `variantes-teintes-claires`) : les teintes claires
-diffèrent de celles utilisées dans le rapport « Hiérarchie et management », qui gardent la règle
-d'origine.
+générateurs, tout suit. Hors gamut sRGB le chroma est réduit à teinte constante (notebook
+`variantes-teintes-claires`), ce qui laisse la clarté et la teinte exactes. Le plafond de cloche
+posé le 4 septembre 2026 a été retiré le 18 septembre après test papier : il tenait toute la
+branche claire à la valeur de la teinte la plus étroite et rendait les graphiques ternes.
 
 | Destinataire | Objet | Générateur |
 |--------------|-------|------------|
