@@ -1,0 +1,517 @@
+{
+"G1_bien_etre_travail_general_versant_colonne_barre.svg": {
+"page": 20,
+"largeur": 328,
+"hauteur": 254
+},
+"G2_bien_etre_general_3dim_colonne_barre.svg": {
+"page": 21,
+"largeur": 327,
+"hauteur": 342
+},
+"G3_bien_etre_general_croise_travail_colonne_barre.svg": {
+"page": 21,
+"largeur": 327,
+"hauteur": 164
+},
+"G4_bien_etre_travail_3dim_pleine_barre.svg": {
+"page": 22,
+"largeur": 595,
+"hauteur": 324
+},
+"G5_ambiance_3dim_colonne_barre.svg": {
+"page": 23,
+"largeur": 298,
+"hauteur": 310
+},
+"G6_bien_etre_travail_ambiance_colonne_barre.svg": {
+"page": 23,
+"largeur": 328,
+"hauteur": 151
+},
+"G7_soutenabilite_3dim_pleine_barre.svg": {
+"page": 24,
+"largeur": 471,
+"hauteur": 300
+},
+"G8_utile_3dim_colonne_barre.svg": {
+"page": 25,
+"largeur": 328,
+"hauteur": 313
+},
+"G9_sources_satisfaction_pleine_barre.svg": {
+"page": 26,
+"largeur": 471,
+"hauteur": 227
+},
+"G10_autonomie_competences_pleine_barre.svg": {
+"page": 27,
+"largeur": 471,
+"hauteur": 216
+},
+"G11_pro_perso_3dim_pleine_barre.svg": {
+"page": 28,
+"largeur": 471,
+"hauteur": 300
+},
+"G12_remplacabilite_3dim_pleine_barre.svg": {
+"page": 29,
+"largeur": 428,
+"hauteur": 273
+},
+"G13_promotion_2dim_colonne_barre.svg": {
+"page": 30,
+"largeur": 328,
+"hauteur": 290
+},
+"G14_ennui_3dim_large_barre.svg": {
+"page": 31,
+"largeur": 471,
+"hauteur": 324
+},
+"G15_sacrifice_qualite_3dim_colonne_barre.svg": {
+"page": 32,
+"largeur": 328,
+"hauteur": 302
+},
+"G16_interets_particuliers_2dim_pleine_barre.svg": {
+"page": 33,
+"largeur": 471,
+"hauteur": 226
+},
+"G17_changements_pro_long_pleine_barre.svg": {
+"page": 34,
+"largeur": 471,
+"hauteur": 173
+},
+"G18_changements_pro_impact_large_barre.svg": {
+"page": 35,
+"largeur": 428,
+"hauteur": 149
+},
+"G19_travail_seul_2dim_colonne_barre.svg": {
+"page": 38,
+"largeur": 328,
+"hauteur": 267
+},
+"G20_ambiance_2dim_large_barre.svg": {
+"page": 39,
+"largeur": 471,
+"hauteur": 227
+},
+"G21_frequence_reunions_2dim_pleine_barre.svg": {
+"page": 40,
+"largeur": 471,
+"hauteur": 227
+},
+"G22_frequence_convivialite_age_colonne_barre.svg": {
+"page": 41,
+"largeur": 328,
+"hauteur": 177
+},
+"G23_diffi_hierarchie_versant_colonne_barre.svg": {
+"page": 41,
+"largeur": 328,
+"hauteur": 228
+},
+"G24_turnover_equipe_2dim_colonne_barre.svg": {
+"page": 42,
+"largeur": 328,
+"hauteur": 243
+},
+"G25_turnover_equipe_hierarchie_pleine_barre.svg": {
+"page": 43,
+"largeur": 630,
+"hauteur": 187
+},
+"G26_collegues_assez_statut_colonne_barre.svg": {
+"page": 44,
+"largeur": 328,
+"hauteur": 138
+},
+"G27_soutenabilite_collegues_assez_colonne_barre.svg": {
+"page": 44,
+"largeur": 328,
+"hauteur": 116
+},
+"G28_accomp_suffisant_3dim_pleine_barre.svg": {
+"page": 45,
+"largeur": 471,
+"hauteur": 300
+},
+"G29_accomp_sugffisant_sexe_stratif_supervision_large_barre.svg": {
+"page": 46,
+"largeur": 471,
+"hauteur": 263
+},
+"G31_apprecie_collegues_3dim_colonne_barre.svg": {
+"page": 47,
+"largeur": 328,
+"hauteur": 245
+},
+"G32_concurrence_collegues_3dim_colonne_barre.svg": {
+"page": 47,
+"largeur": 328,
+"hauteur": 203
+},
+"G33_vision_SP_collegues_3dim_pleine_barre.svg": {
+"page": 48,
+"largeur": 471,
+"hauteur": 255
+},
+"G34_apprecie_collegues_abc_colonne_barre.svg": {
+"page": 49,
+"largeur": 328,
+"hauteur": 167
+},
+"G35_apprecie_collegues_abc_stratif_versant_pleine_barre.svg": {
+"page": 50,
+"largeur": 471,
+"hauteur": 387
+},
+"G36_concurrence_collegues_abc_stratif_versant_large_barre.svg": {
+"page": 51,
+"largeur": 382,
+"hauteur": 321
+},
+"G37_vision_SP_collegues_4dim_large_barre.svg": {
+"page": 52,
+"largeur": 366,
+"hauteur": 333
+},
+"G38_vision_SP_hierarchie_4dim_pleine_barre.svg": {
+"page": 53,
+"largeur": 471,
+"hauteur": 348
+},
+"G39_bien_etre_travail_3dim_special_pleine_barre.svg": {
+"page": 54,
+"largeur": 471,
+"hauteur": 308
+},
+"G40_indice_qualite_collectif_large.svg": {
+"page": 55,
+"largeur": 366,
+"hauteur": 283
+},
+"G41_ident_resp_2dim_colonne_barre.svg": {
+"page": 58,
+"largeur": 328,
+"hauteur": 291
+},
+"G42_indications_abc_large_barre.svg": {
+"page": 59,
+"largeur": 362,
+"hauteur": 196
+},
+"G43_resp_consignes_abc_colonne_barre.svg": {
+"page": 59,
+"largeur": 290,
+"hauteur": 196
+},
+"G30_outils_pilotage_colonne_barre.svg": {
+"page": 60,
+"largeur": 340,
+"hauteur": 267
+},
+"G44_entretien_pro_abc_colonne_barre.svg": {
+"page": 60,
+"largeur": 340,
+"hauteur": 127
+},
+"G45_outils_pilotage_statut_large_barre.svg": {
+"page": 61,
+"largeur": 471,
+"hauteur": 161
+},
+"G46_exprimer_maniere_manager_colonne_barre.svg": {
+"page": 62,
+"largeur": 328,
+"hauteur": 238
+},
+"G47_impact_changement_exprimer_maniere_manager_colonne_barre.svg": {
+"page": 62,
+"largeur": 328,
+"hauteur": 159
+},
+"G48_managers_leviers_expertise_qlte_vie_versant_pleine_barre.svg": {
+"page": 63,
+"largeur": 471,
+"hauteur": 227
+},
+"G49_managers_eval_2dim_colonne_barre.svg": {
+"page": 64,
+"largeur": 328,
+"hauteur": 208
+},
+"G50_managers_promo_2dim_colonne_barre.svg": {
+"page": 64,
+"largeur": 328,
+"hauteur": 231
+},
+"G51_managers_bien_etre_travail_2dim_colonne_barre.svg": {
+"page": 65,
+"largeur": 328,
+"hauteur": 239
+},
+"G52_exprim_abc_colonne_barre.svg": {
+"page": 66,
+"largeur": 328,
+"hauteur": 203
+},
+"G53_attention_bienetre_versant_colonne_barre.svg": {
+"page": 66,
+"largeur": 327,
+"hauteur": 164
+},
+"G54_bien_etre_travail_equilibre_large_barre.svg": {
+"page": 67,
+"largeur": 361,
+"hauteur": 149
+},
+"G55_managers_regul_versant_colonne_barre.svg": {
+"page": 67,
+"largeur": 328,
+"hauteur": 153
+},
+"G56_ambiance_versant_large_barre.svg": {
+"page": 68,
+"largeur": 471,
+"hauteur": 165
+},
+"G57_estime_supervision_large_barre.svg": {
+"page": 69,
+"largeur": 471,
+"hauteur": 138
+},
+"G58_managers_echanges_reguliers_supervision_large_barre.svg": {
+"page": 70,
+"largeur": 471,
+"hauteur": 154
+},
+"G59_discut_supervision_pleine_barre.svg": {
+"page": 71,
+"largeur": 2056,
+"hauteur": 700
+},
+"G60_managers_connais_versant_colonne_barre.svg": {
+"page": 72,
+"largeur": 471,
+"hauteur": 127
+},
+"G61_eval_connais_versant_colonne_barre.svg": {
+"page": 72,
+"largeur": 265,
+"hauteur": 157
+},
+"G62_managers_transm_info_versant_colonne_barre.svg": {
+"page": 73,
+"largeur": 290,
+"hauteur": 136
+},
+"G63_reponses_versant_colonne_barre.svg": {
+"page": 73,
+"largeur": 290,
+"hauteur": 161
+},
+"G64_managers_bien_etre_travail_cause_pleine_barre.svg": {
+"page": 74,
+"largeur": 471,
+"hauteur": 263
+},
+"G65_accomp_suffisant_accomp_seul_colonne_barre.svg": {
+"page": 75,
+"largeur": 327,
+"hauteur": 136
+},
+"G66_managers_benefice_accompagnement_long_colonne_barre.svg": {
+"page": 75,
+"largeur": 332,
+"hauteur": 212
+},
+"G67_managers_benefice_accompagnement_court_colonne_barre.svg": {
+"page": 76,
+"largeur": 328,
+"hauteur": 207
+},
+"G68_managers_dvlp_competences_benefice_accomp_colonne_barre.svg": {
+"page": 76,
+"largeur": 328,
+"hauteur": 182
+},
+"G69_managers_estime_benefice_accomp_pleine_barre.svg": {
+"page": 77,
+"largeur": 471,
+"hauteur": 173
+},
+"G70_impt_equite_2dim_large_barre.svg": {
+"page": 81,
+"largeur": 350,
+"hauteur": 283
+},
+"G71_impt_argent_public_2dim_large_barre.svg": {
+"page": 81,
+"largeur": 350,
+"hauteur": 283
+},
+"G72_impt_lois_reglements_2dim_large_barre.svg": {
+"page": 82,
+"largeur": 350,
+"hauteur": 283
+},
+"G73_impt_ineg_2dim_large_barre.svg": {
+"page": 82,
+"largeur": 350,
+"hauteur": 248
+},
+"G74_agir_equite_2dim_large_barre.svg": {
+"page": 83,
+"largeur": 352,
+"hauteur": 242
+},
+"G75_agir_argent_public_2dim_colonne_barre.svg": {
+"page": 83,
+"largeur": 352,
+"hauteur": 238
+},
+"G76_agir_lois_reglements_2dim_large_barre.svg": {
+"page": 84,
+"largeur": 350,
+"hauteur": 283
+},
+"G77_agir_ineg_2dim_large_barre.svg": {
+"page": 84,
+"largeur": 350,
+"hauteur": 283
+},
+"G78_delta_valeur_agir_pleine_barre.svg": {
+"page": 85,
+"largeur": 350,
+"hauteur": 445
+},
+"G79_bien_etre_travail_3dim_vision_desaccord.svg": {
+"page": 86,
+"largeur": 328,
+"hauteur": 290
+},
+"G80_pleine.svg": {
+"page": 87,
+"largeur": 471,
+"hauteur": 276
+},
+"G81_desaccord_collegues_3dim_colonne_barre.svg": {
+"page": 88,
+"largeur": 352,
+"hauteur": 257
+},
+"G82_desaccord_hierarchie_3dim_colonne_barre.svg": {
+"page": 88,
+"largeur": 352,
+"hauteur": 246
+},
+"G83_managers_degrad_bien_etre_travail_colonne_barre.svg": {
+"page": 89,
+"largeur": 314,
+"hauteur": 158
+},
+"G84_managers_degrad_versant_colonne_barre.svg": {
+"page": 89,
+"largeur": 314,
+"hauteur": 143
+},
+"G85_managers_transmission_consignes_versant_pleine_barre.svg": {
+"page": 90,
+"largeur": 471,
+"hauteur": 295
+},
+"G86_enfreindre_3dim_colonne_barre.svg": {
+"page": 91,
+"largeur": 328,
+"hauteur": 242
+},
+"G87_deja_enfreint_3dim_pleine_barre.svg": {
+"page": 92,
+"largeur": 471,
+"hauteur": 266
+},
+"G88_deja_enfreint_2dim_pleine_barre.svg": {
+"page": 93,
+"largeur": 471,
+"hauteur": 201
+},
+"G89_enfreindre_sacrif_colonne_barre.svg": {
+"page": 94,
+"largeur": 328,
+"hauteur": 153
+},
+"G90_managers_enfreindre_degrad_colonne_barre.svg": {
+"page": 94,
+"largeur": 265,
+"hauteur": 149
+},
+"G91_bien_etre_travail_enfreindre_deja_enfreint_pleine_barre.svg": {
+"page": 95,
+"largeur": 428,
+"hauteur": 194
+},
+"A1.svg": {
+"page": 107,
+"largeur": 350,
+"hauteur": 630
+},
+"A2.svg": {
+"page": 108,
+"largeur": 350,
+"hauteur": 631
+},
+"A3.svg": {
+"page": 109,
+"largeur": 350,
+"hauteur": 630
+},
+"A4.svg": {
+"page": 110,
+"largeur": 350,
+"hauteur": 630
+},
+"B1.svg": {
+"page": 112,
+"largeur": 350,
+"hauteur": 630
+},
+"B2.svg": {
+"page": 113,
+"largeur": 350,
+"hauteur": 630
+},
+"B3.svg": {
+"page": 114,
+"largeur": 350,
+"hauteur": 630
+},
+"B4.svg": {
+"page": 115,
+"largeur": 350,
+"hauteur": 630
+},
+"C1.svg": {
+"page": 117,
+"largeur": 350,
+"hauteur": 630
+},
+"C2.svg": {
+"page": 118,
+"largeur": 350,
+"hauteur": 630
+},
+"C3.svg": {
+"page": 119,
+"largeur": 350,
+"hauteur": 630
+},
+"C4.svg": {
+"page": 120,
+"largeur": 350,
+"hauteur": 630
+}
+}

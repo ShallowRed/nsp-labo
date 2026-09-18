@@ -1,0 +1,11 @@
+item;serie;valeur;couleur
+Titulaire civil;Mesurer le temps de travail;28;#554C9F
+Titulaire civil;Organiser les journées de travail;23;#E08DBC
+Personnel médical hospitalier;Mesurer le temps de travail;15;#554C9F
+Personnel médical hospitalier;Organiser les journées de travail;30;#E08DBC
+Fonctionnaire élève ou stagiaire;Mesurer le temps de travail;23;#554C9F
+Fonctionnaire élève ou stagiaire;Organiser les journées de travail;30;#E08DBC
+CDI;Mesurer le temps de travail;25;#554C9F
+CDI;Organiser les journées de travail;27;#E08DBC
+CDD;Mesurer le temps de travail;30;#554C9F
+CDD;Organiser les journées de travail;31;#E08DBC

@@ -1,0 +1,39 @@
+variable,reference,modalite,cote,ic_bas,ic_haut,significatif,cote_ecrite
+Sexe,Homme,Femme,1.065,0.695,1.63,0,1.1
+Âge,<35 ans,35-44,1.359,0.865,2.135,0,1.4
+Âge,<35 ans,45-54,1.795,1.076,2.996,1,1.8
+Âge,<35 ans,>= 55 ans,1.206,0.703,2.067,0,1.2
+Catégorie,A+,A,0.718,0.41,1.257,0,0.7
+Catégorie,A+,B,0.775,0.388,1.55,0,0.8
+Catégorie,A+,C,0.586,0.242,1.419,0,0.6
+Encadrement,Non,Oui majo,1.448,0.835,2.509,0,1.4
+Encadrement,Non,Oui mino,1.021,0.703,1.484,0,1.0
+Statut,Titulaire ou assimilé,CDD,0.58,0.243,1.386,0,0.6
+Statut,Titulaire ou assimilé,CDI,1.279,0.765,2.139,0,1.3
+Taille établissement,100 ou moins,100 à 500,0.788,0.35,1.772,0,0.8
+Taille établissement,100 ou moins,1000 et plus,0.807,0.4,1.628,0,0.8
+Taille établissement,100 ou moins,500 à 1000,0.514,0.23,1.152,0,0.5
+Syndicalisme,Ni adhérent·e ni sympathisant·e,Adhérent·e,0.908,0.613,1.347,0,0.9
+Syndicalisme,Ni adhérent·e ni sympathisant·e,Sympathisant·e,0.854,0.528,1.383,0,0.9
+Equilibre pro-perso,Oui ou plutôt oui,Non ou plutôt non,1.048,0.724,1.517,0,1.0
+Télétravail,Jamais,<3j/semaine,0.693,0.453,1.061,0,0.7
+Télétravail,Jamais,3j/s et +,3.397,0.828,7.0,0,3.4
+Collègues en nombre suffisant,Oui,Non,1.835,1.245,2.705,1,1.8
+Fréquence réunions d'équipe,>= 1 fois/mois,< 1 fois/mois,1.04,0.726,1.49,0,1.0
+Accompagnement suffisant,Oui,Non,1.388,0.977,1.97,0,1.4
+Turnover équipe,Comme il faut,Trop faible,2.468,1.248,4.88,1,2.5
+Turnover équipe,Comme il faut,Trop important,1.914,1.286,2.85,1,1.9
+Turnover hiérarchie,Comme il faut,Trop faible,1.681,0.958,2.951,0,1.7
+Turnover hiérarchie,Comme il faut,Trop important,0.917,0.568,1.478,0,0.9
+Aide collègues en cas difficultés,Oui ou plutôt oui,Non ou plutôt non,2.087,1.41,3.088,1,2.1
+Aide hiérarchie en cas difficultés,Oui ou plutôt oui,Non ou plutôt non,1.279,0.891,1.837,0,1.3
+Partage vision SP collègues,Oui ou plutôt oui,Non ou plutôt non,1.996,1.33,2.993,1,2.0
+Partage vision SP hiérarchie,Oui ou plutôt oui,Non ou plutôt non,1.406,0.889,2.223,0,1.4
+Désaccord exprimable collègues,Oui ou plutôt oui,Non ou plutôt non,1.999,0.962,4.157,0,2.0
+Désaccord exprimable hiérarchie,Oui ou plutôt oui,Non ou plutôt non,1.704,1.186,2.448,1,1.7
+Sacrifice qualité travail,Jamais ou parfois,Souvent ou très fréquemment,1.284,0.891,1.849,0,1.3
+Développement compétences possible,Tout à fait ou plutôt d'accord,Pas du tout ou plutôt pas d'accord,3.004,2.081,4.336,1,3.0
+Possibilité agir pour équité,Oui ou plutôt oui,Non ou plutôt non,1.224,0.853,1.757,0,1.2
+Service d'intérêts particuliers,Jamais ou parfois,Souvent ou très fréquemment,1.825,1.247,2.669,1,1.8
+A déjà enfreint un ordre hiérarchique,"Non, et je n’en jamais eu l’envie","Non, mais j’en ai déjà eu envie",1.393,0.809,2.398,0,1.4
+A déjà enfreint un ordre hiérarchique,"Non, et je n’en jamais eu l’envie",Oui,1.417,0.806,2.494,0,1.4
