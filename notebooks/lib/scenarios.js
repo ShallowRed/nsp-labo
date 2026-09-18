@@ -26,7 +26,7 @@ export const SCENARIOS = {
       ambre: { H: 65, k: 0.8 },
       ardoise: { H: 235, k: 0.12 },
     },
-    options: { profil: "cloche", ecretage: "oklch", plafond: plafondGamut },
+    options: { profil: "cloche", ecretage: "oklch", plafond: null },
   },
 };
 
