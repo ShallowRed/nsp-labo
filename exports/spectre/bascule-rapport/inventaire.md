@@ -6,19 +6,19 @@ Liens SVG analysés : 100. Nuances InDesign reconnues : 111.
 | Ancienne | Nouvelle | Palier | Occurrences |
 |---|---|---|---|
 | `#007B7C` | `#007777` | canard 550 | 84 |
-| `#F6BB81` | `#EBBF95` | ambre 200 | 64 |
-| `#2DC2C2` | `#32C2C2` | canard 300 | 59 |
-| `#E45C5F` | `#DF6263` | coquelicot 400 | 9 |
-| `#EA85C0` | `#E08DBC` | framboise 300 | 6 |
-| `#E29A4E` | `#DE9B58` | ambre 300 | 6 |
-| `#7FBF71` | `#83BE76` | prairie 300 | 5 |
-| `#C6EDFF` | `#D1EBF9` | petrole 100 | 2 |
+| `#C6EDFF` | `#CAECFF` | petrole 100 | 2 |
 
 ## Couleurs du spectre inchangées
 
 - `#0B4862` petrole 700 (240 occurrences)
 - `#C24146` coquelicot 500 (84 occurrences)
 - `#D0D9DE` ardoise 150 (81 occurrences)
+- `#F6BB81` ambre 200 (64 occurrences)
+- `#2DC2C2` canard 300 (59 occurrences)
+- `#E45C5F` coquelicot 400 (9 occurrences)
+- `#EA85C0` framboise 300 (6 occurrences)
+- `#E29A4E` ambre 300 (6 occurrences)
+- `#7FBF71` prairie 300 (5 occurrences)
 - `#554C9F` lavande 600 (5 occurrences)
 - `#107098` petrole 550 (4 occurrences)
 - `#3C9AC8` petrole 400 (3 occurrences)
