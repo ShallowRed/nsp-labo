@@ -1,0 +1,97 @@
+<!doctype html>
+<notebook>
+  <title>Impression : ce que la presse rend</title>
+  <script type="module">
+    import { Plot, html } from "./lib/deps.js";
+    const brut = await FileAttachment("data/epreuve-cmjn.csv").csv();
+    const epreuve = brut.map((d) => ({
+      famille: d.famille, palier: +d.palier, ecran: d.hex, presse: d["hex epreuve"],
+      C: +d.C, M: +d.M, Y: +d.Y, K: +d.K, dE: +d.dE2000,
+    }));
+    const familles = [...new Set(epreuve.map((d) => d.famille))];
+    const repere = Object.fromEntries(familles.map((f) => [f, epreuve.find((d) => d.famille === f && d.palier === 500).ecran]));
+  </script>
+  <script type="text/markdown">
+# Impression : ce que la presse rend
+
+Le spectre est défini pour l'écran, en RVB. Une presse offset imprime en quatre encres (cyan, magenta, jaune, noir) et ne peut pas rendre toutes les couleurs d'un écran : les plus saturées sont ramenées à la couleur imprimable la plus proche. Cette page montre, pour chacune des 152 couleurs, la séparation en quatre encres, la couleur que le papier recevra et l'écart avec l'écran.
+
+Le calcul utilise le profil Coated FOGRA39, celui d'un imprimeur européen sur papier couché, avec la conversion colorimétrique relative, qui est celle d'un export PDF d'InDesign par défaut. L'écart est mesuré en ΔE2000 : sous 2, il ne se voit pas ; entre 2 et 5, il se voit quand les deux couleurs sont côte à côte ; au-dessus de 5, la couleur imprimée est visiblement différente.
+
+## L'écran et la presse, couleur par couleur
+
+Chaque case montre la couleur d'écran en haut et la couleur imprimée en bas. Les cases cerclées ont un écart supérieur au seuil choisi.
+  </script>
+  <script type="module">
+    const seuil = view(Inputs.range([1, 8], { label: "Seuil d'écart (ΔE2000)", step: 0.5, value: 2 }));
+  </script>
+  <script type="module">
+    const titre = (d) => `${d.famille} ${d.palier}\nécran ${d.ecran}\npresse ${d.presse}\nC ${d.C}  M ${d.M}  J ${d.Y}  N ${d.K}\nΔE2000 ${d.dE}`;
+    const moities = epreuve.flatMap((d) => [{ ...d, rang: "écran", hex: d.ecran }, { ...d, rang: "presse", hex: d.presse }]);
+    display(Plot.plot({
+      width: 680, height: 8 * 44 + 46, marginLeft: 78, marginRight: 50,
+      x: { label: "palier (clair vers foncé)", tickValues: [50, 200, 350, 500, 650, 800, 950] },
+      fy: { label: null, domain: familles, padding: 0.12 },
+      y: { label: null, domain: ["écran", "presse"], axis: "right", tickSize: 0, padding: 0 },
+      color: { type: "identity" },
+      marks: [
+        Plot.cell(moities, { x: "palier", y: "rang", fy: "famille", fill: "hex", inset: 0, insetLeft: 1, insetRight: 1, tip: true, title: titre }),
+        Plot.rect(epreuve.filter((d) => d.dE > seuil), { x: "palier", fy: "famille", fill: "none", stroke: "#141516", strokeWidth: 1.5, inset: 0, insetLeft: 1, insetRight: 1 }),
+      ],
+    }));
+    const n = epreuve.filter((d) => d.dE > seuil).length;
+    display(html`<p style="font-size:0.85em;color:#555;margin:4px 0 12px;">${n} couleur${n > 1 ? "s" : ""} sur ${epreuve.length} ${n > 1 ? "ont" : "a"} un écart supérieur à ${String(seuil).replace(".", ",")}.</p>`);
+  </script>
+  <script type="text/markdown">
+## Où l'écart se concentre
+
+Une ligne par famille, tracée dans sa couleur. Les deux traits horizontaux marquent les seuils de 2 et de 5.
+  </script>
+  <script type="module">
+    display(Plot.plot({
+      width: 680, height: 300, marginLeft: 44, marginRight: 20,
+      x: { label: "palier (clair vers foncé)", tickValues: [50, 200, 350, 500, 650, 800, 950] },
+      y: { label: "ΔE2000", grid: true },
+      marks: [
+        Plot.ruleY([2, 5], { stroke: "#84929A", strokeDasharray: "3,3" }),
+        Plot.lineY(epreuve, { x: "palier", y: "dE", z: "famille", stroke: (d) => repere[d.famille], strokeWidth: 1.8 }),
+        Plot.dot(epreuve, { x: "palier", y: "dE", fill: (d) => repere[d.famille], r: 2.2, tip: true, title: titre }),
+      ],
+    }));
+    display(html`<p style="font-size:0.85em;margin:2px 0 12px 44px;display:flex;flex-wrap:wrap;gap:4px 14px;">${familles.map((f) => html`<span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:${repere[f]};margin-right:5px;"></span>${f}</span>`)}</p>`);
+  </script>
+  <script type="module">
+    const parFamille = familles.map((f) => {
+      const lignes = epreuve.filter((d) => d.famille === f);
+      const pire = lignes.reduce((a, b) => (b.dE > a.dE ? b : a));
+      return { famille: f, "écart moyen": lignes.reduce((s, d) => s + d.dE, 0) / lignes.length, "écart maximal": pire.dE, "au palier": pire.palier, "au-dessus de 2": lignes.filter((d) => d.dE > 2).length };
+    }).sort((a, b) => b["écart maximal"] - a["écart maximal"]);
+    display(Inputs.table(parFamille, {
+      format: { "écart moyen": (v) => v.toFixed(1).replace(".", ","), "écart maximal": (v) => v.toFixed(1).replace(".", ",") },
+      select: false, rows: 8,
+    }));
+  </script>
+  <script type="text/markdown">
+## Les couleurs à surveiller
+
+Les couleurs dont l'écart dépasse le seuil choisi plus haut, de la plus touchée à la moins touchée, avec leur séparation en pourcentages d'encre.
+  </script>
+  <script type="module">
+    const pastille = (hex) => html`<span style="display:inline-block;width:34px;height:16px;border-radius:3px;background:${hex};vertical-align:middle;border:1px solid #0001"></span>`;
+    const aSurveiller = epreuve.filter((d) => d.dE > seuil).sort((a, b) => b.dE - a.dE)
+      .map((d) => ({ couleur: `${d.famille} ${d.palier}`, écran: d.ecran, presse: d.presse, "C M J N": `${d.C} ${d.M} ${d.Y} ${d.K}`, ΔE2000: d.dE }));
+    display(aSurveiller.length
+      ? Inputs.table(aSurveiller, { format: { écran: pastille, presse: pastille, ΔE2000: (v) => v.toFixed(1).replace(".", ",") }, select: false, rows: 14, width: { couleur: 130, écran: 60, presse: 60 } })
+      : html`<p>Aucune couleur au-dessus de ce seuil.</p>`);
+  </script>
+  <script type="text/markdown">
+## Ce que ça change pour un document imprimé
+
+- Les deux pôles des échelles d'opinion, canard et coquelicot, s'impriment sans écart visible : ΔE de 1 au plus. Les garanties de contraste tiennent sur le papier comme à l'écran.
+- La lavande est la famille la plus touchée, sur presque toute son échelle, avec un écart maximal de 9,3 au palier 300. Viennent ensuite les teintes pâles les plus saturées, celles du canard en tête : la presse les rend un peu plus ternes. L'écart mesure la distance entre la couleur demandée et la couleur rendue ; deux couleurs voisines du spectre restent distinctes une fois imprimées.
+- Dans InDesign, le document reste en RVB jusqu'à l'export : la conversion se fait à l'export PDF avec le profil de l'imprimeur, et les séparations obtenues sont celles de cette page. Pour voir et figer les séparations dans le panneau Nuances, le nuancier peut être passé en CMJN avec ces mêmes valeurs.
+- Un autre papier ou une autre presse demande un autre profil : l'épreuve se recalcule avec `scripts/epreuve-cmjn.py --profile <profil.icc>`.
+
+Les valeurs de cette page sont celles du fichier [epreuve-cmjn.csv](https://github.com/ShallowRed/nsp-labo/blob/main/exports/spectre/epreuve-cmjn.csv).
+  </script>
+</notebook>

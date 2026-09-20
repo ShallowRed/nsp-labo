@@ -35,6 +35,7 @@ Les notebooks sont la surface de présentation du travail sur la couleur et la c
 - `palette-rapport` : la palette des enquêtes en situation, avec le bloc R.
 - `categories-sans-ordre` : les trios de couleurs pour les modalités qu'on ne peut pas classer.
 - `variantes-teintes-claires` : la comparaison des règles pour l'extrémité claire du spectre.
+- `impression` : chaque couleur à l'écran et sur papier couché, sa séparation CMJN et l'écart ΔE2000 ; lit `notebooks/data/epreuve-cmjn.csv`, que `scripts/epreuve-cmjn.py` écrit en même temps que l'export.
 
 Un notebook par exploration ; un notebook sans usage est supprimé, git garde l'historique. La logique et les textes de fond sont dans `notebooks/lib/`, pas dans les cellules. Aucun import `npm:` en cellule : passer par `lib/deps.js`. Couleur, contraste et daltonisme sont toujours calculés (culori, matrices de Viénot). Toute page ajoutée est référencée dans `notebooks/index.html` dans la même modification.
 

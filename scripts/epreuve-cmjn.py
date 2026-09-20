@@ -11,6 +11,7 @@ Writes exports/spectre/epreuve-cmjn.csv and exports/spectre/epreuve-cmjn.html.
 Requires Pillow (python3 -m venv .venv && .venv/bin/pip install pillow).
 """
 import argparse
+import shutil
 import csv
 import math
 from pathlib import Path
@@ -113,6 +114,8 @@ th{{text-align:left;font-weight:500;padding-right:6px;font-size:12px}}td{{width:
 <p>Chaque case : à gauche la couleur sRGB, à droite son rendu après séparation CMJN. En dessous, l'écart ΔE2000 et la séparation C M J N en %. En rouge, les écarts perceptibles au-delà de 5.</p>
 <table>{table}</table>"""
     (ROOT / "exports/spectre/epreuve-cmjn.html").write_text(html)
+    # the Impression notebook reads the same table from the served root
+    shutil.copy(ROOT / "exports/spectre/epreuve-cmjn.csv", ROOT / "notebooks/data/epreuve-cmjn.csv")
     worst = sorted(out, key=lambda r: -r["dE2000"])[:8]
     print(f"{name} · {args.intent} : {sum(r['dE2000'] >= 5 for r in out)} couleurs sur {len(out)} à ΔE ≥ 5")
     for r in worst:
