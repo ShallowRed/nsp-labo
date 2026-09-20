@@ -6,7 +6,7 @@ import fs from "node:fs";
 import path from "node:path";
 import * as d3 from "d3";
 import {CATALOGUE, JEUX} from "./catalogue.mjs";
-import {BLOCS, EXTRAITS, CORPS, VALEUR, MARGE, MARGE_X, ESPACE_LIBELLE, INTERLIGNE_LIBELLE, largeurTexte, lignesLibelle, colonnePour, bornes} from "./disposition.mjs";
+import {BLOCS, EXTRAITS, CORPS, VALEUR, MARGE, MARGE_X, ESPACE_LIBELLE, INTERLIGNE_LIBELLE, largeurTexte, lignesLibelle, colonnePour, bornes, equilibrer} from "./disposition.mjs";
 
 const ICI = path.dirname(new URL(import.meta.url).pathname);
 const DONNEES = "/Users/lucaspoulain/Downloads/Donnees_graphiques";
@@ -18,6 +18,8 @@ const SEUIL_VALEUR = 4.5;
 const BARRE_FIXE = 13;
 const ECART = (b) => b * 0.28, ENTRE_GROUPES = (b) => b * 1.1, INTITULE = (b) => b + 4;
 const AXE = 24, LEGENDE_LIGNE = 13;
+// blanc laissé autour d'un intitulé là où une ligne de grille le traverserait
+const RESERVE = 2.5;
 
 const echapper = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
 const texte = (x, y, s, {taille = CORPS, couleur = ARDOISE, ancre = "start", gras = false} = {}) =>
@@ -48,13 +50,15 @@ function generer(g) {
   const BARRE = g.barre ?? BARRE_FIXE;
   let y = MARGE, barres = "";
   const segments = []; // étendue verticale des barres de chaque groupe, pour les lignes de grille
+  const reserves = []; // emprise des intitulés posés sur la grille : les lignes de grille s'interrompent derrière eux
+  const reserver = (yc, s, gras) => reserves.push({x1: DEBUT_TRACE - RESERVE, x2: DEBUT_TRACE + largeurTexte(s, CORPS, gras) + RESERVE, y1: yc - CORPS / 2 - RESERVE, y2: yc + CORPS / 2 + RESERVE});
   for (const gr of g.groupes) {
     const donnees = fichierDonnees(g.id, gr.fichier, JEUX[g.jeu]);
-    // l'intitulé passe sur plusieurs lignes s'il dépasse la zone de tracé ; le libellé d'axe (« Versant FP ») le suit sur sa propre ligne
-    const lignesIntitule = gr.intitule ? lignesLibelle(gr.intitule, DROITE_MAX - DEBUT_TRACE, CORPS, true) : [];
-    lignesIntitule.forEach((l, i) => { barres += texte(DEBUT_TRACE, y + INTITULE(BARRE) / 2 - 1 + i * 9, l, {couleur: PETROLE, gras: true}); });
+    // l'intitulé ne dépasse pas la largeur des barres et passe sur plusieurs lignes au besoin ; le libellé d'axe (« Versant FP ») le suit sur sa propre ligne
+    const lignesIntitule = gr.intitule ? lignesLibelle(gr.intitule, FIN_TRACE - DEBUT_TRACE, CORPS, true) : [];
+    lignesIntitule.forEach((l, i) => { const yc = y + INTITULE(BARRE) / 2 - 1 + i * 9; barres += texte(DEBUT_TRACE, yc, l, {couleur: PETROLE, gras: true}); reserver(yc, l, true); });
     if (lignesIntitule.length) y += INTITULE(BARRE) + (lignesIntitule.length - 1) * 9;
-    if (gr.axe) { barres += texte(DEBUT_TRACE, y + INTITULE(BARRE) / 2 - 1, gr.axe, {gras: true}); y += INTITULE(BARRE); }
+    if (gr.axe) { const yc = y + INTITULE(BARRE) / 2 - 1; barres += texte(DEBUT_TRACE, yc, gr.axe, {gras: true}); reserver(yc, gr.axe, true); y += INTITULE(BARRE); }
     const hautGroupe = y;
     for (const [cle, lib = cle] of gr.modalites) {
       let debut = 0;
@@ -74,9 +78,14 @@ function generer(g) {
   }
   const finTrace = y - ENTRE_GROUPES(BARRE) + ECART(BARRE) + 1;
   const graduations = d3.range(0, 101, 25);
-  // lignes de grille continues, de la première barre du premier groupe à la dernière barre du dernier
-  const hautGrille = segments[0][0], basGrille = segments[segments.length - 1][1];
-  let svg = graduations.map((v) => `<line x1="${x(v)}" x2="${x(v)}" y1="${hautGrille.toFixed(2)}" y2="${basGrille.toFixed(2)}" stroke="${GRILLE}" stroke-width="0.4"/>`).join("") + barres;
+  // lignes de grille continues, de la première barre du premier groupe jusqu'à l'axe, dont elles prolongent les graduations
+  const hautGrille = segments[0][0], basGrille = finTrace + 1;
+  const troncons = (gx) => {
+    let morceaux = [[hautGrille, basGrille]];
+    for (const r of reserves.filter((r) => gx >= r.x1 && gx <= r.x2)) morceaux = morceaux.flatMap(([a, b]) => (r.y2 <= a || r.y1 >= b ? [[a, b]] : [[a, r.y1], [r.y2, b]].filter(([c, d]) => d - c > 6)));
+    return morceaux;
+  };
+  let svg = graduations.map((v) => troncons(x(v)).map(([a, b]) => `<line x1="${x(v)}" x2="${x(v)}" y1="${a.toFixed(2)}" y2="${b.toFixed(2)}" stroke="${GRILLE}" stroke-width="0.4"/>`).join("")).join("") + barres;
   y = finTrace + 1;
   svg += `<line x1="${DEBUT_TRACE}" x2="${FIN_TRACE}" y1="${y}" y2="${y}" stroke="${ARDOISE}" stroke-width="0.6"/>`;
   svg += graduations.map((v) => `<line x1="${x(v)}" x2="${x(v)}" y1="${y}" y2="${y + 2.5}" stroke="${ARDOISE}" stroke-width="0.6"/>${texte(x(v), y + 8, v, {ancre: "middle"})}`).join("");
@@ -102,6 +111,6 @@ const ids = process.argv.slice(2);
 fs.mkdirSync(SORTIE, {recursive: true});
 for (const g of CATALOGUE.filter((g) => !ids.length || ids.includes(g.id))) {
   const {svg, hauteur, barre, colonne, voisins, trace} = generer(g);
-  fs.writeFileSync(path.join(SORTIE, `${g.id}.svg`), svg);
+  fs.writeFileSync(path.join(SORTIE, `${g.id}.svg`), equilibrer(svg));
   console.log(`${g.id.padEnd(4)} p${String(BLOCS[g.fichier]?.page ?? "?").padEnd(4)} ${g.largeur} × ${hauteur} pt (bloc ${BLOCS[g.fichier]?.hauteur ?? "?"}, barre ${barre}, colonne ${colonne}${voisins.length ? ` alignée sur ${voisins.join(" ")}` : ""}, tracé ${trace.toFixed(0)}) → ${g.fichier}`);
 }

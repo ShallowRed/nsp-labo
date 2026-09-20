@@ -126,7 +126,7 @@ export const CATALOGUE = [
     groupes: [groupe("Catégorie", 1, CATEGORIE)]},
   {id: "G35", fichier: "G35_apprecie_collegues_abc_stratif_versant_pleine_barre.svg", largeur: 471, jeu: "oui5",
     groupes: [groupe("FPE", 1, CATEGORIE, "Catégorie"), groupe("FPT", 2, CATEGORIE, "Catégorie"), groupe("FPH", 3, CATEGORIE, "Catégorie")]},
-  {id: "G36", fichier: "G36_concurrence_collegues_abc_stratif_versant_large_barre.svg", largeur: 382, jeu: "nonOui2", barre: 12,
+  {id: "G36", fichier: "G36_concurrence_collegues_abc_stratif_versant_large_barre.svg", largeur: 382, jeu: "nonOui2", barre: 10.5,
     groupes: [groupe("FPE", 1, CATEGORIE, "Catégorie"), groupe("FPT", 2, CATEGORIE, "Catégorie"), groupe("FPH", 3, CATEGORIE, "Catégorie")]},
   {id: "G37", fichier: "G37_vision_SP_collegues_4dim_large_barre.svg", largeur: 366, jeu: "oui5", barre: 12,
     groupes: [groupe("Tranche d’âge", 1, AGE), groupe("Versant FP", 2, VERSANT), groupe("Fonctions d’encadrement", 3, ENCADREMENT), groupe("Catégorie", 4, CATEGORIE)]},

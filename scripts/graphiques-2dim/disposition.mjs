@@ -89,3 +89,18 @@ export const bornes = (largeur, colonne, droite, symetrique = true) => {
   const FIN = largeur - MARGE_X - droite;
   return {DEBUT, FIN: symetrique ? Math.min(largeur - DEBUT, FIN) : FIN, DROITE_MAX: largeur - MARGE_X};
 };
+
+// Équilibre les marges visibles du haut et du bas sans changer la hauteur du SVG : le contenu est décalé de la moitié
+// de l'écart entre l'espace laissé au-dessus du premier élément dessiné et l'espace laissé sous le dernier.
+// Les graphiques tracés avec des chemins (aires) ne sont pas mesurés et restent tels quels.
+export const equilibrer = (svg) => {
+  if (/<(path|polygon|polyline)\b/.test(svg)) return svg;
+  const hauteur = +svg.match(/viewBox="0 0 [\d.]+ ([\d.]+)"/)[1];
+  const hauts = [], bas = [];
+  for (const m of svg.matchAll(/<rect [^>]*?y="([\d.]+)"[^>]*?height="([\d.]+)"/g)) { hauts.push(+m[1]); bas.push(+m[1] + +m[2]); }
+  for (const m of svg.matchAll(/<text [^>]*?y="([\d.]+)"[^>]*?font-size="([\d.]+)"/g)) { hauts.push(+m[1] - 0.36 * +m[2]); bas.push(+m[1] + 0.36 * +m[2]); }
+  if (!hauts.length) return svg;
+  const decalage = (Math.min(...hauts) - (hauteur - Math.max(...bas))) / 2;
+  if (Math.abs(decalage) < 0.5) return svg;
+  return svg.replace(/(<svg [^>]*>)([\s\S]*)(<\/svg>)/, (_, debut, contenu, fin) => `${debut}<g transform="translate(0,${(-decalage).toFixed(1)})">${contenu}</g>${fin}`);
+};

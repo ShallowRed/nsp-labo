@@ -6,7 +6,7 @@ import fs from "node:fs";
 import path from "node:path";
 import * as d3 from "d3";
 import {FORMES} from "./catalogue-formes.mjs";
-import {BLOCS, EXTRAITS, CORPS, VALEUR, MARGE, MARGE_X, ESPACE_LIBELLE, INTERLIGNE_LIBELLE, largeurTexte, lignesLibelle, colonnePour, bornes, lireGroupes} from "./disposition.mjs";
+import {BLOCS, EXTRAITS, CORPS, VALEUR, MARGE, MARGE_X, ESPACE_LIBELLE, INTERLIGNE_LIBELLE, largeurTexte, lignesLibelle, colonnePour, bornes, equilibrer, lireGroupes} from "./disposition.mjs";
 
 const ICI = path.dirname(new URL(import.meta.url).pathname);
 const SORTIE = path.join(ICI, "sortie");
@@ -54,7 +54,7 @@ function groupes(g) {
   }
   const finTrace = y - ENTRE_ITEMS + 2;
   const graduations = x.ticks(4);
-  svg += graduations.map((v) => `<line x1="${x(v)}" x2="${x(v)}" y1="${debutTrace}" y2="${finTrace}" stroke="${GRILLE}" stroke-width="0.4"/>`).join("") + barres;
+  svg += graduations.map((v) => `<line x1="${x(v)}" x2="${x(v)}" y1="${debutTrace}" y2="${finTrace + 1}" stroke="${GRILLE}" stroke-width="0.4"/>`).join("") + barres;
   y = finTrace + 1;
   svg += `<line x1="${DEBUT_TRACE}" x2="${FIN_TRACE}" y1="${y}" y2="${y}" stroke="${ARDOISE}" stroke-width="0.6"/>`;
   svg += graduations.map((v) => `<line x1="${x(v)}" x2="${x(v)}" y1="${y}" y2="${y + 2.5}" stroke="${ARDOISE}" stroke-width="0.6"/>${texte(x(v), y + 8, v, {ancre: "middle"})}`).join("");
@@ -148,6 +148,6 @@ const ids = process.argv.slice(2);
 fs.mkdirSync(SORTIE, {recursive: true});
 for (const g of FORMES.filter((g) => !ids.length || ids.includes(g.id))) {
   const {svg, hauteur, axeX, finX, colonne, voisins} = g.type === "groupes" ? groupes(g) : g.type === "aires" ? aires(g) : colonnes(g);
-  fs.writeFileSync(path.join(SORTIE, `${g.id}.svg`), `<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" width="${g.largeur}pt" height="${hauteur}pt" viewBox="0 0 ${g.largeur} ${hauteur}" data-axe-x="${axeX.toFixed(1)}" data-fin-x="${finX.toFixed(1)}">${svg}</svg>\n`);
+  fs.writeFileSync(path.join(SORTIE, `${g.id}.svg`), equilibrer(`<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" width="${g.largeur}pt" height="${hauteur}pt" viewBox="0 0 ${g.largeur} ${hauteur}" data-axe-x="${axeX.toFixed(1)}" data-fin-x="${finX.toFixed(1)}">${svg}</svg>\n`));
   console.log(`${g.id.padEnd(4)} p${String(BLOCS[g.fichier]?.page ?? "?").padEnd(4)} ${g.largeur} × ${hauteur} pt (colonne ${colonne}${voisins.length ? ` alignée sur ${voisins.join(" ")}` : ""}, tracé ${(finX - axeX).toFixed(0)}) → ${g.fichier}`);
 }
