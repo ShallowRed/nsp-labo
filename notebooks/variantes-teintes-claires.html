@@ -13,7 +13,7 @@
   <script type="text/markdown">
 # Teintes claires : les variantes comparées
 
-Aux paliers 50 et 100, la cloche de chroma demande plus que ce que l'écran (gamut sRGB) affiche pour la plupart des teintes. Dans la règle d'origine, c'est l'écrêtage des canaux sRGB qui décidait de la couleur à cet endroit : la teinte dérivait (pétrole 50 tirait vers le cyan, 17° d'écart) et le chroma variait d'une famille à l'autre. Six règles ont été comparées ici et sur le site en cours de refonte ; la règle retenue est la dernière (écrêtage à teinte constante et cloche plafonnée à 0,45·(1−L) sur toute l'échelle), désormais celle du scénario `resserre`. Les valeurs du rapport « Hiérarchie et management » restent celles de la règle d'origine.
+Aux paliers 50 et 100, la cloche de chroma demande plus que ce que l'écran (gamut sRGB) affiche pour la plupart des teintes. Dans la règle d'origine, c'est l'écrêtage des canaux sRGB qui décidait de la couleur à cet endroit : la teinte dérivait (pétrole 50 tirait vers le cyan, 17° d'écart) et le chroma variait d'une famille à l'autre. Six règles ont été comparées ici et sur le site en cours de refonte. Le 4 septembre 2026, la règle retenue était la dernière de la liste : écrêtage à teinte constante et cloche plafonnée à 0,45·(1−L) sur toute l'échelle. Le 18 septembre 2026, après un test sur papier, le plafond a été retiré : calibré sous le gamut de la teinte la plus étroite, le canard, il tenait toute la branche claire de toutes les familles à cette valeur et rendait les graphiques ternes. La règle du scénario `resserre` est donc l'écrêtage à teinte constante, sans plafond : la clarté et la teinte restent exactes, seule la saturation cède hors du gamut. Les graphiques du rapport « Travailler dans le service public » portent ces valeurs.
 
 ## Le nuancier selon la variante
 
@@ -22,7 +22,7 @@ Les cases cerclées diffèrent de la règle d'origine.
   <script type="module">
     const variante = view(Inputs.select(
       new Map(Object.entries(VARIANTES).map(([id, v]) => [v.label, id])),
-      { label: "Variante", value: "teinte-constante-plafond-continu" }
+      { label: "Variante", value: "teinte-constante" }
     ));
   </script>
   <script type="module">

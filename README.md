@@ -29,6 +29,8 @@ Les recettes pour les graphiques (échelles d'opinion, fréquences, catégories 
 
 ## Les notebooks
 
+Les notebooks sont la surface de présentation du travail sur la couleur et la charte graphique : ce qui doit être montré ou expliqué y va, et leur page d'accueil (`notebooks/index.html`) reprend la liste des fichiers livrés par environnement. Ce README s'adresse à qui maintient le dépôt.
+
 - `couleurs-showcase` : l'article de référence (nuancier, échelles, accessibilité).
 - `palette-rapport` : la palette des enquêtes en situation, avec le bloc R.
 - `categories-sans-ordre` : les trios de couleurs pour les modalités qu'on ne peut pas classer.

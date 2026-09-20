@@ -34,14 +34,14 @@ export const SCENARIOS = {
 
 // Variantes de l'extrémité claire comparées avant de retenir la règle ci-dessus
 // (notebook variantes-teintes-claires). Overrides de genScale ; « sRGB » est la règle
-// d'origine, dont les valeurs ont servi au rapport « Hiérarchie et management ».
+// d'origine, celle des premiers graphiques du rapport d'enquête de 2026.
 export const VARIANTES = {
   "ecretage-srgb": { label: "écrêtage sRGB (règle d'origine)", options: { ecretage: "rgb", plafond: null } },
   "plafond-50-100": { label: "écrêtage sRGB + plafond gamut sur 50 et 100", options: { ecretage: "rgb", plafond: plafondClair } },
   "plafond-continu": { label: "écrêtage sRGB + plafond gamut sur toute l'échelle", options: { ecretage: "rgb", plafond: plafondGamut } },
-  "teinte-constante": { label: "écrêtage à teinte constante", options: { ecretage: "oklch", plafond: null } },
+  "teinte-constante": { label: "écrêtage à teinte constante (retenue le 18 septembre 2026)", options: { ecretage: "oklch", plafond: null } },
   "teinte-constante-plafond": { label: "teinte constante + plafond sur 50 et 100", options: { ecretage: "oklch", plafond: plafondClair } },
-  "teinte-constante-plafond-continu": { label: "teinte constante + plafond sur toute l'échelle (retenue)", options: { ecretage: "oklch", plafond: plafondGamut } },
+  "teinte-constante-plafond-continu": { label: "teinte constante + plafond sur toute l'échelle (retenue du 4 au 18 septembre 2026)", options: { ecretage: "oklch", plafond: plafondGamut } },
 };
 
 // Familles candidates au jeu catégoriel dataviz (l'ordre final est recalculé
