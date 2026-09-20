@@ -36,18 +36,18 @@ Données de R : `~/Downloads/Donnees_graphiques`, un CSV par groupe (`G12_1.csv`
 
 1. `node generer.mjs && node generer-formes.mjs` dans ce dossier.
 2. Copier `sortie/<id>.svg` vers `Links/<fichier>` du dossier InDesign (correspondance dans les catalogues), après sauvegarde du dossier `Links`.
-   Les catalogues écrivent les couleurs du spectre du 4 septembre 2026, et ces valeurs servent aussi de clé pour lire les données extraites des anciens SVG (`donnees-extraites/`) : les remplacer dans un catalogue fait disparaître des segments. Un SVG régénéré passe donc par `scripts/svg-recolore.py` avec `exports/spectre/bascule-rapport/svg-recolore.txt` avant d'aller dans `Links` ; `scripts/diagnostic-svg.py <dossier>` confirme le résultat.
-3. Dans InDesign, panneau Scripts, dossier « Passe couleur NSP » (`exports/spectre/bascule-rapport/`) :
+   Les catalogues écrivent les couleurs du spectre du 4 septembre 2026, et ces valeurs servent aussi de clé pour lire les données extraites des anciens SVG (`donnees-extraites/`) : les remplacer dans un catalogue fait disparaître des segments. Un SVG régénéré passe donc par `../outils/svg-recolore.py` avec `../indesign/svg-recolore.txt` avant d'aller dans `Links` ; `../outils/diagnostic-svg.py <dossier>` confirme le résultat.
+3. Dans InDesign, panneau Scripts, dossier « Passe couleur NSP » (`../indesign/`) :
    - `relier-graphiques.jsx` : relie chaque SVG au fichier de même nom dans le `Links` à côté du document, quel que soit le dossier d'origine du lien, puis le recharge. Nécessaire quand des liens pointent encore vers un ancien dossier (V6.2, V8), auquel cas InDesign les déclare à jour.
    - `injecter-graphiques.jsx` : image à 100 %, centrée, bloc ajusté au contenu. Titres et précisions intacts. Le bloc est recentré sur l'ancien centre : un graphique dont la largeur a changé est à recaler à la main. À lancer une fois ; avec une sélection, seuls les blocs sélectionnés sont traités.
-   - `../bascule-rapport-archives/composer-graphiques.jsx` (archivé) : variante qui cale aussi le titre (bord gauche sur l'axe) et les précisions (toute la largeur du fond). Non retenue pour la V9, gardée pour référence.
-   - `../bascule-rapport-archives/numeroter-graphiques.jsx` (archivé) : pose sur chaque graphique G1 à G91 un numéro automatique (liste « Graphiques », style « Numéro graphique », Poppins SemiBold 7 pt pétrole) dans un petit bloc en haut à droite de la zone du graphique, au-dessus du titre, calé à 24 pt du bord droit du fond. Ordre de lecture : page, puis haut vers bas. Relançable.
-   - `../bascule-rapport-archives/corriger-synthese.jsx` (archivé) : remplacements de texte de la synthèse issus du Word du 15 septembre 2026, à usage unique.
+   - `../indesign-archives/composer-graphiques.jsx` (archivé) : variante qui cale aussi le titre (bord gauche sur l'axe) et les précisions (toute la largeur du fond). Non retenue pour la V9, gardée pour référence.
+   - `../indesign-archives/numeroter-graphiques.jsx` (archivé) : pose sur chaque graphique G1 à G91 un numéro automatique (liste « Graphiques », style « Numéro graphique », Poppins SemiBold 7 pt pétrole) dans un petit bloc en haut à droite de la zone du graphique, au-dessus du titre, calé à 24 pt du bord droit du fond. Ordre de lecture : page, puis haut vers bas. Relançable.
+   - `../indesign-archives/corriger-synthese.jsx` (archivé) : remplacements de texte de la synthèse issus du Word du 15 septembre 2026, à usage unique.
    Chaque script écrit un rapport sur le bureau.
 4. Exporter le PDF et le vérifier : `python3 mesurer-pdf.py <pdf> 20 95 mesures.json` (marges attendues 24 pt de chaque côté du fond, axes identiques pour les graphiques d'une même page).
 5. Planche de comparaison : `python3 comparer.py <dossier des anciens SVG>`.
 
-Les scripts Python utilisent PyMuPDF (`pip install pymupdf`) ; `comparer.py` utilise aussi `rsvg-convert` (`brew install librsvg`) et les fontes Poppins de `../../fonts`.
+Les scripts Python utilisent PyMuPDF (`pip install pymupdf`) ; `comparer.py` utilise aussi `rsvg-convert` (`brew install librsvg`) et les fontes Poppins de `fonts/` à la racine du dépôt.
 
 ## Planche de comparaison
 

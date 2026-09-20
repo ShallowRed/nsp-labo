@@ -1,12 +1,12 @@
 // Pistes d'intercalaires (page de gauche, pétrole 50) reprenant le graphique de la couverture.
-// Usage : node intercalaires.mjs → ../../exports/couverture-hmsp/intercalaire-<piste>.svg
+// Usage : node intercalaires.mjs → sortie/intercalaire-<piste>.svg
 
 import fs from "node:fs";
 import path from "node:path";
 import * as d3 from "d3";
 
 const ICI = path.dirname(new URL(import.meta.url).pathname);
-const SORTIE = path.join(ICI, "../../exports/couverture-hmsp");
+const SORTIE = path.join(ICI, "sortie");
 const W = 595.28, H = 841.89, LISIERE = 557;
 const FOND = "#EDF7FD", BLANC = "#FFFFFF", P100 = "#D1EBF9", P200 = "#97D1F2", P600 = "#096286";
 // colonne de la couverture (216 → 521,6) reflétée sur une page de gauche

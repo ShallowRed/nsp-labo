@@ -4,7 +4,7 @@ current one: a recolour mapping for its SVG links, an InDesign script updating t
 swatches, and an inventory of what does not belong to the spectrum.
 
 Usage: bascule-rapport.py <report.idml> <links-dir> [--cmjn]
-Writes exports/spectre/bascule-rapport/: svg-recolore.txt, inventaire.md and nuances-indesign-rvb.jsx,
+Writes rapports/hm-2026/indesign/: svg-recolore.txt, inventaire.md and nuances-indesign-rvb.jsx,
 or nuances-indesign-cmjn.jsx with --cmjn (FOGRA39 separations from exports/spectre/epreuve-cmjn.csv).
 """
 import argparse
@@ -16,8 +16,8 @@ from pathlib import Path
 from urllib.parse import unquote
 from xml.etree import ElementTree as ET
 
-ROOT = Path(__file__).resolve().parent.parent
-OUT = ROOT / "exports/spectre/bascule-rapport"
+ROOT = Path(__file__).resolve().parents[3]
+OUT = ROOT / "rapports/hm-2026/indesign"
 
 # Recipe swatches ("bien · canard 600") are retargeted by their usage name to the acted
 # recipe and renamed accordingly. Same table as USAGES in notebooks/lib/ase.js.
@@ -47,7 +47,7 @@ def main():
     args = ap.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
 
-    origin = read_csv(ROOT / "exports/spectre/variantes/ecretage-srgb.csv")
+    origin = read_csv(ROOT / "rapports/hm-2026/indesign/spectre-origine.csv")
     current = read_csv(ROOT / "exports/spectre/spectre-nsp.csv")
     cmjn = read_csv(ROOT / "exports/spectre/epreuve-cmjn.csv") if args.cmjn else {}
     by_hex_origin = {}

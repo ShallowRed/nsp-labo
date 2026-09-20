@@ -3,7 +3,7 @@
 du spectre elles relèvent. Sert quand une passe de recoloration ne trouve rien.
 
 Usage : diagnostic-svg.py <dossier> [fichier de correspondance]
-        (par défaut exports/spectre/bascule-rapport/svg-recolore.txt)
+        (par défaut rapports/hm-2026/indesign/svg-recolore.txt)
 """
 import csv
 import re
@@ -11,7 +11,7 @@ import sys
 from collections import Counter
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[3]
 NEUTRES = {"#FFFFFF", "#000000", "#EBEBEB", "#DEDEDE", "#B3B3B3", "#7F7F7F", "#4D4D4D", "#111111"}
 
 # toutes les écritures de couleur qu'un SVG peut porter
@@ -41,9 +41,9 @@ def table(chemin):
 
 def main():
     dossier = Path(sys.argv[1])
-    corresp = Path(sys.argv[2]) if len(sys.argv) > 2 else ROOT / "exports/spectre/bascule-rapport/svg-recolore.txt"
+    corresp = Path(sys.argv[2]) if len(sys.argv) > 2 else ROOT / "rapports/hm-2026/indesign/svg-recolore.txt"
     courant = table(ROOT / "exports/spectre/spectre-nsp.csv")
-    origine = table(ROOT / "exports/spectre/variantes/ecretage-srgb.csv")
+    origine = table(ROOT / "rapports/hm-2026/indesign/spectre-origine.csv")
     cherchees = {}
     if corresp.exists():
         for ligne in corresp.read_text(encoding="utf8").splitlines():

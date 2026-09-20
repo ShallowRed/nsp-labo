@@ -1,13 +1,13 @@
 // Génère des pistes de couverture pour l'étude « Hiérarchie et management » avec des graphiques présents dans le rapport.
-// Usage : node generer.mjs → ../../exports/couverture-hmsp/<piste>.svg (A4 en points)
+// Usage : node generer.mjs → sortie/<piste>.svg (A4 en points)
 
 import fs from "node:fs";
 import path from "node:path";
 import * as d3 from "d3";
 
 const ICI = path.dirname(new URL(import.meta.url).pathname);
-const SORTIE = path.join(ICI, "../../exports/couverture-hmsp");
-const FORET = path.join(ICI, "../annexes-foret/donnees");
+const SORTIE = path.join(ICI, "sortie");
+const FORET = path.join(ICI, "../annexes/donnees");
 const DONNEES_G = "/Users/lucaspoulain/Downloads/Donnees_graphiques";
 
 const W = 595.28, H = 841.89, CHAMP = 557;
