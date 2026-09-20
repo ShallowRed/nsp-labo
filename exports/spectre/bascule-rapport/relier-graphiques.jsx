@@ -12,6 +12,11 @@ app.doScript(function () {
     if (it.hasOwnProperty("allGraphics")) cibles = cibles.concat(it.allGraphics);
     else if (it.hasOwnProperty("itemLink")) cibles.push(it);
   }
+  // a text cursor or an empty frame counts as a selection and would silently relink nothing
+  if (app.selection.length && !cibles.length) {
+    if (!confirm("La sélection ne contient aucun graphique. Relier tous les graphiques du document ?")) return;
+    cibles = doc.allGraphics;
+  }
   var lignes = [], relies = 0, absents = 0;
   for (var i = 0; i < cibles.length; i++) {
     var g = cibles[i], lien = null, nom = "";
