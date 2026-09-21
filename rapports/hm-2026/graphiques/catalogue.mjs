@@ -21,36 +21,36 @@ const CAUSES_MANAGER = [["D’une volonté personnelle d’exercer une fonction 
 const groupe = (intitule, fichier, modalites, axe = "") => ({intitule, fichier, axe, modalites: modalites.map((m) => (Array.isArray(m) ? m : [m]))});
 
 export const JEUX = {
-  bien: {reponses: ["Bien", "Plutôt bien", "Plutôt mal", "Mal", "Ne sait pas ou autre"], couleurs: ["#007777", "#32C2C2", "#EBBF95", "#C24146", "#E0E7EB"], blanc: [0, 3]},
-  bonne: {reponses: ["Bonne", "Plutôt bonne", "Plutôt mauvaise", "Mauvaise", "Ne sait pas ou autre"], couleurs: ["#007777", "#32C2C2", "#EBBF95", "#C24146", "#E0E7EB"], blanc: [0, 3]},
-  oui5: {reponses: ["Oui", "Plutôt oui", "Plutôt non", "Non", "Ne sait pas ou autre"], couleurs: ["#007777", "#32C2C2", "#EBBF95", "#C24146", "#E0E7EB"], blanc: [0, 3]},
-  oui3: {reponses: ["Oui", "Ne sait pas ou autre", "Non"], couleurs: ["#007777", "#DE9B58", "#C24146"], blanc: [0, 2]},
-  frequence: {reponses: ["Très fréquemment", "Souvent", "Parfois", "Jamais", "Ne sait pas ou autre"], couleurs: ["#007777", "#32C2C2", "#EBBF95", "#C24146", "#E0E7EB"], blanc: [0, 3]},
+  bien: {reponses: ["Bien", "Plutôt bien", "Plutôt mal", "Mal", "Ne sait pas ou autre"], couleurs: ["canard 550", "canard 300", "ambre 200", "coquelicot 500", "ardoise 100"], blanc: [0, 3]},
+  bonne: {reponses: ["Bonne", "Plutôt bonne", "Plutôt mauvaise", "Mauvaise", "Ne sait pas ou autre"], couleurs: ["canard 550", "canard 300", "ambre 200", "coquelicot 500", "ardoise 100"], blanc: [0, 3]},
+  oui5: {reponses: ["Oui", "Plutôt oui", "Plutôt non", "Non", "Ne sait pas ou autre"], couleurs: ["canard 550", "canard 300", "ambre 200", "coquelicot 500", "ardoise 100"], blanc: [0, 3]},
+  oui3: {reponses: ["Oui", "Ne sait pas ou autre", "Non"], couleurs: ["canard 550", "ambre 300", "coquelicot 500"], blanc: [0, 2]},
+  frequence: {reponses: ["Très fréquemment", "Souvent", "Parfois", "Jamais", "Ne sait pas ou autre"], couleurs: ["canard 550", "canard 300", "ambre 200", "coquelicot 500", "ardoise 100"], blanc: [0, 3]},
   // même échelle pour un fait défavorable (travailler seul) : le rouge est du côté « très fréquemment »
-  frequenceNegative: {reponses: ["Très fréquemment", "Souvent", "Parfois", "Jamais", "Ne sait pas ou autre"], couleurs: ["#C24146", "#DF6263", "#EBBF95", "#007777", "#E0E7EB"], blanc: [0, 1, 3]},
+  frequenceNegative: {reponses: ["Très fréquemment", "Souvent", "Parfois", "Jamais", "Ne sait pas ou autre"], couleurs: ["coquelicot 500", "coquelicot 400", "ambre 200", "canard 550", "ardoise 100"], blanc: [0, 1, 3]},
   // progression pétrole 700 / 550 / 400 / 250 / 100, comme les anciens graphiques
-  reunions: {reponses: ["Au moins une fois par semaine", "Au moins une fois par mois", "Au moins une fois tous les 6 mois", "Une fois par an ou moins", "Jamais", "Ne sait pas ou autre"], couleurs: ["#0B4862", "#107098", "#3C9AC8", "#7AC4EC", "#D1EBF9", "#E0E7EB"], blanc: [0, 1, 2]},
-  turnover: {reponses: ["Trop faible", "Comme il faut", "Trop important", "Ne sait pas ou autre"], couleurs: ["#DF6263", "#007777", "#C24146", "#E0E7EB"], blanc: [0, 1, 2]},
-  ouiNon3: {reponses: ["Oui", "Non", "Ne sait pas ou autre"], couleurs: ["#007777", "#C24146", "#E0E7EB"], blanc: [0, 1]},
-  ouiNon2: {reponses: ["Oui", "Non"], couleurs: ["#007777", "#C24146"], blanc: [0, 1]},
-  nonOui2: {reponses: ["Non", "Oui"], couleurs: ["#007777", "#C24146"], blanc: [0, 1]},
-  accord5: {reponses: ["Tout à fait d'accord", "Plutôt d'accord", "Plutôt pas d'accord", "Pas du tout d'accord", "Ne sait pas ou autre"], libelles: ["Tout à fait d’accord", "Plutôt d’accord", "Plutôt pas d’accord", "Pas du tout d’accord", "Ne sait pas ou autre"], couleurs: ["#007777", "#32C2C2", "#EBBF95", "#C24146", "#E0E7EB"], blanc: [0, 3]},
-  ouiToutAFait: {reponses: ["Oui, tout à fait", "Plutôt oui", "Plutôt non", "Non, pas du tout", "Ne sait pas ou autre"], couleurs: ["#007777", "#32C2C2", "#EBBF95", "#C24146", "#E0E7EB"], blanc: [0, 3]},
-  importance: {reponses: ["Très important", "Plutôt important", "Peu important", "Pas du tout important", "Ne sait pas ou autre"], couleurs: ["#007777", "#32C2C2", "#EBBF95", "#C24146", "#E0E7EB"], blanc: [0, 3]},
+  reunions: {reponses: ["Au moins une fois par semaine", "Au moins une fois par mois", "Au moins une fois tous les 6 mois", "Une fois par an ou moins", "Jamais", "Ne sait pas ou autre"], couleurs: ["petrole 700", "petrole 550", "petrole 400", "petrole 250", "petrole 100", "ardoise 100"], blanc: [0, 1, 2]},
+  turnover: {reponses: ["Trop faible", "Comme il faut", "Trop important", "Ne sait pas ou autre"], couleurs: ["coquelicot 400", "canard 550", "coquelicot 500", "ardoise 100"], blanc: [0, 1, 2]},
+  ouiNon3: {reponses: ["Oui", "Non", "Ne sait pas ou autre"], couleurs: ["canard 550", "coquelicot 500", "ardoise 100"], blanc: [0, 1]},
+  ouiNon2: {reponses: ["Oui", "Non"], couleurs: ["canard 550", "coquelicot 500"], blanc: [0, 1]},
+  nonOui2: {reponses: ["Non", "Oui"], couleurs: ["canard 550", "coquelicot 500"], blanc: [0, 1]},
+  accord5: {reponses: ["Tout à fait d'accord", "Plutôt d'accord", "Plutôt pas d'accord", "Pas du tout d'accord", "Ne sait pas ou autre"], libelles: ["Tout à fait d’accord", "Plutôt d’accord", "Plutôt pas d’accord", "Pas du tout d’accord", "Ne sait pas ou autre"], couleurs: ["canard 550", "canard 300", "ambre 200", "coquelicot 500", "ardoise 100"], blanc: [0, 3]},
+  ouiToutAFait: {reponses: ["Oui, tout à fait", "Plutôt oui", "Plutôt non", "Non, pas du tout", "Ne sait pas ou autre"], couleurs: ["canard 550", "canard 300", "ambre 200", "coquelicot 500", "ardoise 100"], blanc: [0, 3]},
+  importance: {reponses: ["Très important", "Plutôt important", "Peu important", "Pas du tout important", "Ne sait pas ou autre"], couleurs: ["canard 550", "canard 300", "ambre 200", "coquelicot 500", "ardoise 100"], blanc: [0, 3]},
   identification: {reponses: ["Oui, il s'agit d'une seule personne que vous pouvez nommer", "Vous identifiez deux personnes ou plus qui pourraient être qualifiées comme telles", "Non, vous n'identifiez personne en particulier qui pourrait correspondre", "Non, vous n'avez pas de supérieur·e hiérarchique direct·e"],
     libelles: ["Oui, il s’agit d’une seule personne que vous pouvez nommer", "Vous identifiez deux personnes ou plus qui pourraient être qualifiées comme telles", "Non, vous n’identifiez personne en particulier qui pourrait correspondre", "Non, vous n’avez pas de supérieur·e hiérarchique direct·e"],
-    couleurs: ["#007777", "#32C2C2", "#EBBF95", "#C24146"], blanc: [0, 3]},
+    couleurs: ["canard 550", "canard 300", "ambre 200", "coquelicot 500"], blanc: [0, 3]},
   // progression pétrole 700 / 250 pour deux manières de recevoir les indications
-  indications: {reponses: ["On vous dit aussi comment il faut le faire", "On vous indique plutôt l’objectif du travail et vous choisissez vous-même la façon d’y arriver", "Ne sait pas ou autre"], couleurs: ["#0B4862", "#7AC4EC", "#E0E7EB"], blanc: [0]},
-  consignes: {reponses: ["Vous appliquez strictement les consignes", "Dans certains cas, vous faites autrement", "La plupart du temps, vous faites autrement", "Ne sait pas ou autre"], couleurs: ["#0B4862", "#1C7EA9", "#7AC4EC", "#E0E7EB"], blanc: [0, 1]},
+  indications: {reponses: ["On vous dit aussi comment il faut le faire", "On vous indique plutôt l’objectif du travail et vous choisissez vous-même la façon d’y arriver", "Ne sait pas ou autre"], couleurs: ["petrole 700", "petrole 250", "ardoise 100"], blanc: [0]},
+  consignes: {reponses: ["Vous appliquez strictement les consignes", "Dans certains cas, vous faites autrement", "La plupart du temps, vous faites autrement", "Ne sait pas ou autre"], couleurs: ["petrole 700", "petrole 500", "petrole 250", "ardoise 100"], blanc: [0, 1]},
   // consignes qui dégradent le sens du travail : le rouge est du côté « très fréquemment »
-  degradation: {reponses: ["Oui, très fréquemment", "Oui, souvent", "Oui, parfois", "Non, jamais", "Ne sait pas ou autre"], couleurs: ["#C24146", "#DF6263", "#EBBF95", "#007777", "#E0E7EB"], blanc: [0, 1, 3]},
-  transmission: {reponses: ["Oui, souvent", "Oui, parfois", "Non", "Ne sait pas ou autre"], couleurs: ["#007777", "#32C2C2", "#C24146", "#E0E7EB"], blanc: [0, 2]},
+  degradation: {reponses: ["Oui, très fréquemment", "Oui, souvent", "Oui, parfois", "Non, jamais", "Ne sait pas ou autre"], couleurs: ["coquelicot 500", "coquelicot 400", "ambre 200", "canard 550", "ardoise 100"], blanc: [0, 1, 3]},
+  transmission: {reponses: ["Oui, souvent", "Oui, parfois", "Non", "Ne sait pas ou autre"], couleurs: ["canard 550", "canard 300", "coquelicot 500", "ardoise 100"], blanc: [0, 2]},
   // affirmation défavorable (« n'importe qui serait capable de le faire ») : le rouge est du côté « tout à fait d'accord »
-  accord5Inverse: {reponses: ["Tout à fait d'accord", "Plutôt d'accord", "Plutôt pas d'accord", "Pas du tout d'accord", "Ne sait pas ou autre"], libelles: ["Tout à fait d’accord", "Plutôt d’accord", "Plutôt pas d’accord", "Pas du tout d’accord", "Ne sait pas ou autre"], couleurs: ["#C24146", "#EBBF95", "#32C2C2", "#007777", "#E0E7EB"], blanc: [0, 3]},
-  changements: {reponses: ["Oui, des changements dans le bon sens", "Non, aucun changement", "Oui, des changements dans le mauvais sens", "Ne sait pas ou autre"], couleurs: ["#007777", "#DE9B58", "#C24146", "#E0E7EB"], blanc: [0, 2]},
-  impact: {reponses: ["Plutôt positifs", "Les aspects positifs et les aspects négatifs se compensent", "Plutôt négatifs", "Ne sait pas ou autre"], couleurs: ["#007777", "#DE9B58", "#C24146", "#E0E7EB"], blanc: [0, 2]},
-  enfreint: {reponses: ["Oui", "Non, mais j’en ai déjà eu envie", "Non, et je n’en jamais eu l’envie", "Ne sait pas ou autre"], libelles: ["Oui", "Non, mais j’en ai déjà eu envie", "Non, et je n’en ai jamais eu l’envie", "Ne sait pas ou autre"], couleurs: ["#C24146", "#DE9B58", "#007777", "#E0E7EB"], blanc: [0, 2]},
+  accord5Inverse: {reponses: ["Tout à fait d'accord", "Plutôt d'accord", "Plutôt pas d'accord", "Pas du tout d'accord", "Ne sait pas ou autre"], libelles: ["Tout à fait d’accord", "Plutôt d’accord", "Plutôt pas d’accord", "Pas du tout d’accord", "Ne sait pas ou autre"], couleurs: ["coquelicot 500", "ambre 200", "canard 300", "canard 550", "ardoise 100"], blanc: [0, 3]},
+  changements: {reponses: ["Oui, des changements dans le bon sens", "Non, aucun changement", "Oui, des changements dans le mauvais sens", "Ne sait pas ou autre"], couleurs: ["canard 550", "ambre 300", "coquelicot 500", "ardoise 100"], blanc: [0, 2]},
+  impact: {reponses: ["Plutôt positifs", "Les aspects positifs et les aspects négatifs se compensent", "Plutôt négatifs", "Ne sait pas ou autre"], couleurs: ["canard 550", "ambre 300", "coquelicot 500", "ardoise 100"], blanc: [0, 2]},
+  enfreint: {reponses: ["Oui", "Non, mais j’en ai déjà eu envie", "Non, et je n’en jamais eu l’envie", "Ne sait pas ou autre"], libelles: ["Oui", "Non, mais j’en ai déjà eu envie", "Non, et je n’en ai jamais eu l’envie", "Ne sait pas ou autre"], couleurs: ["coquelicot 500", "ambre 300", "canard 550", "ardoise 100"], blanc: [0, 2]},
 };
 
 export const CATALOGUE = [

@@ -12,4 +12,4 @@ Production d'un rapport InDesign de 124 pages à partir du système de couleurs 
 
 Le panneau Scripts d'InDesign lit ce dossier par un lien symbolique nommé « Passe couleur NSP », placé dans le dossier `Scripts Panel` des préférences d'InDesign et pointant vers `rapports/hm-2026/indesign`.
 
-Un graphique régénéré est recoloré avec `outils/svg-recolore.py` et `indesign/svg-recolore.txt` avant d'être copié dans le dossier `Links` du document ; `outils/diagnostic-svg.py` confirme le résultat. Dans InDesign, chaque script de calage se lance en simulation, puis en application.
+Un graphique régénéré lit ses couleurs dans le spectre courant et se copie tel quel dans le dossier `Links` du document. `outils/svg-recolore.py` et `indesign/svg-recolore.txt` servent aux SVG qui ne viennent pas du générateur ; `outils/diagnostic-svg.py` confirme le résultat. Dans InDesign, chaque script de calage se lance en simulation, puis en application.

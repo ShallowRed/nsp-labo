@@ -6,12 +6,13 @@ import fs from "node:fs";
 import path from "node:path";
 import * as d3 from "d3";
 import {FORMES} from "./catalogue-formes.mjs";
+import {teinte, cleExtraite} from "./couleurs.mjs";
 import {BLOCS, EXTRAITS, CORPS, VALEUR, MARGE, MARGE_X, ESPACE_LIBELLE, INTERLIGNE_LIBELLE, largeurTexte, lignesLibelle, colonnePour, bornes, equilibrer, lireGroupes} from "./disposition.mjs";
 
 const ICI = path.dirname(new URL(import.meta.url).pathname);
 const SORTIE = path.join(ICI, "sortie");
 
-const ARDOISE = "#3B4348", PETROLE = "#0B4862", GRILLE = "#E6ECEF", BLANC = "#FFFFFF";
+const ARDOISE = teinte("ardoise 700"), PETROLE = teinte("petrole 700"), GRILLE = "#E6ECEF", BLANC = "#FFFFFF";
 
 const echapper = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
 const texte = (x, y, s, {taille = CORPS, couleur = ARDOISE, ancre = "start", gras = false} = {}) =>
@@ -47,7 +48,7 @@ function groupes(g) {
     series.forEach(([serie, couleur], i) => {
       const v = valeurDe(item, serie);
       const yb = y + i * (BARRE + ECART);
-      barres += `<rect x="${x(0).toFixed(2)}" y="${yb.toFixed(2)}" width="${(x(v) - x(0)).toFixed(2)}" height="${BARRE}" fill="${couleur}"/>`;
+      barres += `<rect x="${x(0).toFixed(2)}" y="${yb.toFixed(2)}" width="${(x(v) - x(0)).toFixed(2)}" height="${BARRE}" fill="${teinte(couleur)}"/>`;
       barres += texte(x(v) + 3, yb + BARRE / 2, `${v} %`, {taille: VALEUR});
     });
     y += h + ENTRE_ITEMS;
@@ -64,7 +65,7 @@ function groupes(g) {
   for (const [serie, couleur] of series) {
     const l = 12 + largeurTexte(serie) + 12;
     if (lx + l - 12 > DROITE_MAX && lx > DEBUT_TRACE) { lx = DEBUT_TRACE; y += 13; }
-    svg += `<rect x="${lx.toFixed(1)}" y="${(y - 4).toFixed(1)}" width="8" height="8" fill="${couleur}"/>` + texte(lx + 12, y, serie);
+    svg += `<rect x="${lx.toFixed(1)}" y="${(y - 4).toFixed(1)}" width="8" height="8" fill="${teinte(couleur)}"/>` + texte(lx + 12, y, serie);
     lx += l;
   }
   return {svg, hauteur: Math.ceil(y + MARGE), axeX: DEBUT_TRACE, finX: FIN_TRACE, colonne, voisins};
@@ -86,10 +87,10 @@ function colonnes(g) {
       const cx = AXE_X + 16 + ic * (LARGEUR_COL + ESPACE);
       let cumul = 0;
       for (const [reponse, couleur] of segments) {
-        const d = donnees.find((d) => d.valeur === v && d.couleur.toUpperCase() === couleur.toUpperCase());
+        const d = donnees.find((d) => d.valeur === v && d.couleur.toUpperCase() === cleExtraite(couleur).toUpperCase());
         const p = d ? +d.pct : 0;
         const yh = echelle(cumul + p), yb = echelle(cumul);
-        svg += `<rect x="${cx}" y="${yh.toFixed(2)}" width="${LARGEUR_COL}" height="${(yb - yh).toFixed(2)}" fill="${couleur}"/>`;
+        svg += `<rect x="${cx}" y="${yh.toFixed(2)}" width="${LARGEUR_COL}" height="${(yb - yh).toFixed(2)}" fill="${teinte(couleur)}"/>`;
         if (p >= 6) svg += texte(cx + LARGEUR_COL / 2, (yh + yb) / 2, p, {taille: VALEUR, couleur: BLANC, ancre: "middle"});
         cumul += p;
       }
@@ -102,7 +103,7 @@ function colonnes(g) {
   g.colonnes.forEach(([, segments], ic) => {
     const lx = AXE_X + 16 + ic * (LARGEUR_COL + ESPACE);
     [...segments].reverse().forEach(([reponse, couleur], k) => {
-      svg += `<rect x="${lx}" y="${y + k * 13 - 4}" width="8" height="8" fill="${couleur}"/>` + texte(lx + 12, y + k * 13, reponse);
+      svg += `<rect x="${lx}" y="${y + k * 13 - 4}" width="8" height="8" fill="${teinte(couleur)}"/>` + texte(lx + 12, y + k * 13, reponse);
     });
   });
   y += 13 * Math.max(...g.colonnes.map(([, segments]) => segments.length));
@@ -125,7 +126,7 @@ function aires(g) {
   for (const [serie, couleur] of g.series) {
     const bas = cumul, haut = donnees.map((d, i) => bas[i] + d[serie]);
     const trace = d3.area().x((_, i) => x(abscisses[i])).y0((_, i) => echelle(bas[i])).y1((_, i) => echelle(haut[i]));
-    svg += `<path d="${trace(donnees)}" fill="${couleur}"/>`;
+    svg += `<path d="${trace(donnees)}" fill="${teinte(couleur)}"/>`;
     cumul = haut;
   }
   y += HAUT_TRACE;
@@ -138,7 +139,7 @@ function aires(g) {
   y += 13;
   let lx = DEBUT_TRACE;
   for (const [serie, couleur] of g.series) {
-    svg += `<rect x="${lx.toFixed(1)}" y="${(y - 4).toFixed(1)}" width="8" height="8" fill="${couleur}"/>` + texte(lx + 12, y, serie);
+    svg += `<rect x="${lx.toFixed(1)}" y="${(y - 4).toFixed(1)}" width="8" height="8" fill="${teinte(couleur)}"/>` + texte(lx + 12, y, serie);
     lx += 12 + largeurTexte(serie) + 12;
   }
   return {svg, hauteur: Math.ceil(y + MARGE), axeX: DEBUT_TRACE, finX: FIN_TRACE, colonne: DEBUT_TRACE - MARGE_X, voisins: []};

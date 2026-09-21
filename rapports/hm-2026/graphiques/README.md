@@ -8,6 +8,7 @@ Régénération des 91 graphiques du rapport InDesign à partir des CSV de R ou 
 |---|---|
 | `catalogue.mjs` | Barres empilées : par graphique, le fichier de `Links` à remplacer, la largeur du bloc, le jeu de réponses et de couleurs (`JEUX`), les groupes de modalités avec leur intitulé et, si l'ancien graphique en avait un, leur libellé d'axe (`axe`). Options : `colonne` (largeur de la colonne de libellés), `barre` (hauteur de barre), `aligner: false`. |
 | `catalogue-formes.mjs` | Barres groupées (G9, G17, G30, G45, G46, G66), colonnes empilées (G78) et aires empilées (G40), avec `legende` pour le titre de légende. |
+| `couleurs.mjs` | Les catalogues nomment un palier du spectre (« canard 550 ») ; la valeur est lue dans `exports/spectre/spectre-nsp.csv` à la génération. Le fichier porte aussi la table des couleurs du 4 septembre 2026, qui servent de clé aux données reconstituées. |
 | `disposition.mjs` | Règles communes : chasse réelle des glyphes Poppins, retour à la ligne, colonne de libellés partagée par page, bornes du tracé. |
 | `generer.mjs`, `generer-formes.mjs` | Générateurs. `node generer.mjs [G1 G2 …]` écrit `sortie/<id>.svg` ; sans argument, tout le catalogue. |
 | `poppins-largeurs.json` | Chasse des glyphes Poppins Regular et Bold, extraite des fontes incorporées au PDF du rapport. |
@@ -16,7 +17,7 @@ Régénération des 91 graphiques du rapport InDesign à partir des CSV de R ou 
 | `comparer.py`, `fonts.conf` | Planche PDF ancien / remplaçant à la même largeur. |
 | `mesurer-pdf.py` | Mesure dans un PDF exporté, pour chaque graphique, l'axe, la fin du tracé et les marges gauche et droite dans son fond bleu. Sert à vérifier un export. |
 
-Données de R : `~/Downloads/Donnees_graphiques`, un CSV par groupe (`G12_1.csv`…), séparateur `;`, `v1` réponse, `v2` modalité, `pct` à virgule décimale, valeurs entre guillemets pouvant contenir des `;` et des retours à la ligne. Les données reconstituées (`donnees-extraites/`) ont la couleur du segment en `v1`, traduite par le jeu de couleurs du graphique. Les données de G40 viennent de `Donnees_graphiques/donnees_G40.xlsx`, converties dans `donnees-extraites/G40_aires.csv`.
+Données de R : `~/Downloads/Donnees_graphiques`, un CSV par groupe (`G12_1.csv`…), séparateur `;`, `v1` réponse, `v2` modalité, `pct` à virgule décimale, valeurs entre guillemets pouvant contenir des `;` et des retours à la ligne. Les données reconstituées (`donnees-extraites/`) ont en `v1` la couleur que le segment avait dans le spectre du 4 septembre 2026, traduite par le jeu de couleurs du graphique et la table de `couleurs.mjs`. Les données de G40 viennent de `Donnees_graphiques/donnees_G40.xlsx`, converties dans `donnees-extraites/G40_aires.csv`.
 
 ## Règles de disposition
 
@@ -36,7 +37,7 @@ Données de R : `~/Downloads/Donnees_graphiques`, un CSV par groupe (`G12_1.csv`
 
 1. `node generer.mjs && node generer-formes.mjs` dans ce dossier.
 2. Copier `sortie/<id>.svg` vers `Links/<fichier>` du dossier InDesign (correspondance dans les catalogues), après sauvegarde du dossier `Links`.
-   Les catalogues écrivent les couleurs du spectre du 4 septembre 2026, et ces valeurs servent aussi de clé pour lire les données extraites des anciens SVG (`donnees-extraites/`) : les remplacer dans un catalogue fait disparaître des segments. Un SVG régénéré passe donc par `../outils/svg-recolore.py` avec `../indesign/svg-recolore.txt` avant d'aller dans `Links` ; `../outils/diagnostic-svg.py <dossier>` confirme le résultat.
+   Les SVG générés portent les couleurs courantes du spectre ; `../outils/diagnostic-svg.py sortie` le confirme. Après une modification du spectre, régénérer suffit.
 3. Dans InDesign, panneau Scripts, dossier « Passe couleur NSP » (`../indesign/`) :
    - `relier-graphiques.jsx` : relie chaque SVG au fichier de même nom dans le `Links` à côté du document, quel que soit le dossier d'origine du lien, puis le recharge. Nécessaire quand des liens pointent encore vers un ancien dossier (V6.2, V8), auquel cas InDesign les déclare à jour.
    - `injecter-graphiques.jsx` : image à 100 %, centrée, bloc ajusté au contenu. Titres et précisions intacts. Le bloc est recentré sur l'ancien centre : un graphique dont la largeur a changé est à recaler à la main. À lancer une fois ; avec une sélection, seuls les blocs sélectionnés sont traités.

@@ -6,13 +6,14 @@ import fs from "node:fs";
 import path from "node:path";
 import * as d3 from "d3";
 import {CATALOGUE, JEUX} from "./catalogue.mjs";
+import {teinte, cleExtraite} from "./couleurs.mjs";
 import {BLOCS, EXTRAITS, CORPS, VALEUR, MARGE, MARGE_X, ESPACE_LIBELLE, INTERLIGNE_LIBELLE, largeurTexte, lignesLibelle, colonnePour, bornes, equilibrer} from "./disposition.mjs";
 
 const ICI = path.dirname(new URL(import.meta.url).pathname);
 const DONNEES = "/Users/lucaspoulain/Downloads/Donnees_graphiques";
 const SORTIE = path.join(ICI, "sortie");
 
-const ARDOISE = "#3B4348", PETROLE = "#0B4862", GRILLE = "#E6ECEF", BLANC = "#FFFFFF";
+const ARDOISE = teinte("ardoise 700"), PETROLE = teinte("petrole 700"), GRILLE = "#E6ECEF", BLANC = "#FFFFFF";
 const SEUIL_VALEUR = 4.5;
 // Pas des barres uniforme dans tout le rapport
 const BARRE_FIXE = 13;
@@ -36,12 +37,13 @@ const fichierDonnees = (id, n, jeu) => {
   // les libellés de R contiennent parfois des retours à la ligne : on les replie en espaces
   const plat = (s) => s.replace(/\s+/g, " ").trim();
   // une réponse donnée comme couleur (données extraites d'un SVG) est traduite par le jeu de couleurs du graphique
-  const reponse = (v) => (v.startsWith("#") ? jeu.reponses[jeu.couleurs.map((c) => c.toUpperCase()).indexOf(v.toUpperCase())] ?? v : v);
+  const reponse = (v) => (v.startsWith("#") ? jeu.reponses[jeu.couleurs.map((c) => cleExtraite(c).toUpperCase()).indexOf(v.toUpperCase())] ?? v : v);
   return d3.dsvFormat(";").parse(fs.readFileSync(path.join(dossier, nom), "utf8"), (d) => ({reponse: reponse(plat(d.v1)), modalite: plat(d.v2), pct: +d.pct.replace(",", ".")}));
 };
 
 function generer(g) {
-  const {reponses, couleurs, blanc, libelles: libellesReponses = reponses} = JEUX[g.jeu];
+  const {reponses, blanc, libelles: libellesReponses = reponses} = JEUX[g.jeu];
+  const couleurs = JEUX[g.jeu].couleurs.map(teinte);
   const {colonne, plafond: COLONNE, voisins} = colonnePour(g.id);
   // la dernière graduation (« 100 ») est centrée sur la fin du tracé : sa moitié droite déborde
   const {DEBUT: DEBUT_TRACE, FIN: FIN_TRACE, DROITE_MAX} = bornes(g.largeur, colonne, largeurTexte("100") / 2, g.colonne === undefined);

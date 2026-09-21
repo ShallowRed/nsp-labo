@@ -27,7 +27,7 @@ Un notebook par sujet ; un notebook sans usage est supprimé, git garde l'histor
 
 ## Points ouverts
 
-- Le générateur de graphiques de `rapports/hm-2026/graphiques/` écrit des couleurs saisies en dur, celles du 4 septembre 2026, et les SVG sont recolorés ensuite. Ces valeurs servent aussi de clé aux données reconstituées ; les lire par nom de palier dans le CSV demande de séparer les deux.
+- Les traits de grille des graphiques du rapport sont d'un gris, `#E6ECEF`, qui n'appartient pas au spectre.
 - Les données de ces graphiques sont sur le poste de Lucas et ne sont pas versionnées ; ce dépôt est public.
 - La copie du CSV vers nsp-site est manuelle.
 
