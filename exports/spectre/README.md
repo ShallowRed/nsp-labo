@@ -7,6 +7,7 @@ Deux fichiers, générés depuis la source unique du spectre (`node scripts/gen-
   fichier. Les couleurs arrivent groupées et nommées, en couleurs globales (modifier une
   couleur du nuancier met à jour tout ce qui l'utilise).
 - **`spectre-nsp.csv`** : la référence complète (152 valeurs, hex et notation `oklch()` exacte), pour tout autre outil.
+- **`spectre-nsp.css`** : les 152 couleurs en propriétés CSS `--nsp-<famille>-<palier>` (`scripts/gen-css.mjs`), pour une page ou une feuille Sass.
 - **`epreuve-cmjn.csv`** : séparations Coated FOGRA39 et écart ΔE2000 de chaque couleur (`scripts/epreuve-cmjn.py`), présentées dans le notebook Impression.
 
 ## Ce que contient le nuancier
