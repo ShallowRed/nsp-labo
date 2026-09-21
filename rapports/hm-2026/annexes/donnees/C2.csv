@@ -11,8 +11,8 @@ Encadrement,Non,Oui mino,0.965,0.752,1.238,0,1.0
 Statut,Titulaire ou assimilé,CDD,1.187,0.719,1.96,0,1.2
 Statut,Titulaire ou assimilé,CDI,1.006,0.705,1.434,0,1.0
 Taille établissement,100 ou moins,100 à 500,0.852,0.647,1.122,0,0.9
-Taille établissement,100 ou moins,1000 et plus,0.705,0.524,0.949,1,0.7
 Taille établissement,100 ou moins,500 à 1000,1.045,0.701,1.557,0,1.0
+Taille établissement,100 ou moins,1000 et plus,0.705,0.524,0.949,1,0.7
 Syndicalisme,Ni adhérent·e ni sympathisant·e,Adhérent·e,0.993,0.785,1.255,0,1.0
 Syndicalisme,Ni adhérent·e ni sympathisant·e,Sympathisant·e,1.235,0.887,1.718,0,1.2
 Equilibre pro-perso,Oui ou plutôt oui,Non ou plutôt non,1.861,1.389,2.494,1,1.9

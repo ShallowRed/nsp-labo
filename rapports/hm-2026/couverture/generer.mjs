@@ -9,15 +9,15 @@ const ICI = path.dirname(new URL(import.meta.url).pathname);
 const SORTIE = path.join(ICI, "sortie");
 const FORET = path.join(ICI, "../annexes/donnees");
 import {DONNEES as DONNEES_G} from "../graphiques/disposition.mjs";
+import {teinte} from "../graphiques/couleurs.mjs";
 
 const W = 595.28, H = 841.89, CHAMP = 557;
 const GAUCHE = 51, DROITE = 522; // marge du titre, bord droit de l'année
 const FILET = {x1: 216, x2: 440, y: 751};
 
-const S = {
-  petrole: {50: "#EDF7FD", 100: "#D1EBF9", 250: "#7AC4EC", 500: "#1C7EA9", 550: "#107098", 600: "#096286", 650: "#085574", 700: "#0B4862"},
-  ardoise: {50: "#F2F6F8", 100: "#E0E7EB", 300: "#A1AEB6", 400: "#84929A", 500: "#6A777F", 700: "#3B4348"},
-};
+// S.petrole[600] lit le palier dans le spectre courant
+const famille = (nom) => new Proxy({}, {get: (_, palier) => teinte(`${nom} ${palier}`)});
+const S = {petrole: famille("petrole"), ardoise: famille("ardoise")};
 const BLANC = "#FFFFFF";
 
 const logo = (couleur) => `data:image/png;base64,${fs.readFileSync(path.join(ICI, `logo-${couleur}.png`)).toString("base64")}`;
