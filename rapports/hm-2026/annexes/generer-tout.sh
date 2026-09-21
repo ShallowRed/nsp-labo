@@ -1,5 +1,5 @@
 #!/bin/sh
-# Génère les douze graphiques des annexes au gabarit retenu : 350 × 630 pt, texte à 7 pt.
+# Génère les douze graphiques des annexes au gabarit retenu : 353,738 × 630 pt, texte à 7 pt.
 set -e
 cd "$(dirname "$0")"
 titre() {
@@ -21,6 +21,6 @@ for serie in A B C; do
   for n in 1 2 3 4; do
     retrait=0.6
     [ "$n" = 1 ] && retrait=0.3   # les graphiques « tous versants » ont une variable et deux modalités de plus
-    node generer.mjs "donnees/$serie$n.csv" "sortie/$serie$n.svg" --largeur 350 --hauteur 630 --corps 7 --retrait "$retrait" --axe "$(titre $serie)" --perimetre "$(perimetre $n)"
+    node generer.mjs "donnees/$serie$n.csv" "sortie/$serie$n.svg" --largeur 353.738 --hauteur 630 --corps 7 --retrait "$retrait" --axe "$(titre $serie)" --perimetre "$(perimetre $n)"
   done
 done
