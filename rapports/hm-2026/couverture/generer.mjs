@@ -308,13 +308,13 @@ function finale({sansHabillage = false} = {}) {
     y += epaisseur + ecart;
   }
   // Aucun tracé translucide n'en recouvre un autre, pour qu'aucune surépaisseur claire n'apparaisse :
-  // la ligne 0 longe le bord gauche des barres, les autres lignes de grille s'interrompent derrière les barres
+  // la ligne 0 longe le bord gauche des barres, la ligne 100 est continue au-delà de leur bord droit, les autres s'interrompent derrière les barres
   // et s'arrêtent au-dessus de l'axe, l'axe part du bord droit de la ligne 0.
   const xTrait = (g) => (g === 0 ? x1 - TRAIT / 2 : x(g));
   const hautBarres = lignes.map((_, i) => y0 + i * (epaisseur + ecart));
   const troncons = [[-14, y0], ...hautBarres.slice(1).map((h) => [h - ecart, h]), [hautBarres.at(-1) + epaisseur, CHAMP - TRAIT]];
   const grille = `<line x1="${xTrait(0)}" x2="${xTrait(0)}" y1="-14" y2="${CHAMP}" stroke="${encre}" stroke-opacity="0.5" stroke-width="${TRAIT}"/>`
-    + GRADUATIONS.slice(1).map((g) => troncons.map(([a, b]) => `<line x1="${x(g)}" x2="${x(g)}" y1="${a}" y2="${b}" stroke="${encre}" stroke-opacity="0.13" stroke-width="0.5"/>`).join("")).join("");
+    + GRADUATIONS.slice(1).map((g) => (g === 100 ? [[-14, CHAMP - TRAIT]] : troncons).map(([a, b]) => `<line x1="${x(g)}" x2="${x(g)}" y1="${a}" y2="${b}" stroke="${encre}" stroke-opacity="0.13" stroke-width="0.5"/>`).join("")).join("");
   // axe sur la lisière : trait blanc dans le champ, graduations et étiquettes dans la bande, dans le prolongement des lignes
   const axe = `<line x1="${x1}" x2="${x2 + 0.25}" y1="${CHAMP - TRAIT / 2}" y2="${CHAMP - TRAIT / 2}" stroke="${encre}" stroke-opacity="0.5" stroke-width="${TRAIT}"/>`
     + GRADUATIONS.map((g) => `<line x1="${xTrait(g)}" x2="${xTrait(g)}" y1="${CHAMP}" y2="${CHAMP + 4}" stroke="${S.petrole[600]}" stroke-opacity="0.6" stroke-width="${g === 0 ? TRAIT : 0.6}"/>`
