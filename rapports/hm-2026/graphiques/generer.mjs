@@ -7,10 +7,9 @@ import path from "node:path";
 import * as d3 from "d3";
 import {CATALOGUE, JEUX} from "./catalogue.mjs";
 import {teinte, cleExtraite} from "./couleurs.mjs";
-import {BLOCS, EXTRAITS, CORPS, VALEUR, MARGE, MARGE_X, ESPACE_LIBELLE, INTERLIGNE_LIBELLE, largeurTexte, lignesLibelle, colonnePour, bornes, equilibrer} from "./disposition.mjs";
+import {BLOCS, EXTRAITS, DONNEES, CORPS, VALEUR, MARGE, MARGE_X, ESPACE_LIBELLE, INTERLIGNE_LIBELLE, largeurTexte, lignesLibelle, colonnePour, bornes, equilibrer} from "./disposition.mjs";
 
 const ICI = path.dirname(new URL(import.meta.url).pathname);
-const DONNEES = "/Users/lucaspoulain/Downloads/Donnees_graphiques";
 const SORTIE = path.join(ICI, "sortie");
 
 const ARDOISE = teinte("ardoise 700"), PETROLE = teinte("petrole 700"), GRILLE = teinte("ardoise 100"), BLANC = "#FFFFFF";

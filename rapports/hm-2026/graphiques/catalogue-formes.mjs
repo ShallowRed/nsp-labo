@@ -15,7 +15,7 @@ export const FORMES = [
   {id: "G66", type: "groupes", legende: "Versant de la FP", fichier: "G66_managers_benefice_accompagnement_long_colonne_barre.svg", largeur: 328, series: VERSANT, max: 60, entete: "Plusieurs réponses possibles"},
   {id: "G78", type: "colonnes", fichier: "G78_delta_valeur_agir_pleine_barre.svg", largeur: 350,
     colonnes: [["Importance de la valeur", [["Très important", "petrole 700"], ["Plutôt important", "petrole 550"]]], ["Capacité à agir", [["Oui", "canard 550"], ["Plutôt oui", "canard 300"]]]]},
-  // données de R (Donnees_graphiques/donnees_G40.xlsx), converties dans donnees-extraites/G40_aires.csv
+  // données de R (donnees_G40.xlsx de nsp-donnees), converties dans donnees-extraites/G40_aires.csv
   {id: "G40", type: "aires", legende: "Bien-être au travail", fichier: "G40_indice_qualite_collectif_large.svg", largeur: 366, max: 80, pas: 20, unite: "%",
     abscisse: "Indicateur de qualité du collectif", series: [["Mal", "coquelicot 500"], ["Plutôt mal", "coquelicot 400"]]},
 ];

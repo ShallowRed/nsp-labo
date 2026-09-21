@@ -27,6 +27,6 @@ Un notebook par sujet ; un notebook sans usage est supprimé, git garde l'histor
 
 ## Points ouverts
 
-- Les données de ces graphiques sont sur le poste de Lucas et ne sont pas versionnées ; ce dépôt est public.
+- Les agrégats de l'enquête que lisent les générateurs du rapport sont dans le dépôt privé `nsp-donnees`. Les données reconstituées depuis les anciens SVG (`graphiques/donnees-extraites/`, `annexes/donnees/`) sont encore dans ce dépôt, qui est public.
 
 La mémoire de travail du chantier est dans la carte Pawn : `shallowred-garden/agents/workspace-pawn/content/projets/nos-services-publics/`.

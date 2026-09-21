@@ -8,7 +8,7 @@ import * as d3 from "d3";
 const ICI = path.dirname(new URL(import.meta.url).pathname);
 const SORTIE = path.join(ICI, "sortie");
 const FORET = path.join(ICI, "../annexes/donnees");
-const DONNEES_G = "/Users/lucaspoulain/Downloads/Donnees_graphiques";
+import {DONNEES as DONNEES_G} from "../graphiques/disposition.mjs";
 
 const W = 595.28, H = 841.89, CHAMP = 557;
 const GAUCHE = 51, DROITE = 522; // marge du titre, bord droit de l'année

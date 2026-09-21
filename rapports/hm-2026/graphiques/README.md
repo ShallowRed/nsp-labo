@@ -17,7 +17,7 @@ Régénération des 91 graphiques du rapport InDesign à partir des CSV de R ou 
 | `comparer.py`, `fonts.conf` | Planche PDF ancien / remplaçant à la même largeur. |
 | `mesurer-pdf.py` | Mesure dans un PDF exporté, pour chaque graphique, l'axe, la fin du tracé et les marges gauche et droite dans son fond bleu. Sert à vérifier un export. |
 
-Données de R : `~/Downloads/Donnees_graphiques`, un CSV par groupe (`G12_1.csv`…), séparateur `;`, `v1` réponse, `v2` modalité, `pct` à virgule décimale, valeurs entre guillemets pouvant contenir des `;` et des retours à la ligne. Les données reconstituées (`donnees-extraites/`) ont en `v1` la couleur que le segment avait dans le spectre du 4 septembre 2026, traduite par le jeu de couleurs du graphique et la table de `couleurs.mjs`. Les données de G40 viennent de `Donnees_graphiques/donnees_G40.xlsx`, converties dans `donnees-extraites/G40_aires.csv`.
+Données de R : dépôt privé `nsp-donnees` cloné à côté de celui-ci (`hm-2026/graphiques/`), ou dossier désigné par `NSP_DONNEES`, un CSV par groupe (`G12_1.csv`…), séparateur `;`, `v1` réponse, `v2` modalité, `pct` à virgule décimale, valeurs entre guillemets pouvant contenir des `;` et des retours à la ligne. Les données reconstituées (`donnees-extraites/`) ont en `v1` la couleur que le segment avait dans le spectre du 4 septembre 2026, traduite par le jeu de couleurs du graphique et la table de `couleurs.mjs`. Les données de G40 viennent de `donnees_G40.xlsx` du même dossier, converties dans `donnees-extraites/G40_aires.csv`.
 
 ## Règles de disposition
 

@@ -4,6 +4,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import * as d3 from "d3";
+import {DONNEES} from "../graphiques/disposition.mjs";
 
 const ICI = path.dirname(new URL(import.meta.url).pathname);
 const SORTIE = path.join(ICI, "sortie");
@@ -13,7 +14,7 @@ const FOND = "#EDF7FD", BLANC = "#FFFFFF", P100 = "#D1EBF9", P200 = "#97D1F2", P
 const X1 = W - 521.57, X2 = W - 216;
 const x = d3.scaleLinear([0, 100], [X1, X2]);
 
-const G3 = d3.dsvFormat(";").parse(fs.readFileSync("/Users/lucaspoulain/Downloads/Donnees_graphiques/G3_bien_etre_general_croise_travail.csv", "utf8"),
+const G3 = d3.dsvFormat(";").parse(fs.readFileSync(path.join(DONNEES, "G3_bien_etre_general_croise_travail.csv"), "utf8"),
   (d) => ({general: d.v1, travail: d.v2, pct: +d.pct.replace(",", ".")}));
 const REPONSES = ["Bien", "Plutôt bien", "Plutôt mal", "Mal", "Ne sait pas ou autre"];
 const LIGNES = ["Bien", "Plutôt bien", "Plutôt mal", "Mal"];

@@ -13,6 +13,8 @@ const ICI = path.dirname(new URL(import.meta.url).pathname);
 const AVANCES = JSON.parse(fs.readFileSync(path.join(ICI, "poppins-largeurs.json"), "utf8")); // chasse des glyphes, en em
 export const BLOCS = JSON.parse(fs.readFileSync(path.join(ICI, "blocs.json"), "utf8")); // dimensions et pages des blocs InDesign, relevées dans l'IDML
 export const EXTRAITS = path.join(ICI, "donnees-extraites"); // données reconstituées depuis les anciens SVG
+// agrégats de la chaîne R : dépôt privé nsp-donnees cloné à côté de celui-ci, ou dossier donné par NSP_DONNEES
+export const DONNEES = process.env.NSP_DONNEES ?? path.join(ICI, "../../../../nsp-donnees/hm-2026/graphiques");
 
 export const CORPS = 7, VALEUR = 6.5, MARGE = 8;
 export const MARGE_X = 24;
