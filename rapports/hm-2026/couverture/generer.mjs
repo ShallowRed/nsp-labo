@@ -312,9 +312,10 @@ function finale({sansHabillage = false} = {}) {
     + GRADUATIONS.map((g) => `<line x1="${x(g)}" x2="${x(g)}" y1="${CHAMP}" y2="${CHAMP + 4}" stroke="${S.petrole[600]}" stroke-opacity="0.6" stroke-width="0.6"/>`
       + texte(x(g), CHAMP + 12, g === 100 ? "100 %" : g, {taille: 7, couleur: S.petrole[600], ancre: "middle"})).join("");
   const graphique = grille + barres + versants + axe;
-  // le bloc du graphique seul part du bord gauche de la page et va jusqu'au fond perdu de droite (14 pt)
-  const largeurBloc = (595.276 + 14).toFixed(3);
-  if (sansHabillage) return `<svg xmlns="http://www.w3.org/2000/svg" width="${largeurBloc}pt" height="${H}pt" viewBox="0 0 ${largeurBloc} ${H}">${graphique}</svg>`;
+  // le bloc du graphique seul part du bord gauche de la page et couvre le fond perdu de 14 pt à droite, en tête et en pied ;
+  // le dessin est décalé de la hauteur du fond perdu de tête, et la grille monte jusqu'au bord du bloc
+  const FOND_PERDU = 14, largeurBloc = (595.276 + FOND_PERDU).toFixed(3), hauteurBloc = (H + 2 * FOND_PERDU).toFixed(2);
+  if (sansHabillage) return `<svg xmlns="http://www.w3.org/2000/svg" width="${largeurBloc}pt" height="${hauteurBloc}pt" viewBox="0 0 ${largeurBloc} ${hauteurBloc}"><g transform="translate(0,${FOND_PERDU})">${graphique.replaceAll(' y1="0" y2="' + CHAMP + '"', ` y1="${-FOND_PERDU}" y2="${CHAMP}"`)}</g></svg>`;
   return `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${W}pt" height="${H}pt" viewBox="0 0 ${W} ${H}">
 <rect width="${W}" height="${CHAMP}" fill="${S.petrole[600]}"/>
 <rect y="${CHAMP}" width="${W}" height="${H - CHAMP}" fill="${S.petrole[50]}"/>
