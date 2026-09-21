@@ -28,7 +28,7 @@ const COULEURS = {
   texte: teinte("ardoise 700"),
   secondaire: teinte("ardoise 500"),
   bande: teinte("ardoise 50"),
-  grille: "#E6ECEF",     // entre ardoise 50 et 100
+  grille: teinte("ardoise 100"),
   grilleUn: teinte("ardoise 300"), // ligne de la cote 1
   pointRef: teinte("ardoise 400") // point de la référence
 };

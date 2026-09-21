@@ -27,7 +27,6 @@ Un notebook par sujet ; un notebook sans usage est supprimé, git garde l'histor
 
 ## Points ouverts
 
-- Les traits de grille des graphiques du rapport sont d'un gris, `#E6ECEF`, qui n'appartient pas au spectre.
 - Les données de ces graphiques sont sur le poste de Lucas et ne sont pas versionnées ; ce dépôt est public.
 
 La mémoire de travail du chantier est dans la carte Pawn : `shallowred-garden/agents/workspace-pawn/content/projets/nos-services-publics/`.

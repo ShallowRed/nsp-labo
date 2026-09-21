@@ -13,7 +13,7 @@ const ICI = path.dirname(new URL(import.meta.url).pathname);
 const DONNEES = "/Users/lucaspoulain/Downloads/Donnees_graphiques";
 const SORTIE = path.join(ICI, "sortie");
 
-const ARDOISE = teinte("ardoise 700"), PETROLE = teinte("petrole 700"), GRILLE = "#E6ECEF", BLANC = "#FFFFFF";
+const ARDOISE = teinte("ardoise 700"), PETROLE = teinte("petrole 700"), GRILLE = teinte("ardoise 100"), BLANC = "#FFFFFF";
 const SEUIL_VALEUR = 4.5;
 // Pas des barres uniforme dans tout le rapport
 const BARRE_FIXE = 13;

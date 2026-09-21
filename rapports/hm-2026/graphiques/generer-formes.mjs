@@ -12,7 +12,7 @@ import {BLOCS, EXTRAITS, CORPS, VALEUR, MARGE, MARGE_X, ESPACE_LIBELLE, INTERLIG
 const ICI = path.dirname(new URL(import.meta.url).pathname);
 const SORTIE = path.join(ICI, "sortie");
 
-const ARDOISE = teinte("ardoise 700"), PETROLE = teinte("petrole 700"), GRILLE = "#E6ECEF", BLANC = "#FFFFFF";
+const ARDOISE = teinte("ardoise 700"), PETROLE = teinte("petrole 700"), GRILLE = teinte("ardoise 100"), BLANC = "#FFFFFF";
 
 const echapper = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
 const texte = (x, y, s, {taille = CORPS, couleur = ARDOISE, ancre = "start", gras = false} = {}) =>

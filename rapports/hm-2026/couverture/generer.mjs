@@ -80,7 +80,7 @@ function foretHierarchie({x0, y0, k, domaine, c, interligne = 1.5}) {
   return {svg, xUn: x(1), bas: ya + 20 * k};
 }
 
-const CLAIR = {bande: BLANC, texte: S.ardoise[700], intitule: S.petrole[700], secondaire: S.ardoise[500], grille: "#E6ECEF", grilleUn: S.ardoise[300], pointRef: S.ardoise[400], point: S.petrole[500], creux: BLANC};
+const CLAIR = {bande: BLANC, texte: S.ardoise[700], intitule: S.petrole[700], secondaire: S.ardoise[500], grille: S.ardoise[100], grilleUn: S.ardoise[300], pointRef: S.ardoise[400], point: S.petrole[500], creux: BLANC};
 const SOMBRE = {bande: S.petrole[650], texte: S.petrole[100], intitule: BLANC, secondaire: S.petrole[250], grille: S.petrole[550], grilleUn: S.petrole[250], pointRef: S.petrole[250], point: BLANC, creux: S.petrole[600]};
 
 // 1b. Extrait « hiérarchie » de l'annexe A1, sur fond clair.
