@@ -113,7 +113,7 @@ const plot = Plot.plot({
   marks: [
     Plot.rect(bandes.filter((b) => b.alterne), {x1: 0, x2: LARGEUR, y1: "y1", y2: "y2", fill: COULEURS.bande}),
     // grille verticale continue, d'un axe gradué à l'autre ; la ligne de la cote 1 est plus marquée
-    Plot.ruleX(graduations.filter((g) => g !== 1), {x: (d) => x(d), y1: HAUT, y2: y + 2, stroke: COULEURS.grille, strokeWidth: 0.4}),
+    Plot.ruleX(graduations.filter((g) => g !== 1), {x: (d) => x(d), y1: HAUT, y2: y + 2, stroke: COULEURS.grille, strokeWidth: 0.25}),
     Plot.ruleX([1], {x: (d) => x(d), y1: HAUT, y2: y + 2, stroke: COULEURS.grilleUn, strokeWidth: 0.6}),
     // repère de la cote 1, sur la hauteur des modalités de chaque variable
     // point de la référence, sur la ligne de la cote 1

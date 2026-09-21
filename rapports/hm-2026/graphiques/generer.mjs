@@ -86,7 +86,7 @@ function generer(g) {
     for (const r of reserves.filter((r) => gx >= r.x1 && gx <= r.x2)) morceaux = morceaux.flatMap(([a, b]) => (r.y2 <= a || r.y1 >= b ? [[a, b]] : [[a, r.y1], [r.y2, b]].filter(([c, d]) => d - c > 6)));
     return morceaux;
   };
-  let svg = graduations.map((v) => troncons(x(v)).map(([a, b]) => `<line x1="${x(v)}" x2="${x(v)}" y1="${a.toFixed(2)}" y2="${b.toFixed(2)}" stroke="${GRILLE}" stroke-width="0.4"/>`).join("")).join("") + barres;
+  let svg = graduations.map((v) => troncons(x(v)).map(([a, b]) => `<line x1="${x(v)}" x2="${x(v)}" y1="${a.toFixed(2)}" y2="${b.toFixed(2)}" stroke="${GRILLE}" stroke-width="0.25"/>`).join("")).join("") + barres;
   y = finTrace + 1;
   svg += `<line x1="${DEBUT_TRACE}" x2="${FIN_TRACE}" y1="${y}" y2="${y}" stroke="${ARDOISE}" stroke-width="0.6"/>`;
   svg += graduations.map((v) => `<line x1="${x(v)}" x2="${x(v)}" y1="${y}" y2="${y + 2.5}" stroke="${ARDOISE}" stroke-width="0.6"/>${texte(x(v), y + 8, v, {ancre: "middle"})}`).join("");

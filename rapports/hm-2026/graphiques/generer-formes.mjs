@@ -55,7 +55,7 @@ function groupes(g) {
   }
   const finTrace = y - ENTRE_ITEMS + 2;
   const graduations = x.ticks(4);
-  svg += graduations.map((v) => `<line x1="${x(v)}" x2="${x(v)}" y1="${debutTrace}" y2="${finTrace + 1}" stroke="${GRILLE}" stroke-width="0.4"/>`).join("") + barres;
+  svg += graduations.map((v) => `<line x1="${x(v)}" x2="${x(v)}" y1="${debutTrace}" y2="${finTrace + 1}" stroke="${GRILLE}" stroke-width="0.25"/>`).join("") + barres;
   y = finTrace + 1;
   svg += `<line x1="${DEBUT_TRACE}" x2="${FIN_TRACE}" y1="${y}" y2="${y}" stroke="${ARDOISE}" stroke-width="0.6"/>`;
   svg += graduations.map((v) => `<line x1="${x(v)}" x2="${x(v)}" y1="${y}" y2="${y + 2.5}" stroke="${ARDOISE}" stroke-width="0.6"/>${texte(x(v), y + 8, v, {ancre: "middle"})}`).join("");
@@ -81,7 +81,7 @@ function colonnes(g) {
     y += 14;
     const echelle = d3.scaleLinear([0, 100], [y + HAUT_TRACE, y]);
     for (const t of [0, 25, 50, 75, 100]) {
-      svg += `<line x1="${AXE_X}" x2="${g.largeur - MARGE_X}" y1="${echelle(t)}" y2="${echelle(t)}" stroke="${GRILLE}" stroke-width="0.4"/>` + texte(AXE_X - 4, echelle(t), t, {taille: 6, ancre: "end"});
+      svg += `<line x1="${AXE_X}" x2="${g.largeur - MARGE_X}" y1="${echelle(t)}" y2="${echelle(t)}" stroke="${GRILLE}" stroke-width="0.25"/>` + texte(AXE_X - 4, echelle(t), t, {taille: 6, ancre: "end"});
     }
     g.colonnes.forEach(([titre, segments], ic) => {
       const cx = AXE_X + 16 + ic * (LARGEUR_COL + ESPACE);
@@ -121,7 +121,7 @@ function aires(g) {
   let y = MARGE + 12, svg = "";
   svg += texte(DEBUT_TRACE - ESPACE_LIBELLE, MARGE + 3, g.unite, {ancre: "end"});
   const echelle = d3.scaleLinear([0, g.max], [y + HAUT_TRACE, y]);
-  svg += d3.range(0, g.max + 1, g.pas).map((t) => `<line x1="${DEBUT_TRACE}" x2="${FIN_TRACE}" y1="${echelle(t)}" y2="${echelle(t)}" stroke="${GRILLE}" stroke-width="0.4"/>` + texte(DEBUT_TRACE - ESPACE_LIBELLE, echelle(t), t, {ancre: "end"})).join("");
+  svg += d3.range(0, g.max + 1, g.pas).map((t) => `<line x1="${DEBUT_TRACE}" x2="${FIN_TRACE}" y1="${echelle(t)}" y2="${echelle(t)}" stroke="${GRILLE}" stroke-width="0.25"/>` + texte(DEBUT_TRACE - ESPACE_LIBELLE, echelle(t), t, {ancre: "end"})).join("");
   let cumul = donnees.map(() => 0);
   for (const [serie, couleur] of g.series) {
     const bas = cumul, haut = donnees.map((d, i) => bas[i] + d[serie]);
