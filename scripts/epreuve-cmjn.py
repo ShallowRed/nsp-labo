@@ -7,7 +7,7 @@ separation, and the CIEDE2000 distance between the two, which flags the colours 
 cannot reproduce.
 
 Usage: epreuve-cmjn.py [--profile path.icc] [--intent relative|perceptual]
-Writes exports/spectre/epreuve-cmjn.csv and exports/spectre/epreuve-cmjn.html.
+Writes exports/spectre/epreuve-cmjn.csv and its copy for the Impression notebook, notebooks/data/epreuve-cmjn.csv.
 Requires Pillow (python3 -m venv .venv && .venv/bin/pip install pillow).
 """
 import argparse
@@ -101,19 +101,6 @@ def main():
         w.writeheader()
         w.writerows(out)
 
-    fams = list(dict.fromkeys(r["famille"] for r in out))
-    cell = lambda r: (f'<td><div class="pair"><span style="background:{r["hex"]}"></span><span style="background:{r["hex epreuve"]}"></span></div>'
-                      f'<small class="{"warn" if r["dE2000"] >= 5 else ""}">{r["palier"]} · ΔE {r["dE2000"]}<br>{r["C"]} {r["M"]} {r["Y"]} {r["K"]}</small></td>')
-    table = "".join(f'<tr><th>{f}</th>{"".join(cell(r) for r in out if r["famille"] == f and r["palier nomme"] == "oui")}</tr>' for f in fams)
-    html = f"""<!doctype html><meta charset="utf-8"><title>Épreuve CMJN du spectre</title>
-<style>body{{margin:0;padding:24px 28px;background:#fff;font:13px/1.35 Poppins,system-ui,sans-serif;color:#141516;width:1010px}}
-h1{{font-size:17px;margin:0 0 4px;color:#0F2E3D}}p{{margin:0 0 14px;color:#515C63;font-size:12px}}table{{border-collapse:separate;border-spacing:4px 6px}}
-th{{text-align:left;font-weight:500;padding-right:6px;font-size:12px}}td{{width:80px;vertical-align:top}}.pair{{display:flex;height:34px;border-radius:4px;overflow:hidden}}
-.pair span{{flex:1}}small{{display:block;font-size:9px;color:#515C63;margin-top:2px;font-family:ui-monospace,monospace}}small.warn{{color:#C24146;font-weight:600}}</style>
-<h1>Épreuve écran du spectre en CMJN · {name}, {args.intent}</h1>
-<p>Chaque case : à gauche la couleur sRGB, à droite son rendu après séparation CMJN. En dessous, l'écart ΔE2000 et la séparation C M J N en %. En rouge, les écarts perceptibles au-delà de 5.</p>
-<table>{table}</table>"""
-    (ROOT / "exports/spectre/epreuve-cmjn.html").write_text(html)
     # the Impression notebook reads the same table from the served root
     shutil.copy(ROOT / "exports/spectre/epreuve-cmjn.csv", ROOT / "notebooks/data/epreuve-cmjn.csv")
     worst = sorted(out, key=lambda r: -r["dE2000"])[:8]
