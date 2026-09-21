@@ -9,7 +9,8 @@
     "check": "node scripts/check.mjs",
     "gen:r": "node scripts/gen-r.mjs",
     "gen:ase": "node scripts/gen-ase.mjs",
-    "gen:css": "node scripts/gen-css.mjs"
+    "gen:css": "node scripts/gen-css.mjs",
+    "livrer": "node scripts/livrer.mjs"
   },
   "dependencies": {
     "@observablehq/notebook-kit": "^2.1.8",

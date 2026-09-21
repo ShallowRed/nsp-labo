@@ -6,7 +6,7 @@ Système de couleurs du collectif Nos services publics : la source du spectre, l
 
 Le spectre est calculé en OKLCH : 8 familles en 11 paliers nommés, de 50 à 950, et leurs crans intermédiaires, soit 152 couleurs. Le générateur, les mesures de contraste et la simulation du daltonisme sont dans `notebooks/lib/spectre.js` ; les paramètres du spectre acté sont dans `notebooks/lib/scenarios.js`. Hors du gamut sRGB, le chroma est réduit à teinte constante : la clarté et la teinte restent exactes. La règle des teintes claires a été fixée le 18 septembre 2026 (`nsp-site/docs/ddr/DDR-005-teintes-claires-du-spectre.md`).
 
-Une teinte se modifie dans `scenarios.js`. Les garanties se vérifient avec `npm run check`, puis chaque fichier livré se régénère avec sa commande `npm run gen:*` ou son script de `scripts/` ; `npm run` liste les commandes.
+Une teinte se modifie dans `scenarios.js`. Les garanties se vérifient avec `npm run check`, puis chaque fichier livré se régénère avec sa commande `npm run gen:*` ou son script de `scripts/` ; `npm run` liste les commandes. `npm run livrer` recopie ensuite le spectre dans les dépôts voisins qui le consomment, nsp-site et le thème `nsp` de vignettes, sans rien y commiter.
 
 ## Les fichiers livrés
 
@@ -29,6 +29,5 @@ Un notebook par sujet ; un notebook sans usage est supprimé, git garde l'histor
 
 - Les traits de grille des graphiques du rapport sont d'un gris, `#E6ECEF`, qui n'appartient pas au spectre.
 - Les données de ces graphiques sont sur le poste de Lucas et ne sont pas versionnées ; ce dépôt est public.
-- La copie du CSV vers nsp-site est manuelle.
 
 La mémoire de travail du chantier est dans la carte Pawn : `shallowred-garden/agents/workspace-pawn/content/projets/nos-services-publics/`.

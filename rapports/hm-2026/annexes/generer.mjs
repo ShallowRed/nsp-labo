@@ -8,6 +8,7 @@ import path from "node:path";
 import {JSDOM} from "jsdom";
 import * as Plot from "@observablehq/plot";
 import * as d3 from "d3";
+import {teinte} from "../graphiques/couleurs.mjs";
 
 const args = process.argv.slice(2);
 const [source, sortie] = args;
@@ -22,14 +23,14 @@ const PERIMETRE = option("perimetre", "");
 const DOMAINE = [0, +option("max", 7)];
 
 const COULEURS = {
-  point: "#1C7EA9",      // pétrole 500
-  intitule: "#0B4862",   // pétrole 700
-  texte: "#3B4348",      // ardoise 700
-  secondaire: "#6A777F", // ardoise 500
-  bande: "#F2F6F8",      // ardoise 50
+  point: teinte("petrole 500"),
+  intitule: teinte("petrole 700"),
+  texte: teinte("ardoise 700"),
+  secondaire: teinte("ardoise 500"),
+  bande: teinte("ardoise 50"),
   grille: "#E6ECEF",     // entre ardoise 50 et 100
-  grilleUn: "#A1AEB6",   // ardoise 300, ligne de la cote 1
-  pointRef: "#84929A"    // ardoise 400, point de la référence
+  grilleUn: teinte("ardoise 300"), // ligne de la cote 1
+  pointRef: teinte("ardoise 400") // point de la référence
 };
 const CORPS = +option("corps", 7);
 const REGULIER = "Poppins-Regular, Poppins";
