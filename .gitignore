@@ -14,3 +14,6 @@ __pycache__/
 
 # pistes de couverture non retenues, régénérées à chaque lancement de couverture/generer.mjs
 rapports/hm-2026/couverture/sortie/[0-9]*
+
+# correctifs de texte du rapport : ils citent des passages du rapport non publié
+rapports/hm-2026/indesign/correctifs-*.jsx
