@@ -288,9 +288,11 @@ function barresAxeesClaires() {
 // « Rapport » reste à sa place à gauche ; le bas des barres est aligné sur sa ligne de base ; l'axe est posé sur la lisière, ses graduations dans la bande.
 // Tailles et positions des textes relevées dans le PDF V8 : Rapport et titre Poppins 26, année Merriweather Black 26.
 function finale({sansHabillage = false} = {}) {
+  // relevés dans l'export du document du 21 septembre 2026 : lisière du champ et ligne de base de « Rapport »
+  const CHAMP = 558.044, BASE_RAPPORT = 532.04, TRAIT = 0.8;
   const x1 = FILET.x1, x2 = 521.57, epaisseur = 34, ecart = 7, encre = BLANC;
   const lignes = ["Bien", "Plutôt bien", "Plutôt mal", "Mal"];
-  const y0 = 528 - (lignes.length * epaisseur + (lignes.length - 1) * ecart); // 528 = ligne de base de « Rapport »
+  const y0 = BASE_RAPPORT - (lignes.length * epaisseur + (lignes.length - 1) * ecart);
   const x = d3.scaleLinear([0, 100], [x1, x2]);
   let y = y0, barres = "", versants = "";
   const donnees = d3.dsvFormat(";").parse(fs.readFileSync(path.join(DONNEES_G, "G3_bien_etre_general_croise_travail.csv"), "utf8"),
@@ -305,23 +307,29 @@ function finale({sansHabillage = false} = {}) {
     versants += texte(x1 - 7, y + epaisseur / 2, v, {taille: 7, couleur: encre, ancre: "end"}).replace("<text ", `<text fill-opacity="0.5" `);
     y += epaisseur + ecart;
   }
-  // grille : la ligne 0 traverse le champ depuis le haut de la page, comme les autres
-  const grille = GRADUATIONS.map((g) => `<line x1="${x(g)}" x2="${x(g)}" y1="0" y2="${CHAMP}" stroke="${encre}" stroke-opacity="${g === 0 ? 0.5 : 0.13}" stroke-width="${g === 0 ? 0.8 : 0.5}"/>`).join("");
-  // axe sur la lisière : trait blanc dans le champ, graduations et étiquettes dans la bande
-  const axe = `<line x1="${x1}" x2="${x2}" y1="${CHAMP - 0.4}" y2="${CHAMP - 0.4}" stroke="${encre}" stroke-opacity="0.5" stroke-width="0.8"/>`
-    + GRADUATIONS.map((g) => `<line x1="${x(g)}" x2="${x(g)}" y1="${CHAMP}" y2="${CHAMP + 4}" stroke="${S.petrole[600]}" stroke-opacity="0.6" stroke-width="0.6"/>`
-      + texte(x(g), CHAMP + 12, g === 100 ? "100 %" : g, {taille: 7, couleur: S.petrole[600], ancre: "middle"})).join("");
+  // Aucun tracé translucide n'en recouvre un autre, pour qu'aucune surépaisseur claire n'apparaisse :
+  // la ligne 0 longe le bord gauche des barres, les autres lignes de grille s'interrompent derrière les barres
+  // et s'arrêtent au-dessus de l'axe, l'axe part du bord droit de la ligne 0.
+  const xTrait = (g) => (g === 0 ? x1 - TRAIT / 2 : x(g));
+  const hautBarres = lignes.map((_, i) => y0 + i * (epaisseur + ecart));
+  const troncons = [[-14, y0], ...hautBarres.slice(1).map((h) => [h - ecart, h]), [hautBarres.at(-1) + epaisseur, CHAMP - TRAIT]];
+  const grille = `<line x1="${xTrait(0)}" x2="${xTrait(0)}" y1="-14" y2="${CHAMP}" stroke="${encre}" stroke-opacity="0.5" stroke-width="${TRAIT}"/>`
+    + GRADUATIONS.slice(1).map((g) => troncons.map(([a, b]) => `<line x1="${x(g)}" x2="${x(g)}" y1="${a}" y2="${b}" stroke="${encre}" stroke-opacity="0.13" stroke-width="0.5"/>`).join("")).join("");
+  // axe sur la lisière : trait blanc dans le champ, graduations et étiquettes dans la bande, dans le prolongement des lignes
+  const axe = `<line x1="${x1}" x2="${x2 + 0.25}" y1="${CHAMP - TRAIT / 2}" y2="${CHAMP - TRAIT / 2}" stroke="${encre}" stroke-opacity="0.5" stroke-width="${TRAIT}"/>`
+    + GRADUATIONS.map((g) => `<line x1="${xTrait(g)}" x2="${xTrait(g)}" y1="${CHAMP}" y2="${CHAMP + 4}" stroke="${S.petrole[600]}" stroke-opacity="0.6" stroke-width="${g === 0 ? TRAIT : 0.6}"/>`
+      + texte(xTrait(g), CHAMP + 12, g === 100 ? "100 %" : g, {taille: 7, couleur: S.petrole[600], ancre: "middle"})).join("");
   const graphique = grille + barres + versants + axe;
   // le bloc du graphique seul part du bord gauche de la page et couvre le fond perdu de 14 pt à droite, en tête et en pied ;
   // le dessin est décalé de la hauteur du fond perdu de tête, et la grille monte jusqu'au bord du bloc
   const FOND_PERDU = 14, largeurBloc = (595.276 + FOND_PERDU).toFixed(3), hauteurBloc = (H + 2 * FOND_PERDU).toFixed(2);
-  if (sansHabillage) return `<svg xmlns="http://www.w3.org/2000/svg" width="${largeurBloc}pt" height="${hauteurBloc}pt" viewBox="0 0 ${largeurBloc} ${hauteurBloc}"><g transform="translate(0,${FOND_PERDU})">${graphique.replaceAll(' y1="0" y2="' + CHAMP + '"', ` y1="${-FOND_PERDU}" y2="${CHAMP}"`)}</g></svg>`;
+  if (sansHabillage) return `<svg xmlns="http://www.w3.org/2000/svg" width="${largeurBloc}pt" height="${hauteurBloc}pt" viewBox="0 0 ${largeurBloc} ${hauteurBloc}"><g transform="translate(0,${FOND_PERDU})">${graphique}</g></svg>`;
   return `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${W}pt" height="${H}pt" viewBox="0 0 ${W} ${H}">
 <rect width="${W}" height="${CHAMP}" fill="${S.petrole[600]}"/>
 <rect y="${CHAMP}" width="${W}" height="${H - CHAMP}" fill="${S.petrole[50]}"/>
 ${graphique}
 <image x="36" y="34" width="94.3" height="79.9" xlink:href="${logo("blanc")}"/>
-<text x="${GAUCHE}" y="528" font-family="Poppins" font-weight="700" font-size="26" fill="${S.petrole[50]}">Rapport</text>
+<text x="${GAUCHE}" y="${BASE_RAPPORT}" font-family="Poppins" font-weight="700" font-size="26" fill="${S.petrole[50]}">Rapport</text>
 <text font-family="Poppins" font-size="26" fill="${S.petrole[600]}"><tspan x="${GAUCHE}" y="599">Travailler dans le service public :</tspan><tspan x="${GAUCHE}" y="630.2">enquête sur le vécu des</tspan><tspan x="${GAUCHE}" y="661.4">agent·es public·ques</tspan></text>
 <line x1="${FILET.x1}" x2="${FILET.x2}" y1="${FILET.y}" y2="${FILET.y}" stroke="${S.petrole[600]}" stroke-width="0.75"/>
 <text x="${x2}" y="755" text-anchor="end" font-family="Merriweather" font-weight="900" font-size="26" fill="${S.petrole[600]}">2026</text>
