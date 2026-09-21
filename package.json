@@ -10,6 +10,7 @@
     "gen:r": "node scripts/gen-r.mjs",
     "gen:ase": "node scripts/gen-ase.mjs",
     "gen:css": "node scripts/gen-css.mjs",
+    "gen:jsx": "node scripts/gen-jsx.mjs",
     "livrer": "node scripts/livrer.mjs"
   },
   "dependencies": {

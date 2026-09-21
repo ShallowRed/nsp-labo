@@ -13,6 +13,7 @@ Une teinte se modifie dans `scenarios.js`. Les garanties se vérifient avec `npm
 - `exports/spectre/spectre-nsp.csv` : les 152 couleurs en hex et en `oklch()` exact. C'est la référence commune, et la livraison pour le web : nsp-site en garde une copie dans `tokens/` et en tire ses variables CSS.
 - `exports/spectre/spectre-nsp.css` : les mêmes 152 couleurs en propriétés CSS `--nsp-<famille>-<palier>`, pour une page ou une feuille Sass. Le thème `nsp` des présentations vignettes en garde une copie.
 - `exports/spectre/spectre-nsp.ase` : le nuancier pour InDesign et Illustrator, avec les recettes des graphiques nommées par modalité. Mode d'emploi dans `exports/spectre/README.md`.
+- `rapports/hm-2026/indesign/importer-spectre.jsx` : le script du panneau Scripts d'InDesign qui crée ou met à jour les 152 nuances et les recettes dans le document ouvert, quand charger le nuancier ne suffit pas parce que des nuances du même nom existent déjà.
 - `exports/spectre/epreuve-cmjn.csv` : la séparation Coated FOGRA39 de chaque couleur et son écart ΔE2000 avec l'écran.
 - `exports/r/` : le kit R, thème ggplot et palettes par modalité. Mode d'emploi dans `exports/r/README.md`.
 - Les SVG du deck de présentation (nuancier, échelles, daltonisme), écrits dans `vignettes/presentations/assets/images/nsp-refonte/` par `scripts/gen-slides-assets.mjs`.
