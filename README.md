@@ -14,7 +14,7 @@ Une teinte se modifie dans `scenarios.js`. Les garanties se vérifient avec `npm
 - `exports/spectre/spectre-nsp.ase` : le nuancier pour InDesign et Illustrator, avec les recettes des graphiques nommées par modalité. Mode d'emploi dans `exports/spectre/README.md`.
 - `exports/spectre/epreuve-cmjn.csv` : la séparation Coated FOGRA39 de chaque couleur et son écart ΔE2000 avec l'écran.
 - `exports/r/` : le kit R, thème ggplot et palettes par modalité. Mode d'emploi dans `exports/r/README.md`.
-- Les SVG du deck de présentation, écrits dans le dépôt `nuxt-slides` par `scripts/gen-slides-assets.mjs`.
+- Les SVG du deck de présentation (nuancier, échelles, daltonisme), écrits dans `vignettes/presentations/assets/images/nsp-refonte/` par `scripts/gen-slides-assets.mjs`.
 
 Les recettes des graphiques sont les mêmes dans le nuancier Adobe et dans le kit R : un graphique R et une figure InDesign qui les suivent ont les mêmes couleurs.
 

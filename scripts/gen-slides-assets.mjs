@@ -1,5 +1,5 @@
 // Génère les visuels SVG du deck de présentation depuis les libs nsp-labo.
-import { writeFileSync, copyFileSync, readFileSync } from "node:fs";
+import { writeFileSync, readFileSync } from "node:fs";
 import { JSDOM } from "jsdom";
 import { converter, formatHex, clampChroma, wcagContrast } from "culori";
 const dom = new JSDOM("<!doctype html><body></body>");
@@ -10,7 +10,7 @@ const Plot = await import("@observablehq/plot");
 const { genSpectre, paliers, simulate, bestCategorical } = await import("/Users/lucaspoulain/Projects/nsp-labo/notebooks/lib/spectre.js");
 const { SCENARIOS, CATEGORIEL } = await import("/Users/lucaspoulain/Projects/nsp-labo/notebooks/lib/scenarios.js");
 const { franceMetropolitaine } = await import("/Users/lucaspoulain/Projects/nsp-labo/notebooks/lib/carte.js");
-const OUT = "/Users/lucaspoulain/Projects/nuxt-slides/public/images/nsp-refonte/";
+const OUT = "/Users/lucaspoulain/Projects/vignettes/presentations/assets/images/nsp-refonte/";
 
 const sc = "resserre"; // spectre acté le 23 juillet 2026
 const spectre = genSpectre(SCENARIOS[sc]);
@@ -104,9 +104,6 @@ console.log("scénario:", sc, "familles:", Object.keys(spectre).join(", "));
   writeFileSync(OUT + "couvertures.svg", s + "</svg>");
 }
 
-// --- 5. figure gabarit (copie) + précédent RESP (copie) ---
-copyFileSync("/Users/lucaspoulain/Projects/nsp-labo/exports/web/figures/enquete-hm_M1_D_x_E.svg", OUT + "figure-gabarit.svg");
-copyFileSync("/Users/lucaspoulain/Projects/Dossier RESP-2025-livre-v8.2/Links/resp-2025-cartos-exports_effectifs-eleves.png", OUT + "resp-precedent.png");
 console.log("assets écrits dans", OUT);
 
 // --- 6. diagrammes de la présentation (remplacent Mermaid, rendu garanti) ---
